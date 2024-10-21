@@ -1,21 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AlumnoModule } from './alumno/alumno.module';
-import { EvaluacionCuestionarioVersionadoModule } from './evaluacion-cuestionario-versionado/evaluacion-cuestionario-versionado.module';
-import { EvaluacionRealizadaModule } from './evaluacion-realizada/evaluacion-realizada.module';
-import { DocenteModule } from './docente/docente.module';
-import { EvaluacionModule } from './evaluacion/evaluacion.module';
-import { CuestionarioModule } from './cuestionario/cuestionario.module';
+import { Alumno } from './alumno/alumno.entity';
+import { EvaluacionCuestionarioVersionado } from './evaluacion-cuestionario-versionado/evaluacion-cuestionario-versionado.entity';
+import { EvaluacionRealizada } from './evaluacion-realizada/evaluacion-realizada.entity';
+import { Docente } from './docente/docente.entity';
+import { Evaluacion } from './evaluacion/evaluacion.entity';
+import { Cuestionario } from './cuestionario/cuestionario.entity';
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 
 @Module({
   imports: [
-    AlumnoModule, 
-    EvaluacionCuestionarioVersionadoModule, 
-    EvaluacionRealizadaModule, 
-    DocenteModule, 
-    EvaluacionModule, 
-    CuestionarioModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -30,6 +24,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
+        entities: [
+          Alumno, 
+          EvaluacionCuestionarioVersionado, 
+          EvaluacionRealizada, 
+          Docente, 
+          Evaluacion, 
+          Cuestionario,
+        ],
         autoLoadEntities: true,
         synchronize: true,
       })
