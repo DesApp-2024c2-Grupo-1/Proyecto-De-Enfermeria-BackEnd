@@ -5,7 +5,6 @@ services:
     image: postgres:12.5
     restart: always
     environment:
-      DATABASE_HOST: db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin1234
       POSTGRES_DB: enfermeria
@@ -17,4 +16,4 @@ services:
 #      test: ["CMD-SHELL", "pg_isready -U postgres"]
 #      interval: 10s
 #      timeout: 5s
-#      retries: 5
+#      retries: 5\
