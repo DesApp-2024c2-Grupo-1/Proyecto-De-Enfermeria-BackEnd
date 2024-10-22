@@ -1,4 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
+import { EvaluacionRealizada } from "src/evaluacion-realizada/evaluacion-realizada.entity";
+import { Evaluacion } from "src/evaluacion/evaluacion.entity";
+import { Cuestionario } from "src/cuestionario/cuestionario.entity";
 
 @Entity()
 export class EvaluacionCuestionarioVersionado {
@@ -10,4 +13,13 @@ export class EvaluacionCuestionarioVersionado {
 
     @Column()
     version: number;
+
+    @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.evaluacionCuestionarioVersionado)
+    evaluacionRealizada: EvaluacionRealizada[];
+
+    @ManyToOne(() => Evaluacion, (evaluacion) => evaluacion.evaluacionCuestionarioVersionado, { nullable: false })
+    evaluacion: Evaluacion;
+
+    @ManyToOne(() => Cuestionario, (cuestionario) => cuestionario.evaluacionCuestionarioVersionado, { nullable: false })
+    cuestionario: Cuestionario;
 }

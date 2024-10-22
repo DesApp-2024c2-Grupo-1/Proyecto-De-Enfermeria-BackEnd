@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne } from "typeorm";
+import { EvaluacionCuestionarioVersionado } from "src/evaluacion-cuestionario-versionado/evaluacion-cuestionario-versionado.entity";
+import { Evaluacion } from "src/evaluacion/evaluacion.entity";
 
 @Entity()
 export class Cuestionario {
@@ -13,4 +15,10 @@ export class Cuestionario {
 
     @Column()
     fecha_version: Date; // ???
+
+    @OneToMany(() => EvaluacionCuestionarioVersionado, (evaluacionCuestionarioVersionado) => evaluacionCuestionarioVersionado.cuestionario)
+    evaluacionCuestionarioVersionado: EvaluacionCuestionarioVersionado[];
+
+    @OneToOne(() => Evaluacion, evaluacion => evaluacion.cuestionario)
+    evaluacion: Evaluacion;
 }
