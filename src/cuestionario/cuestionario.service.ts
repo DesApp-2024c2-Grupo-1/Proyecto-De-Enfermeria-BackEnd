@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Get, Injectable } from '@nestjs/common';
 
 @Injectable()
-export class CuestionarioService {}
+export class CuestionarioService {
+}
