@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, Put } from '@nestjs/common';
 import { Cuestionario } from './cuestionario.entity';
 import { CuestionarioService } from './cuestionario.service';
 
@@ -25,5 +25,10 @@ export class CuestionarioController {
     @Delete('/:id')
     deleteCuestionario(@Param('id') id: number) {
         return this.cuestionarioService.delete(id);
+    }
+
+    @Put('/:id')
+    modificarCuestionario(@Param('id') id: number, @Body() alumnoData: Cuestionario) {
+        return this.cuestionarioService.modifyById(id, alumnoData);
     }
 }

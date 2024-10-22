@@ -45,5 +45,22 @@ export class DocenteService {
   
           return salida
       }
+
+      async modifyById(id: number, docenteData: Docente) {
+        const docente = await AppDataSource
+          .getRepository(Docente)
+          .findOneBy({id})
+  
+  
+          Object.assign(docente, docenteData)
+  
+        const salida = AppDataSource
+          .getRepository(Docente)
+          .save(docente)
+  
+  
+        return salida
+          
+      }
       
 }

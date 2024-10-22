@@ -45,4 +45,21 @@ export class CuestionarioService {
   
           return salida
       }
+
+      async modifyById(id: number, cuestionarioData: Cuestionario) {
+        const cuestionario = await AppDataSource
+          .getRepository(Cuestionario)
+          .findOneBy({id})
+  
+  
+          Object.assign(cuestionario, cuestionarioData)
+  
+        const salida = AppDataSource
+          .getRepository(Cuestionario)
+          .save(cuestionario)
+  
+  
+        return salida
+          
+      }
 }

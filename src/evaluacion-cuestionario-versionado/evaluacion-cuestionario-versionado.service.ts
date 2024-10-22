@@ -45,4 +45,20 @@ export class EvaluacionCuestionarioVersionadoService {
   
           return salida
       }
+      async modifyById(id: number, ecvData: EvaluacionCuestionarioVersionado) {
+        const ecv = await AppDataSource
+          .getRepository(EvaluacionCuestionarioVersionado)
+          .findOneBy({id})
+  
+  
+          Object.assign(ecv, ecvData)
+  
+        const salida = AppDataSource
+          .getRepository(EvaluacionCuestionarioVersionado)
+          .save(ecv)
+  
+  
+        return salida
+          
+      }
 }

@@ -45,4 +45,21 @@ export class AlumnoService {
 
         return salida
     }
+
+    async modifyById(id: number, alumnoData: Alumno) {
+      const alumno = await AppDataSource
+        .getRepository(Alumno)
+        .findOneBy({id})
+
+
+        Object.assign(alumno, alumnoData)
+
+      const salida = AppDataSource
+        .getRepository(Alumno)
+        .save(alumno)
+
+
+      return salida
+        
+    }
 }

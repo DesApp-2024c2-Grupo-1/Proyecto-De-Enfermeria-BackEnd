@@ -45,4 +45,21 @@ export class EvaluacionRealizadaService {
   
           return salida
       }
+
+      async modifyById(id: number, evaluacionRealizadaData: EvaluacionRealizada) {
+        const evaluacionRealizada = await AppDataSource
+          .getRepository(EvaluacionRealizada)
+          .findOneBy({id})
+  
+  
+          Object.assign(evaluacionRealizada, evaluacionRealizadaData)
+  
+        const salida = AppDataSource
+          .getRepository(EvaluacionRealizada)
+          .save(evaluacionRealizada)
+  
+  
+        return salida
+          
+      }
 }

@@ -46,5 +46,23 @@ export class EvaluacionService {
   
           return salida
       }
+      
+      async modifyById(id: number, evaluacionData: Evaluacion) {
+        const evaluacion = await AppDataSource
+          .getRepository(Evaluacion)
+          .findOneBy({id})
+  
+  
+          Object.assign(evaluacion, evaluacionData)
+  
+        const salida = AppDataSource
+          .getRepository(Evaluacion)
+          .save(evaluacion)
+  
+  
+        return salida
+          
+      }
+
   }
 

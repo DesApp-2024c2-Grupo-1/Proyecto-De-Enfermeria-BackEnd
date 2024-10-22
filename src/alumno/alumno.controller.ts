@@ -27,8 +27,8 @@ export class AlumnoController {
     }
 
     @Put('/:id')
-    modificarAlumno(@Param('id') id: number) {
-        
+    modificarAlumno(@Param('id') id: number, @Body() alumnoData: Alumno) {
+        return this.alumnoService.modifyById(id, alumnoData);
     }
 
 }
