@@ -7,6 +7,6 @@ export class AlumnoController {
 
     @Get()
     getAllAlumnos() {
-        return 'this.alumnoService.findAll()'
+        return this.alumnoService.findAll()
     }
 }
