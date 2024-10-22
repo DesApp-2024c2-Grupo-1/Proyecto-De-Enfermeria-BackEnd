@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { Docente } from "src/docente/docente.entity";
 
 @Entity()
 export class EvaluacionRealizada {
@@ -10,4 +11,7 @@ export class EvaluacionRealizada {
 
     @Column()
     fecha: Date;
+
+    @ManyToOne(() => Docente, (docente) => docente.evaluacionRealizada)
+    docente: Docente;
 }

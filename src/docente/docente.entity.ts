@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { EvaluacionRealizada } from './../evaluacion-realizada/evaluacion-realizada.entity';
 
 @Entity()
 export class Docente {
@@ -16,4 +17,7 @@ export class Docente {
 
     @Column()
     dni: number;
+
+    @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.docente)
+    evaluacionRealizada: EvaluacionRealizada[];
 }
