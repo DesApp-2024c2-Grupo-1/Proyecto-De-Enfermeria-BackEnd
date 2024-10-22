@@ -13,4 +13,14 @@ export class AlumnoService {
 
         return alumnos
     }
+
+    async findById(id: number) {
+        const alumno = await AppDataSource
+          .getRepository(Alumno)
+          .createQueryBuilder('alumno')
+          .where('alumno.id = :id', { id })
+          .getOne();
+    
+        return alumno;
+      }
 }
