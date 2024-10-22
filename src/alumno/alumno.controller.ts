@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Param, Body } from '@nestjs/common';
 import { Alumno } from 'src/alumno/alumno.entity';
 import { AlumnoService } from './alumno.service'
 
@@ -11,17 +11,18 @@ export class AlumnoController {
         return this.alumnoService.findAll()
     }
 
-    getAlumnoById(id: number) {
+    @Get('/:id')
+    getAlumnoById(@Param('id') id: number) {
         return this.alumnoService.findById(id);
     }
 
     @Post()
-    createAlumno(alumnoData: Alumno) {
+    createAlumno(@Body() alumnoData: Alumno) {
         return this.alumnoService.create(alumnoData);
     }
 
     @Delete(':id')
-    deleteAlumno(id: number) {
+    deleteAlumno(@Param('id') id: number) {
         return this.alumnoService.delete(id);
     }
 
