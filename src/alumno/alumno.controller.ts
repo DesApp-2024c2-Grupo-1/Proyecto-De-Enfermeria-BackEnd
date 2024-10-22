@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put } from '@nestjs/common';
+import { Alumno } from 'src/alumno/alumno.entity';
 import { AlumnoService } from './alumno.service'
 
 @Controller('/alumno')
@@ -14,8 +15,14 @@ export class AlumnoController {
         return this.alumnoService.findById(id);
     }
 
-      async create(alumnoData: Partial<Alumno>): Promise<Alumno> {
-    const nuevoAlumno = this.alumnoRepository.create(alumnoData); // Crear instancia
-    return this.alumnoRepository.save(nuevoAlumno); // Guardar en la base de datos
-  }
+    @Post()
+    createAlumno(alumnoData: Alumno) {
+        return this.alumnoService.create(alumnoData);
+    }
+
+    @Delete(':id')
+    deleteAlumno(id: number) {
+        return this.alumnoService.delete(id);
+    }
+
 }

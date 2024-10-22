@@ -23,4 +23,26 @@ export class AlumnoService {
     
         return alumno;
       }
+
+    async create(alumnoData: Alumno) {
+      const nuevoAlumno = await AppDataSource
+          .getRepository(Alumno)
+          .create(alumnoData)
+
+          return AppDataSource
+          .getRepository(Alumno)
+          .save(nuevoAlumno)
+      }
+
+    async delete(id: number) {
+      const salida = await AppDataSource
+        .getRepository(Alumno)
+        .createQueryBuilder()
+        .delete()
+        .from(Alumno)
+        .where('id = :id', { id })
+        .execute()
+
+        return salida
+    }
 }
