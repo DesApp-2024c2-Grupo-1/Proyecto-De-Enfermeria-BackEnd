@@ -2,7 +2,7 @@ import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { Cuestionario } from './cuestionario.entity';
 import { CuestionarioService } from './cuestionario.service';
 
-@Controller('cuestionario')
+@Controller('/cuestionario')
 export class CuestionarioController {
     constructor(private cuestionarioService: CuestionarioService) {}
 
@@ -11,8 +11,8 @@ export class CuestionarioController {
         return this.cuestionarioService.findAll()
     }
 
-    @Get()
-    getCuestionarioById(id: number) {
+    @Get('/:id')
+    getCuestionarioById(@Param('id') id: number) {
         return this.cuestionarioService.findById(id);
     }
 
@@ -22,7 +22,7 @@ export class CuestionarioController {
         return this.cuestionarioService.create(cuestionarioData);
     }
 
-    @Delete(':id')
+    @Delete('/:id')
     deleteCuestionario(@Param('id') id: number) {
         return this.cuestionarioService.delete(id);
     }

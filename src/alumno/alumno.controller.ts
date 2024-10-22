@@ -26,4 +26,9 @@ export class AlumnoController {
         return this.alumnoService.delete(id);
     }
 
+    @Put('/:id')
+    modificarAlumno(@Param('id') id: number) {
+        
+    }
+
 }

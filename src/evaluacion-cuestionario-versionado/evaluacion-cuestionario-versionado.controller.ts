@@ -2,7 +2,7 @@ import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
 import { EvaluacionCuestionarioVersionado } from './evaluacion-cuestionario-versionado.entity';
 import { EvaluacionCuestionarioVersionadoService } from './evaluacion-cuestionario-versionado.service';
 
-@Controller('evaluacion-cuestionario-versionado')
+@Controller('/evaluacion-cuestionario-versionado')
 export class EvaluacionCuestionarioVersionadoController {
     constructor(private evaluacionCuestionarioVersionadoService: EvaluacionCuestionarioVersionadoService) {}
 
@@ -11,8 +11,8 @@ export class EvaluacionCuestionarioVersionadoController {
         return this.evaluacionCuestionarioVersionadoService.findAll()
     }
 
-    @Get()
-    getECVById(id: number) {
+    @Get('/:id')
+    getECVById(@Param('id') id: number) {
         return this.evaluacionCuestionarioVersionadoService.findById(id);
     }
 
@@ -21,7 +21,7 @@ export class EvaluacionCuestionarioVersionadoController {
         return this.evaluacionCuestionarioVersionadoService.create(evaluacionCuestionarioVersionadoData);
     }
 
-    @Delete(':id')
+    @Delete('/:id')
     deleteAlumno(@Param('id') id: number) {
         return this.evaluacionCuestionarioVersionadoService.delete(id);
     } 
