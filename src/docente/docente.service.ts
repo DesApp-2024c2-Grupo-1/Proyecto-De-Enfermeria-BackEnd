@@ -23,4 +23,27 @@ export class DocenteService {
     
         return docente;
       }
+
+    async create(docenteData: Docente) {
+        const nuevoDocente = await AppDataSource
+            .getRepository(Docente)
+            .create(docenteData)
+  
+            return AppDataSource
+            .getRepository(Docente)
+            .save(nuevoDocente)
+        }
+  
+    async delete(id: number) {
+        const salida = await AppDataSource
+          .getRepository(Docente)
+          .createQueryBuilder()
+          .delete()
+          .from(Docente)
+          .where('id = :id', { id })
+          .execute()
+  
+          return salida
+      }
+      
 }

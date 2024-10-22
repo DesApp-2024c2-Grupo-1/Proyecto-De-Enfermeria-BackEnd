@@ -23,4 +23,26 @@ export class CuestionarioService {
     
         return cuestionario;
       }
+
+    async create(cuestionarioData: Cuestionario) {
+        const nuevoCuestionario = await AppDataSource
+            .getRepository(Cuestionario)
+            .create(cuestionarioData)
+  
+            return AppDataSource
+            .getRepository(Cuestionario)
+            .save(cuestionarioData)
+        }
+  
+    async delete(id: number) {
+        const salida = await AppDataSource
+          .getRepository(Cuestionario)
+          .createQueryBuilder()
+          .delete()
+          .from(Cuestionario)
+          .where('id = :id', { id })
+          .execute()
+  
+          return salida
+      }
 }

@@ -15,12 +15,34 @@ export class EvaluacionRealizadaService {
     }
 
     async findById(id: number) {
-        const evaluacionrealizada = await AppDataSource
+        const evaluacionRealizada = await AppDataSource
           .getRepository(EvaluacionRealizada)
           .createQueryBuilder('evaluacion')
           .where('evaluacion.id = :id', { id })
           .getOne();
     
-        return evaluacionrealizada;
+        return evaluacionRealizada;
+      }
+
+      async create(evaluacionRealizadaData: EvaluacionRealizada) {
+        const nuevoEvaluacionRealizada = await AppDataSource
+            .getRepository(EvaluacionRealizada)
+            .create(evaluacionRealizadaData)
+  
+            return AppDataSource
+            .getRepository(EvaluacionRealizada)
+            .save(nuevoEvaluacionRealizada)
+        }
+  
+      async delete(id: number) {
+        const salida = await AppDataSource
+          .getRepository(EvaluacionRealizada)
+          .createQueryBuilder()
+          .delete()
+          .from(EvaluacionRealizada)
+          .where('id = :id', { id })
+          .execute()
+  
+          return salida
       }
 }

@@ -24,4 +24,27 @@ export class EvaluacionService {
     
         return evaluacion;
       }
-}
+
+      async create(evaluacionData: Evaluacion) {
+        const nuevoEvaluacion = await AppDataSource
+            .getRepository(Evaluacion)
+            .create(evaluacionData)
+  
+            return AppDataSource
+            .getRepository(Evaluacion)
+            .save(nuevoEvaluacion)
+        }
+  
+      async delete(id: number) {
+        const salida = await AppDataSource
+          .getRepository(Evaluacion)
+          .createQueryBuilder()
+          .delete()
+          .from(Evaluacion)
+          .where('id = :id', { id })
+          .execute()
+  
+          return salida
+      }
+  }
+

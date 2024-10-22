@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
+import { Evaluacion } from './evaluacion.entity';
 import { EvaluacionService } from './evaluacion.service';
 
 @Controller('evaluacion')
@@ -10,7 +11,18 @@ export class EvaluacionController {
         return this.evaluacionService.findAll()
     }
 
+    @Get()
     getEvaluacionById(id: number) {
         return this.evaluacionService.findById(id);
+    }
+
+    @Post()
+    createEvaluacion(@Body() evaluacionData: Evaluacion) {
+        return this.evaluacionService.create(evaluacionData);
+    }
+
+    @Delete(':id')
+    deleteEvaluacion(@Param('id') id: number) {
+        return this.evaluacionService.delete(id);
     }
 }

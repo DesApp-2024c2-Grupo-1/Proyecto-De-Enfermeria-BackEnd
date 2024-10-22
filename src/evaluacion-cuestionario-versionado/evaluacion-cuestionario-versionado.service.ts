@@ -23,4 +23,26 @@ export class EvaluacionCuestionarioVersionadoService {
     
         return ecv;
       }
+
+    async create(evaluacionCuestionarioVersionadoData: EvaluacionCuestionarioVersionado) {
+        const nuevoEvaluacionCuestionarioVersionado = await AppDataSource
+            .getRepository(EvaluacionCuestionarioVersionado)
+            .create(evaluacionCuestionarioVersionadoData)
+  
+            return AppDataSource
+            .getRepository(EvaluacionCuestionarioVersionado)
+            .save(nuevoEvaluacionCuestionarioVersionado)
+        }
+  
+    async delete(id: number) {
+        const salida = await AppDataSource
+          .getRepository(EvaluacionCuestionarioVersionado)
+          .createQueryBuilder()
+          .delete()
+          .from(EvaluacionCuestionarioVersionado)
+          .where('id = :id', { id })
+          .execute()
+  
+          return salida
+      }
 }

@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param } from '@nestjs/common';
+import { Docente } from './docente.entity';
 import { DocenteService } from './docente.service';
 
 @Controller('docente')
@@ -10,7 +11,20 @@ export class DocenteController {
         return this.docenteService.findAll()
     }
 
+    @Get()
     getDocenteById(id: number) {
         return this.docenteService.findById(id);
     }
+
+    @Post()
+    createDocente(@Body() docenteData: Docente) {
+        return this.docenteService.create(docenteData);
+    }
+
+    @Delete(':id')
+    deleteDocente(@Param('id') id: number) {
+        return this.docenteService.delete(id);
+    }
+
+
 }
