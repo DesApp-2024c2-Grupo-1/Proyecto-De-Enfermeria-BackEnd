@@ -9,7 +9,7 @@ export class EvaluacionCuestionarioVersionado {
     id: number;
 
     @Column()
-    nombre: Date;
+    fecha: Date;
 
     @Column()
     version: number;

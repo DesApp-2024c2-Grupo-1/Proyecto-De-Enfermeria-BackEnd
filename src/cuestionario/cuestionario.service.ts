@@ -8,7 +8,7 @@ export class CuestionarioService {
     async findAll() {
         const cuestionarios = await AppDataSource
             .getRepository(Cuestionario)
-            .createQueryBuilder("user")
+            .createQueryBuilder('cuestionario')
             .getMany()
 
         return cuestionarios

@@ -9,7 +9,8 @@ export class EvaluacionService {
     async findAll() {
         const evaluaciones = await AppDataSource
             .getRepository(Evaluacion)
-            .createQueryBuilder("user")
+            .createQueryBuilder('evaluacion')
+            .leftJoinAndSelect('evaluacion.cuestionario', 'cuestionario')
             .getMany()
 
         return evaluaciones
@@ -19,6 +20,7 @@ export class EvaluacionService {
         const evaluacion = await AppDataSource
           .getRepository(Evaluacion)
           .createQueryBuilder('evaluacion')
+          .leftJoinAndSelect('evaluacion.cuestionario', 'cuestionario')
           .where('evaluacion.id = :id', { id })
           .getOne();
     

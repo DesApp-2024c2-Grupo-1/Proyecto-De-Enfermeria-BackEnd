@@ -8,7 +8,9 @@ export class EvaluacionCuestionarioVersionadoService {
     async findAll() {
         const ecvs = await AppDataSource // ecvs significa evaluaciones-cuestionarios-versionados
             .getRepository(EvaluacionCuestionarioVersionado)
-            .createQueryBuilder("user")
+            .createQueryBuilder('evaluacion-cuestionario-versionado')
+            .leftJoinAndSelect('evaluacion-cuestionario-versionado.evaluacion', 'evaluacion')
+            .leftJoinAndSelect('evaluacion-cuestionario-versionado.cuestionario', 'cuestionario')
             .getMany()
 
         return ecvs
@@ -18,6 +20,8 @@ export class EvaluacionCuestionarioVersionadoService {
         const ecv = await AppDataSource // ecv significa evaluacion-cuestionario-versionado
           .getRepository(EvaluacionCuestionarioVersionado)
           .createQueryBuilder('evaluacion-cuestionario-versionado')
+          .leftJoinAndSelect('evaluacion-cuestionario-versionado.evaluacion', 'evaluacion')
+          .leftJoinAndSelect('evaluacion-cuestionario-versionado.cuestionario', 'cuestionario')
           .where('evaluacion-cuestionario-versionado.id = :id', { id })
           .getOne();
     

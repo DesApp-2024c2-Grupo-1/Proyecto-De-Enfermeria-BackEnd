@@ -8,7 +8,7 @@ export class DocenteService {
     async findAll() {
         const docentes = await AppDataSource
             .getRepository(Docente)
-            .createQueryBuilder("user")
+            .createQueryBuilder('docente')
             .getMany()
 
         return docentes

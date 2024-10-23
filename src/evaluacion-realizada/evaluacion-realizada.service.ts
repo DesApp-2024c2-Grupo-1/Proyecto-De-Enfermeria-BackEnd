@@ -8,7 +8,11 @@ export class EvaluacionRealizadaService {
     async findAll() {
         const evaluacionesrealizadas = await AppDataSource
             .getRepository(EvaluacionRealizada)
-            .createQueryBuilder("user")
+            .createQueryBuilder('evaluacion-realizada')
+            .leftJoinAndSelect('evaluacion-realizada.alumno', 'alumno')
+            .leftJoinAndSelect('evaluacion-realizada.docente', 'docente')
+            .leftJoinAndSelect('evaluacion-realizada.evaluacion', 'evaluacion')
+            .leftJoinAndSelect('evaluacion-realizada.evaluacionCuestionarioVersionado', 'evaluacionCuestionarioVersionado')
             .getMany()
 
         return evaluacionesrealizadas
@@ -17,8 +21,12 @@ export class EvaluacionRealizadaService {
     async findById(id: number) {
         const evaluacionRealizada = await AppDataSource
           .getRepository(EvaluacionRealizada)
-          .createQueryBuilder('evaluacion')
-          .where('evaluacion.id = :id', { id })
+          .createQueryBuilder('evaluacion-realizada')
+          .leftJoinAndSelect('evaluacion-realizada.alumno', 'alumno')
+          .leftJoinAndSelect('evaluacion-realizada.docente', 'docente')
+          .leftJoinAndSelect('evaluacion-realizada.evaluacion', 'evaluacion')
+          .leftJoinAndSelect('evaluacion-realizada.evaluacionCuestionarioVersionado', 'evaluacionCuestionarioVersionado')
+          .where('evaluacion-realizada.id = :id', { id })
           .getOne();
     
         return evaluacionRealizada;
