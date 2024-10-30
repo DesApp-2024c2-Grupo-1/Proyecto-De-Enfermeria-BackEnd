@@ -12,11 +12,14 @@ export class Docente {
     @Column()
     apellido: string;
 
-    @Column()
-    mail: string;
+    @Column({unique: true})
+    email: string;
+
+    @Column({unique: true})
+    dni: number;
 
     @Column()
-    dni: number;
+    password: string;
 
     @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.docente)
     evaluacionRealizada: EvaluacionRealizada[];

@@ -9,6 +9,7 @@ export class DocenteService {
         const docentes = await AppDataSource
             .getRepository(Docente)
             .createQueryBuilder('docente')
+            .select(['docente.id', 'docente.nombre', 'docente.apellido', 'docente.email'])
             .getMany()
 
         return docentes
@@ -18,6 +19,7 @@ export class DocenteService {
         const docente = await AppDataSource
           .getRepository(Docente)
           .createQueryBuilder('docente')
+          .select(['docente.id', 'docente.nombre', 'docente.apellido'])
           .where('docente.id = :id', { id })
           .getOne();
     
