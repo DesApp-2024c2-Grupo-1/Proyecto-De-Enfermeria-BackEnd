@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsEmail, IsOptional, IsArray } from 'class-validator';
+import { IsString, IsNumber, IsEmail, IsArray } from 'class-validator';
 import { EvaluacionRealizada } from 'src/evaluacion-realizada/evaluacion-realizada.entity';
 
 export class CrearDocenteDto {

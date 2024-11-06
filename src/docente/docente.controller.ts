@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Delete, Body, Param, Put } from '@nestjs/common';
 import { CrearDocenteDto } from './dto/crear-docente.dto'
+import { PutDocenteDto } from './dto/put-docente.dto';
 import { DocenteService } from './docente.service';
 
 @Controller('/docente')
@@ -27,7 +28,7 @@ export class DocenteController {
     }
 
     @Put('/:id')
-    modificarDocente(@Param('id') id: number, @Body() docenteData: CrearDocenteDto) {
+    modificarDocente(@Param('id') id: number, @Body() docenteData: PutDocenteDto) {
         return this.docenteService.modifyById(id, docenteData);
     }
 
