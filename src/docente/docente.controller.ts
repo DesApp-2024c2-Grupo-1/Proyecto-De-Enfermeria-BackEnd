@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Delete, Body, Param, Put } from '@nestjs/common';
-import { Docente } from './docente.entity';
+import { CrearDocenteDto } from './dto/crear-docente.dto'
 import { DocenteService } from './docente.service';
 
 @Controller('/docente')
@@ -17,7 +17,7 @@ export class DocenteController {
     }
 
     @Post()
-    createDocente(@Body() docenteData: Docente) {
+    createDocente(@Body() docenteData: CrearDocenteDto) {
         return this.docenteService.create(docenteData);
     }
 
@@ -27,7 +27,7 @@ export class DocenteController {
     }
 
     @Put('/:id')
-    modificarDocente(@Param('id') id: number, @Body() docenteData: Docente) {
+    modificarDocente(@Param('id') id: number, @Body() docenteData: CrearDocenteDto) {
         return this.docenteService.modifyById(id, docenteData);
     }
 
