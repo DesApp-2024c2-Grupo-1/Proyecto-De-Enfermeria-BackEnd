@@ -24,6 +24,14 @@ export class AlumnoService {
         return alumno;
       }
 
+    async findByDni(dni: number) {
+      const alumno = await AppDataSource.getRepository(Alumno).findOne({
+        where: { dni },
+        select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+      });
+      return alumno;
+    }
+
     async create(alumnoData: Alumno) {
       const nuevoAlumno = await AppDataSource
           .getRepository(Alumno)

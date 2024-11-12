@@ -14,7 +14,10 @@ export class Alumno {
     apellido: string;
 
     @Column()
-    mail: string;
+    email: string;
+
+    @Column()
+    dni: number;
 
     @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.alumno)
     evaluacionRealizada: EvaluacionRealizada[];

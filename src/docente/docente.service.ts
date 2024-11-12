@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { AppDataSource } from '../db/data-source';
 import { Docente } from './docente.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class DocenteService {
-
     async findAll() {
         const docentes = await AppDataSource
             .getRepository(Docente)
             .createQueryBuilder('docente')
-            .select(['docente.id', 'docente.nombre', 'docente.apellido', 'docente.email'])
+            .select(['docente.id', 'docente.nombre', 'docente.apellido', 'docente.email', 'docente.dni'])
             .getMany()
 
         return docentes
@@ -19,10 +20,18 @@ export class DocenteService {
         const docente = await AppDataSource
           .getRepository(Docente)
           .createQueryBuilder('docente')
-          .select(['docente.id', 'docente.nombre', 'docente.apellido'])
+          .select(['docente.id', 'docente.nombre', 'docente.apellido', 'docente.dni'])
           .where('docente.id = :id', { id })
           .getOne();
     
+        return docente;
+      }
+
+    async findByDni(dni: number) {
+        const docente = await AppDataSource.getRepository(Docente).findOne({
+            where: { dni },
+            select: ['id', 'nombre', 'apellido'],
+        });
         return docente;
       }
 
