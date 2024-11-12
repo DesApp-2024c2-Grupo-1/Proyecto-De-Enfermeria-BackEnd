@@ -1,9 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { AppDataSource } from '../db/data-source';
 import { Docente } from './docente.entity';
+import { PutDocenteDto } from './dto/put-docente.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class DocenteService {
+
+  constructor(
+    @InjectRepository(Docente)
+    private readonly docenteRepository: Repository<Docente>,
+  ) {}
 
     async findAll() {
         const docentes = await AppDataSource
@@ -48,8 +56,8 @@ export class DocenteService {
           return salida
       }
 
-      async modifyById(id: number, docenteData: Docente) {
-        const docente = await AppDataSource
+      async modifyById(id: number, putDocenteDto: PutDocenteDto): Promise<Docente> {
+        /*const docente = await AppDataSource
           .getRepository(Docente)
           .findOneBy({id})
   
@@ -62,7 +70,13 @@ export class DocenteService {
   
   
         return salida
-          
+         */
+        const docente = await this.docenteRepository.preload({
+          id,  // Establece explícitamente el ID aquí
+          ...putDocenteDto,
+        }); 
+
+        return this.docenteRepository.save(docente);
       }
       
 }

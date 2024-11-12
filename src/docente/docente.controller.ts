@@ -31,5 +31,5 @@ export class DocenteController {
     modificarDocente(@Param('id') id: number, @Body() docenteData: PutDocenteDto) {
         return this.docenteService.modifyById(id, docenteData);
     }
-
+    
 }
