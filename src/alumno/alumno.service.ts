@@ -4,25 +4,21 @@ import { AppDataSource } from '../db/data-source';
 
 @Injectable()
 export class AlumnoService {
-
     async findAll() {
-        const alumnos = await AppDataSource
-            .getRepository(Alumno)
-            .createQueryBuilder('alumno')
-            .getMany()
+      const alumnos = await AppDataSource.getRepository(Alumno).find({
+        select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+    });
 
-        return alumnos
+    return alumnos;
     }
 
     async findById(id: number) {
-        const alumno = await AppDataSource
-          .getRepository(Alumno)
-          .createQueryBuilder('alumno')
-          .where('alumno.id = :id', { id })
-          .getOne();
-    
-        return alumno;
-      }
+      const alumno = await AppDataSource.getRepository(Alumno).findOne({
+        where: { id },
+        select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+      });
+      return alumno;
+    }
 
     async findByDni(dni: number) {
       const alumno = await AppDataSource.getRepository(Alumno).findOne({

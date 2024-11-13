@@ -7,30 +7,25 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class DocenteService {
     async findAll() {
-        const docentes = await AppDataSource
-            .getRepository(Docente)
-            .createQueryBuilder('docente')
-            .select(['docente.id', 'docente.nombre', 'docente.apellido', 'docente.email', 'docente.dni'])
-            .getMany()
+      const docentes = await AppDataSource.getRepository(Docente).find({
+        select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+    });
 
-        return docentes
+    return docentes;
     }
 
     async findById(id: number) {
-        const docente = await AppDataSource
-          .getRepository(Docente)
-          .createQueryBuilder('docente')
-          .select(['docente.id', 'docente.nombre', 'docente.apellido', 'docente.dni'])
-          .where('docente.id = :id', { id })
-          .getOne();
-    
-        return docente;
-      }
+      const docente = await AppDataSource.getRepository(Docente).findOne({
+        where: { id },
+        select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+      });
+      return docente;
+    }
 
     async findByDni(dni: number) {
         const docente = await AppDataSource.getRepository(Docente).findOne({
             where: { dni },
-            select: ['id', 'nombre', 'apellido'],
+            select: ['id', 'nombre', 'apellido', 'email', 'dni'],
         });
         return docente;
       }
