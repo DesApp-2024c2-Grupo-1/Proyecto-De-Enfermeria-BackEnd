@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { Alumno } from 'src/alumno/alumno.entity';
-import { AppDataSource } from '../db/data-source';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 

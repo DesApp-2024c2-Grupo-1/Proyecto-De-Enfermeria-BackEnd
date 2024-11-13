@@ -1,68 +1,46 @@
-
 import { Injectable } from '@nestjs/common';
-import { AppDataSource } from '../db/data-source';
 import { Evaluacion } from './evaluacion.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class EvaluacionService {
+  constructor(
+    @InjectRepository(Evaluacion)
+    private readonly evaluacionRepository: Repository<Evaluacion>,
+  ) {}
 
     async findAll() {
-        const evaluaciones = await AppDataSource
-            .getRepository(Evaluacion)
-            .createQueryBuilder('evaluacion')
-            .leftJoinAndSelect('evaluacion.cuestionario', 'cuestionario')
-            .getMany()
+      const evaluaciones = await this.evaluacionRepository.find({
+        select: ['id', 'titulo', 'exigencia', 'cantidadDePreguntas', 'puntajeIdeal'],
+    });
 
         return evaluaciones
     }
 
     async findById(id: number) {
-        const evaluacion = await AppDataSource
-          .getRepository(Evaluacion)
-          .createQueryBuilder('evaluacion')
-          .leftJoinAndSelect('evaluacion.cuestionario', 'cuestionario')
-          .where('evaluacion.id = :id', { id })
-          .getOne();
+      const evaluacion = await this.evaluacionRepository.findOne({
+        where: { id },
+        select: ['id', 'titulo', 'exigencia', 'cantidadDePreguntas', 'puntajeIdeal'],
+      });
     
         return evaluacion;
       }
 
       async create(evaluacionData: Evaluacion) {
-        const nuevoEvaluacion = await AppDataSource
-            .getRepository(Evaluacion)
-            .create(evaluacionData)
-  
-            return AppDataSource
-            .getRepository(Evaluacion)
-            .save(nuevoEvaluacion)
+        const nuevoEvaluacion = this.evaluacionRepository.create(evaluacionData);
+        return await this.evaluacionRepository.save(nuevoEvaluacion);
         }
   
       async delete(id: number) {
-        const salida = await AppDataSource
-          .getRepository(Evaluacion)
-          .createQueryBuilder()
-          .delete()
-          .from(Evaluacion)
-          .where('id = :id', { id })
-          .execute()
-  
-          return salida
+        const salida = await this.evaluacionRepository.delete(id);
+      return salida
       }
       
       async modifyById(id: number, evaluacionData: Evaluacion) {
-        const evaluacion = await AppDataSource
-          .getRepository(Evaluacion)
-          .findOneBy({id})
-  
-  
-          Object.assign(evaluacion, evaluacionData)
-  
-        const salida = AppDataSource
-          .getRepository(Evaluacion)
-          .save(evaluacion)
-  
-  
-        return salida
+        const evaluacion = await this.evaluacionRepository.findOne({where: {id}})
+      Object.assign(evaluacion, evaluacionData)
+      const salida = this.evaluacionRepository.save(evaluacion)
           
       }
 

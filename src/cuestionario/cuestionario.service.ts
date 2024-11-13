@@ -1,65 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import { Cuestionario } from './cuestionario.entity';
-import { AppDataSource } from '../db/data-source';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class CuestionarioService {
+  constructor(
+    @InjectRepository(Cuestionario)
+    private readonly cuestionarioRepository: Repository<Cuestionario>,
+  ) {}
 
     async findAll() {
-        const cuestionarios = await AppDataSource
-            .getRepository(Cuestionario)
-            .createQueryBuilder('cuestionario')
-            .getMany()
+      const cuestionarios = await this.cuestionarioRepository.find({
+        select: ['id', 'titulo', 'version', 'fecha_version'],
+    });
 
         return cuestionarios
     }
 
     async findById(id: number) {
-        const cuestionario = await AppDataSource
-          .getRepository(Cuestionario)
-          .createQueryBuilder('cuestionario')
-          .where('cuestionario.id = :id', { id })
-          .getOne();
+      const cuestionario = await this.cuestionarioRepository.findOne({
+        where: { id },
+        select: ['id', 'titulo', 'version', 'fecha_version'],
+      });
     
         return cuestionario;
       }
 
     async create(cuestionarioData: Cuestionario) {
-        const nuevoCuestionario = await AppDataSource
-            .getRepository(Cuestionario)
-            .create(cuestionarioData)
-  
-            return AppDataSource
-            .getRepository(Cuestionario)
-            .save(cuestionarioData)
+      const nuevoCuestionario = this.cuestionarioRepository.create(cuestionarioData);
+      return await this.cuestionarioRepository.save(nuevoCuestionario);
         }
   
     async delete(id: number) {
-        const salida = await AppDataSource
-          .getRepository(Cuestionario)
-          .createQueryBuilder()
-          .delete()
-          .from(Cuestionario)
-          .where('id = :id', { id })
-          .execute()
-  
-          return salida
+      const salida = await this.cuestionarioRepository.delete(id);
+      return salida
       }
 
       async modifyById(id: number, cuestionarioData: Cuestionario) {
-        const cuestionario = await AppDataSource
-          .getRepository(Cuestionario)
-          .findOneBy({id})
-  
-  
-          Object.assign(cuestionario, cuestionarioData)
-  
-        const salida = AppDataSource
-          .getRepository(Cuestionario)
-          .save(cuestionario)
-  
-  
-        return salida
-          
+        const cuestionario = await this.cuestionarioRepository.findOne({where: {id}})
+      Object.assign(cuestionario, cuestionarioData)
+      const salida = this.cuestionarioRepository.save(cuestionario)    
       }
 }

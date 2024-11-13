@@ -1,68 +1,49 @@
 import { Injectable } from '@nestjs/common';
-import { AppDataSource } from '../db/data-source';
 import { EvaluacionCuestionarioVersionado } from './evaluacion-cuestionario-versionado.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class EvaluacionCuestionarioVersionadoService {
+  constructor(
+    @InjectRepository(EvaluacionCuestionarioVersionado)
+    private readonly evaluacionCuestionarioVersionadoRepository: Repository<EvaluacionCuestionarioVersionado>,
+  ) {}
 
-    async findAll() {
-        const ecvs = await AppDataSource // ecvs significa evaluaciones-cuestionarios-versionados
-            .getRepository(EvaluacionCuestionarioVersionado)
-            .createQueryBuilder('evaluacion-cuestionario-versionado')
-            .leftJoinAndSelect('evaluacion-cuestionario-versionado.evaluacion', 'evaluacion')
-            .leftJoinAndSelect('evaluacion-cuestionario-versionado.cuestionario', 'cuestionario')
-            .getMany()
+  
+
+    async findAll() { // ecvs=evaluaciones-cuestionarios-versionados
+        const ecvs = await this.evaluacionCuestionarioVersionadoRepository.find({
+          select: ['id', 'fecha', 'version'],
+      });
 
         return ecvs
     }
 
     async findById(id: number) {
-        const ecv = await AppDataSource // ecv significa evaluacion-cuestionario-versionado
-          .getRepository(EvaluacionCuestionarioVersionado)
-          .createQueryBuilder('evaluacion-cuestionario-versionado')
-          .leftJoinAndSelect('evaluacion-cuestionario-versionado.evaluacion', 'evaluacion')
-          .leftJoinAndSelect('evaluacion-cuestionario-versionado.cuestionario', 'cuestionario')
-          .where('evaluacion-cuestionario-versionado.id = :id', { id })
-          .getOne();
+        const ecv = await this.evaluacionCuestionarioVersionadoRepository.findOne({
+          where: { id },
+          select: ['id', 'fecha', 'version'],
+        });
     
         return ecv;
       }
 
     async create(evaluacionCuestionarioVersionadoData: EvaluacionCuestionarioVersionado) {
-        const nuevoEvaluacionCuestionarioVersionado = await AppDataSource
-            .getRepository(EvaluacionCuestionarioVersionado)
-            .create(evaluacionCuestionarioVersionadoData)
-  
-            return AppDataSource
-            .getRepository(EvaluacionCuestionarioVersionado)
-            .save(nuevoEvaluacionCuestionarioVersionado)
+      const nuevoEvaluacionCuestionarioVersionado = this.evaluacionCuestionarioVersionadoRepository.create(evaluacionCuestionarioVersionadoData);
+      return await this.evaluacionCuestionarioVersionadoRepository.save(nuevoEvaluacionCuestionarioVersionado);
         }
   
     async delete(id: number) {
-        const salida = await AppDataSource
-          .getRepository(EvaluacionCuestionarioVersionado)
-          .createQueryBuilder()
-          .delete()
-          .from(EvaluacionCuestionarioVersionado)
-          .where('id = :id', { id })
-          .execute()
-  
-          return salida
-      }
-      async modifyById(id: number, ecvData: EvaluacionCuestionarioVersionado) {
-        const ecv = await AppDataSource
-          .getRepository(EvaluacionCuestionarioVersionado)
-          .findOneBy({id})
-  
-  
-          Object.assign(ecv, ecvData)
-  
-        const salida = AppDataSource
-          .getRepository(EvaluacionCuestionarioVersionado)
-          .save(ecv)
-  
+        const salida = await this.evaluacionCuestionarioVersionadoRepository.delete(id);
   
         return salida
+      }
+
+      async modifyById(id: number, ecvData: EvaluacionCuestionarioVersionado) {
+        const ecv = await this.evaluacionCuestionarioVersionadoRepository.findOne({where: {id}})
+      Object.assign(ecv, ecvData)
+      const salida = this.evaluacionCuestionarioVersionadoRepository.save(ecv)
           
       }
 }

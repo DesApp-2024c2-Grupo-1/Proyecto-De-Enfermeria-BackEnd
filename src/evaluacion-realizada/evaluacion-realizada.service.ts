@@ -1,73 +1,47 @@
 import { Injectable } from '@nestjs/common';
-import { AppDataSource } from '../db/data-source';
 import { EvaluacionRealizada } from './evaluacion-realizada.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class EvaluacionRealizadaService {
+  constructor(
+    @InjectRepository(EvaluacionRealizada)
+    private readonly evaluacionRealizadaRepository: Repository<EvaluacionRealizada>,
+  ) {}
 
     async findAll() {
-        const evaluacionesrealizadas = await AppDataSource
-            .getRepository(EvaluacionRealizada)
-            .createQueryBuilder('evaluacion-realizada')
-            .leftJoinAndSelect('evaluacion-realizada.alumno', 'alumno')
-            .leftJoinAndSelect('evaluacion-realizada.docente', 'docente')
-            .leftJoinAndSelect('evaluacion-realizada.evaluacion', 'evaluacion')
-            .leftJoinAndSelect('evaluacion-realizada.evaluacionCuestionarioVersionado', 'evaluacionCuestionarioVersionado')
-            .getMany()
+        const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
+          select: ['id', 'nota', 'fecha'],
+      });
 
-        return evaluacionesrealizadas
+        return evaluacionesRealizadas
     }
 
     async findById(id: number) {
-        const evaluacionRealizada = await AppDataSource
-          .getRepository(EvaluacionRealizada)
-          .createQueryBuilder('evaluacion-realizada')
-          .leftJoinAndSelect('evaluacion-realizada.alumno', 'alumno')
-          .leftJoinAndSelect('evaluacion-realizada.docente', 'docente')
-          .leftJoinAndSelect('evaluacion-realizada.evaluacion', 'evaluacion')
-          .leftJoinAndSelect('evaluacion-realizada.evaluacionCuestionarioVersionado', 'evaluacionCuestionarioVersionado')
-          .where('evaluacion-realizada.id = :id', { id })
-          .getOne();
+        const evaluacionRealizada = await this.evaluacionRealizadaRepository.findOne({
+          where: { id },
+          select: ['id', 'nota', 'fecha'],
+        });
     
         return evaluacionRealizada;
       }
 
       async create(evaluacionRealizadaData: EvaluacionRealizada) {
-        const nuevoEvaluacionRealizada = await AppDataSource
-            .getRepository(EvaluacionRealizada)
-            .create(evaluacionRealizadaData)
-  
-            return AppDataSource
-            .getRepository(EvaluacionRealizada)
-            .save(nuevoEvaluacionRealizada)
+        const nuevoEvaluacionRealizada = this.evaluacionRealizadaRepository.create(evaluacionRealizadaData);
+        return await this.evaluacionRealizadaRepository.save(nuevoEvaluacionRealizada);
         }
   
       async delete(id: number) {
-        const salida = await AppDataSource
-          .getRepository(EvaluacionRealizada)
-          .createQueryBuilder()
-          .delete()
-          .from(EvaluacionRealizada)
-          .where('id = :id', { id })
-          .execute()
+        const salida = await this.evaluacionRealizadaRepository.delete(id);
   
-          return salida
+        return salida
       }
 
       async modifyById(id: number, evaluacionRealizadaData: EvaluacionRealizada) {
-        const evaluacionRealizada = await AppDataSource
-          .getRepository(EvaluacionRealizada)
-          .findOneBy({id})
-  
-  
-          Object.assign(evaluacionRealizada, evaluacionRealizadaData)
-  
-        const salida = AppDataSource
-          .getRepository(EvaluacionRealizada)
-          .save(evaluacionRealizada)
-  
-  
-        return salida
+        const evaluacionRealizada = await this.evaluacionRealizadaRepository.findOne({where: {id}})
+        Object.assign(evaluacionRealizada, evaluacionRealizadaData)
+        const salida = this.evaluacionRealizadaRepository.save(evaluacionRealizada)
           
       }
 }

@@ -16,7 +16,6 @@ export class CuestionarioController {
         return this.cuestionarioService.findById(id);
     }
 
-    
     @Post()
     createCuestionario(@Body() cuestionarioData: Cuestionario) {
         return this.cuestionarioService.create(cuestionarioData);
