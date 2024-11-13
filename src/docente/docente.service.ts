@@ -47,7 +47,7 @@ export class DocenteService {
       async modifyById(id: number, docenteData: Docente) {
         const docente = await this.docenteRepository.findOne({where: {id}})
         Object.assign(docente, docenteData)
-        const salida = this.docenteRepository.save(docente)
+        this.docenteRepository.save(docente)
       }
       
 }

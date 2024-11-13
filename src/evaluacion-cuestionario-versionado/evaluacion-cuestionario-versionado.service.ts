@@ -10,7 +10,6 @@ export class EvaluacionCuestionarioVersionadoService {
     private readonly evaluacionCuestionarioVersionadoRepository: Repository<EvaluacionCuestionarioVersionado>,
   ) {}
 
-  
 
     async findAll() { // ecvs=evaluaciones-cuestionarios-versionados
         const ecvs = await this.evaluacionCuestionarioVersionadoRepository.find({
@@ -43,7 +42,7 @@ export class EvaluacionCuestionarioVersionadoService {
       async modifyById(id: number, ecvData: EvaluacionCuestionarioVersionado) {
         const ecv = await this.evaluacionCuestionarioVersionadoRepository.findOne({where: {id}})
       Object.assign(ecv, ecvData)
-      const salida = this.evaluacionCuestionarioVersionadoRepository.save(ecv)
+      this.evaluacionCuestionarioVersionadoRepository.save(ecv)
           
       }
 }

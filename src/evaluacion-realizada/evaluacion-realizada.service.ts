@@ -41,7 +41,7 @@ export class EvaluacionRealizadaService {
       async modifyById(id: number, evaluacionRealizadaData: EvaluacionRealizada) {
         const evaluacionRealizada = await this.evaluacionRealizadaRepository.findOne({where: {id}})
         Object.assign(evaluacionRealizada, evaluacionRealizadaData)
-        const salida = this.evaluacionRealizadaRepository.save(evaluacionRealizada)
+        this.evaluacionRealizadaRepository.save(evaluacionRealizada)
           
       }
 }
