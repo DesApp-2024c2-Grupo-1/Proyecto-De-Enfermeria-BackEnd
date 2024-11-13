@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Unique } from "typeorm";
 import { EvaluacionRealizada } from './../evaluacion-realizada/evaluacion-realizada.entity';
 
 
@@ -13,10 +13,10 @@ export class Alumno {
     @Column()
     apellido: string;
 
-    @Column()
+    @Column({unique: true})
     email: string;
 
-    @Column()
+    @Column({unique: true})
     dni: number;
 
     @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.alumno)
