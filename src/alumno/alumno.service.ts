@@ -13,6 +13,7 @@ export class AlumnoService {
   async findAll() {
     const alumnos = await this.alumnoRepository.find({
       select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+      relations: ['evaluacionRealizada']
     });
 
     return alumnos;
@@ -22,6 +23,7 @@ export class AlumnoService {
     const alumno = await this.alumnoRepository.findOne({
       where: { id },
       select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+      relations: ['evaluacionRealizada']
     });
     return alumno;
   }
@@ -30,6 +32,7 @@ export class AlumnoService {
     const alumno = await this.alumnoRepository.findOne({
       where: { dni },
       select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+      relations: ['evaluacionRealizada']
     });
     return alumno;
   }

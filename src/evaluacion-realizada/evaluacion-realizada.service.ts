@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EvaluacionRealizada } from './evaluacion-realizada.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Alumno } from 'src/alumno/alumno.entity';
 
 @Injectable()
 export class EvaluacionRealizadaService {
@@ -12,7 +13,8 @@ export class EvaluacionRealizadaService {
 
     async findAll() {
         const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
-          select: ['id', 'nota', 'fecha'],
+          select: ['id', 'nota', 'fecha', 'alumno'],
+          relations: ['alumno', 'docente', 'evaluacion', 'evaluacionCuestionarioVersionado']
       });
 
         return evaluacionesRealizadas
