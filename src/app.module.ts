@@ -17,6 +17,7 @@ import { EvaluacionRealizadaModule } from './evaluacion-realizada/evaluacion-rea
 import { DocenteModule } from './docente/docente.module';
 import { EvaluacionModule } from './evaluacion/evaluacion.module';
 import { CuestionarioModule } from './cuestionario/cuestionario.module';
+import { PreguntaModule } from './pregunta/pregunta.module';
 
 @Module({
   imports: [
@@ -51,7 +52,8 @@ import { CuestionarioModule } from './cuestionario/cuestionario.module';
     EvaluacionRealizadaModule,
     DocenteModule,
     EvaluacionModule,
-    CuestionarioModule
+    CuestionarioModule,
+    PreguntaModule
   ]
 })
 
