@@ -1,68 +1,52 @@
 import { Injectable } from '@nestjs/common';
-import { AppDataSource } from '../db/data-source';
 import { Docente } from './docente.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class DocenteService {
+  constructor(
+    @InjectRepository(Docente)
+    private readonly docenteRepository: Repository<Docente>,
+  ) {}
 
-    async findAll() {
-        const docentes = await AppDataSource
-            .getRepository(Docente)
-            .createQueryBuilder('docente')
-            .select(['docente.id', 'docente.nombre', 'docente.apellido', 'docente.email'])
-            .getMany()
+  async findAll() {
+    const docentes = await this.docenteRepository.find({
+      select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+    });
 
-        return docentes
-    }
+    return docentes;
+  }
 
-    async findById(id: number) {
-        const docente = await AppDataSource
-          .getRepository(Docente)
-          .createQueryBuilder('docente')
-          .select(['docente.id', 'docente.nombre', 'docente.apellido'])
-          .where('docente.id = :id', { id })
-          .getOne();
-    
-        return docente;
-      }
+  async findById(id: number) {
+    const docente = await this.docenteRepository.findOne({
+      where: { id },
+      select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+    });
+    return docente;
+  }
 
-    async create(docenteData: Docente) {
-        const nuevoDocente = await AppDataSource
-            .getRepository(Docente)
-            .create(docenteData)
-  
-            return AppDataSource
-            .getRepository(Docente)
-            .save(nuevoDocente)
-        }
-  
-    async delete(id: number) {
-        const salida = await AppDataSource
-          .getRepository(Docente)
-          .createQueryBuilder()
-          .delete()
-          .from(Docente)
-          .where('id = :id', { id })
-          .execute()
-  
-          return salida
-      }
+  async findByDni(dni: number) {
+    const docente = await this.docenteRepository.findOne({
+      where: { dni },
+      select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+    });
+    return docente;
+  }
 
-      async modifyById(id: number, docenteData: Docente) {
-        const docente = await AppDataSource
-          .getRepository(Docente)
-          .findOneBy({id})
-  
-  
-          Object.assign(docente, docenteData)
-  
-        const salida = AppDataSource
-          .getRepository(Docente)
-          .save(docente)
-  
-  
-        return salida
-          
-      }
-      
+  async create(docenteData: Docente) {
+    const nuevoDocente = this.docenteRepository.create(docenteData);
+    return await this.docenteRepository.save(nuevoDocente);
+  }
+
+  async delete(id: number) {
+    const result = await this.docenteRepository.delete(id);
+    return result;
+  }
+
+  async modifyById(id: number, docenteData: Docente) {
+    const docente = await this.docenteRepository.findOne({ where: { id } });
+    Object.assign(docente, docenteData);
+    this.docenteRepository.save(docente);
+  }
 }

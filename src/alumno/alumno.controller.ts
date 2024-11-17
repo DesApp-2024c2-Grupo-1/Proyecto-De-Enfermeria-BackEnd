@@ -16,6 +16,11 @@ export class AlumnoController {
         return this.alumnoService.findById(id);
     }
 
+    @Get('/dni/:dni')
+    getAlumnoByDni(@Param('dni') dni: string) {
+        return this.alumnoService.findByDni(Number(dni))
+    }
+
     @Post()
     createAlumno(@Body() alumnoData: Alumno) {
         return this.alumnoService.create(alumnoData);

@@ -12,8 +12,13 @@ export class DocenteController {
     }
 
     @Get('/:id')
-    getDocenteById(@Param(':id') id: number) {
+    getDocenteById(@Param('id') id: number) {
         return this.docenteService.findById(id);
+    }
+
+    @Get('/dni/:dni')
+    getDocenteByDni(@Param('dni') dni: number) {
+        return this.docenteService.findByDni(dni);
     }
 
     @Post()
