@@ -13,10 +13,10 @@ export class Alumno {
     @Column()
     apellido: string;
 
-    @Column({unique: true})
+    @Column()
     email: string;
 
-    @Column({unique: true})
+    @Column()
     dni: number;
 
     @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.alumno)
