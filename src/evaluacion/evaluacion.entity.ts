@@ -14,7 +14,7 @@ export class Evaluacion {
     @Column()
     exigencia: string;
 
-    @ManyToOne(() => Docente, (docente) => docente.evaluacionRealizada, { nullable: false })
+    @ManyToOne(() => Docente, (docente) => docente.evaluacion, { nullable: false })
     docente: Docente;
 
     @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.evaluacion)
