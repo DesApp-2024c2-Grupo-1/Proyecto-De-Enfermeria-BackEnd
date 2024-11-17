@@ -10,9 +10,6 @@ export class EvaluacionRealizada {
     id: number;
 
     @Column()
-    nota: number;
-
-    @Column()
     fecha: Date;
 
     @ManyToOne(() => Docente, (docente) => docente.evaluacionRealizada, { nullable: false })
@@ -21,8 +18,8 @@ export class EvaluacionRealizada {
     @ManyToOne(() => Alumno, (alumno) => alumno.evaluacionRealizada, { nullable: false })
     alumno: Alumno;
 
-    @ManyToOne(() => EvaluacionCuestionarioVersionado, (evaluacionCuestionarioVersionado) => evaluacionCuestionarioVersionado.evaluacionRealizada)
-    evaluacionCuestionarioVersionado: EvaluacionCuestionarioVersionado;
+    @ManyToOne(() => EvaluacionVersionado, (evaluacionVersionado) => evaluacionVersionado.evaluacionRealizada)
+    evaluacionVersionado: EvaluacionVersionado;
 
     @ManyToOne(() => Evaluacion, (evaluacion) => evaluacion.evaluacionRealizada, { nullable: false })
     evaluacion: Evaluacion;
