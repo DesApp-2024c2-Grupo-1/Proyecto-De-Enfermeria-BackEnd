@@ -1,10 +1,10 @@
 import { DataSource } from 'typeorm';
 import { Alumno } from '../alumno/alumno.entity';
-import { EvaluacionCuestionarioVersionado } from '../evaluacion-versionado/evaluacion-versionado.entity';
+import { EvaluacionVersionado } from '../evaluacion-versionado/evaluacion-versionado.entity';
 import { EvaluacionRealizada } from '../evaluacion-realizada/evaluacion-realizada.entity';
 import { Docente } from '../docente/docente.entity';
 import { Evaluacion } from '../evaluacion/evaluacion.entity';
-import { Cuestionario } from '../cuestionario/cuestionario.entity';
+import { Pregunta } from 'src/pregunta/pregunta.entity';
 import {  ConfigService, ConfigModule } from '@nestjs/config'
 
 ConfigModule.forRoot();
@@ -20,11 +20,11 @@ export const AppDataSource = new DataSource({
         database: configService.get<string>('DATABASE_NAME'),
         entities: [
           Alumno, 
-          EvaluacionCuestionarioVersionado, 
+          EvaluacionVersionado, 
           EvaluacionRealizada, 
           Docente, 
-          Evaluacion, 
-          Cuestionario,
+          Evaluacion,
+          Pregunta
         ],
         synchronize: true,
   });

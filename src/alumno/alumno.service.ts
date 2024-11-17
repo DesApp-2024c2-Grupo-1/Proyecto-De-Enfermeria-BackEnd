@@ -12,8 +12,7 @@ export class AlumnoService {
 
   async findAll() {
     const alumnos = await this.alumnoRepository.find({
-      select: ['id', 'nombre', 'apellido', 'email', 'dni'],
-      relations: ['evaluacionRealizada']
+      select: ['id', 'nombre', 'apellido', 'dni'],
     });
 
     return alumnos;
@@ -22,8 +21,7 @@ export class AlumnoService {
   async findById(id: number) {
     const alumno = await this.alumnoRepository.findOne({
       where: { id },
-      select: ['id', 'nombre', 'apellido', 'email', 'dni'],
-      relations: ['evaluacionRealizada']
+      select: ['id', 'nombre', 'apellido', 'dni'],
     });
     return alumno;
   }
@@ -31,7 +29,24 @@ export class AlumnoService {
   async findByDni(dni: number) {
     const alumno = await this.alumnoRepository.findOne({
       where: { dni },
-      select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+      select: ['id', 'nombre', 'apellido'],
+    });
+    return alumno;
+  }
+
+  async findByIdConEvaluaciones(id: number) {
+    const alumno = await this.alumnoRepository.findOne({
+      where: { id },
+      select: ['id', 'nombre', 'apellido', 'dni'],
+      relations: ['evaluacionRealizada']
+    });
+    return alumno;
+  }
+
+  async findByDniConEvaluaciones(dni: number) {
+    const alumno = await this.alumnoRepository.findOne({
+      where: { dni },
+      select: ['id', 'nombre', 'apellido'],
       relations: ['evaluacionRealizada']
     });
     return alumno;

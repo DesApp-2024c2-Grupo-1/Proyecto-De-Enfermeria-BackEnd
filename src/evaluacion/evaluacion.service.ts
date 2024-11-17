@@ -12,7 +12,7 @@ export class EvaluacionService {
 
     async findAll() {
       const evaluaciones = await this.evaluacionRepository.find({
-        select: ['id', 'titulo', 'exigencia', 'cantidadDePreguntas', 'puntajeIdeal'],
+        select: ['id', 'titulo', 'exigencia'],
     });
 
         return evaluaciones
@@ -21,7 +21,7 @@ export class EvaluacionService {
     async findById(id: number) {
       const evaluacion = await this.evaluacionRepository.findOne({
         where: { id },
-        select: ['id', 'titulo', 'exigencia', 'cantidadDePreguntas', 'puntajeIdeal'],
+        select: ['id', 'titulo', 'exigencia'],
       });
     
         return evaluacion;

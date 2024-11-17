@@ -11,12 +11,12 @@ export class EvaluacionVersionadoService {
   ) {}
 
 
-    async findAll() { // ecvs=evaluaciones-s-versionados
-        const ecvs = await this.evaluacionVersionadoRepository.find({
+    async findAll() { // evs=evaluaciones-versionados
+        const evs = await this.evaluacionVersionadoRepository.find({
           select: ['id', 'fecha', 'version'],
       });
 
-        return ecvs
+        return evs
     }
 
     async findById(id: number) {
