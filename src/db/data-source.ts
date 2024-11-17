@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { Alumno } from '../alumno/alumno.entity';
-import { EvaluacionCuestionarioVersionado } from '../evaluacion-cuestionario-versionado/evaluacion-cuestionario-versionado.entity';
+import { EvaluacionCuestionarioVersionado } from '../evaluacion-versionado/evaluacion-versionado.entity';
 import { EvaluacionRealizada } from '../evaluacion-realizada/evaluacion-realizada.entity';
 import { Docente } from '../docente/docente.entity';
 import { Evaluacion } from '../evaluacion/evaluacion.entity';

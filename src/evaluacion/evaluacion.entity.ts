@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm";
 import { EvaluacionRealizada } from "src/evaluacion-realizada/evaluacion-realizada.entity";
-import { EvaluacionCuestionarioVersionado } from "src/evaluacion-cuestionario-versionado/evaluacion-cuestionario-versionado.entity";
-import { Cuestionario } from "src/cuestionario/cuestionario.entity";
+import { EvaluacionVersionado } from "src/evaluacion-versionado/evaluacion-versionado.entity";
+import { Docente } from "src/docente/docente.entity";
+import { Pregunta } from "src/pregunta/pregunta.entity";
 
 @Entity()
 export class Evaluacion {
@@ -14,19 +15,16 @@ export class Evaluacion {
     @Column()
     exigencia: string;
 
-    @Column()
-    cantidadDePreguntas: number;
+    @ManyToOne(() => Docente, (docente) => docente.evaluacion, { nullable: false })
+    docente: Docente;
 
-    @Column()
-    puntajeIdeal: number;
+    @ManyToOne(() => Pregunta, (pregunta) => pregunta.evaluacion)
+    pregunta: Pregunta[]
 
     @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.evaluacion)
     evaluacionRealizada: EvaluacionRealizada[];
 
-    @OneToMany(() => EvaluacionCuestionarioVersionado, (evaluacionCuestionarioVersionado) => evaluacionCuestionarioVersionado.evaluacion)
-    evaluacionCuestionarioVersionado: EvaluacionCuestionarioVersionado[];
+    @OneToMany(() => EvaluacionVersionado, (evaluacionVersionado) => evaluacionVersionado.evaluacion)
+    evaluacionVersionado: EvaluacionVersionado[];
 
-    @OneToOne(() => Cuestionario, { nullable: false })
-    @JoinColumn()
-    cuestionario: Cuestionario;
 }

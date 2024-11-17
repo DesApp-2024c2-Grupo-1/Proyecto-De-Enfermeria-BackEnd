@@ -3,7 +3,7 @@ import { EvaluacionRealizada } from "src/evaluacion-realizada/evaluacion-realiza
 import { Evaluacion } from "src/evaluacion/evaluacion.entity";
 
 @Entity()
-export class EvaluacionCuestionarioVersionado {
+export class EvaluacionVersionado {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -13,9 +13,9 @@ export class EvaluacionCuestionarioVersionado {
     @Column()
     version: number;
 
-    @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.evaluacionCuestionarioVersionado)
+    @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.evaluacionVersionado)
     evaluacionRealizada: EvaluacionRealizada[];
 
-    @ManyToOne(() => Evaluacion, (evaluacion) => evaluacion.evaluacionCuestionarioVersionado, { nullable: false })
+    @ManyToOne(() => Evaluacion, (evaluacion) => evaluacion.evaluacionVersionado, { nullable: false })
     evaluacion: Evaluacion;
 }
