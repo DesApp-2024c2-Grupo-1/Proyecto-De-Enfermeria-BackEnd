@@ -16,9 +16,19 @@ export class AlumnoController {
         return this.alumnoService.findById(id);
     }
 
+    @Get('/evaluacion/:id')
+    getAlumnoByIdConEvaluaciones(@Param('id') id: number){
+        return this.alumnoService.findByIdConEvaluaciones(id)
+    }
+
     @Get('/dni/:dni')
     getAlumnoByDni(@Param('dni') dni: string) {
         return this.alumnoService.findByDni(Number(dni))
+    }
+
+    @Get('/dni/evaluacion/:dni')
+    getAlumnoByDniConEvaluaciones(@Param('dni') dni: string) {
+        return this.alumnoService.findByDniConEvaluaciones(Number(dni))
     }
 
     @Post()
@@ -26,7 +36,7 @@ export class AlumnoController {
         return this.alumnoService.create(alumnoData);
     }
 
-    @Delete(':id')
+    @Delete('/:id')
     deleteAlumno(@Param('id') id: number) {
         return this.alumnoService.delete(id);
     }
