@@ -23,4 +23,7 @@ export class Docente {
 
     @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.docente)
     evaluacionRealizada: EvaluacionRealizada[];
-}
+
+    @OneToMany(() => Evaluacion, (evaluacion) => evaluacion.docente)
+    evaluacion: Evaluacion[];
+
