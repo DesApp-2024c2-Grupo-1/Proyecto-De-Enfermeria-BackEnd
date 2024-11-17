@@ -25,6 +25,6 @@ export class Evaluacion {
     evaluacionRealizada: EvaluacionRealizada[];
 
     @OneToMany(() => EvaluacionVersionado, (evaluacionVersionado) => evaluacionVersionado.evaluacion)
-    evaluacionCuestionarioVersionado: EvaluacionVersionado[];
+    evaluacionVersionado: EvaluacionVersionado[];
 
 }
