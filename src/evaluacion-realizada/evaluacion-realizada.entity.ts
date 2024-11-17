@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import { Docente } from "src/docente/docente.entity";
 import { Alumno } from "src/alumno/alumno.entity";
-import { EvaluacionCuestionarioVersionado } from "src/evaluacion-cuestionario-versionado/evaluacion-cuestionario-versionado.entity";
+import { EvaluacionCuestionarioVersionado } from "src/evaluacion-versionado/evaluacion-cuestionario-versionado.entity";
 import { Evaluacion } from "src/evaluacion/evaluacion.entity";
 
 @Entity()

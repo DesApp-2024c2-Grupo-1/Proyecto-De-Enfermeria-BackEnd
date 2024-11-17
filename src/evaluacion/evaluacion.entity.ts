@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from "typeorm";
 import { EvaluacionRealizada } from "src/evaluacion-realizada/evaluacion-realizada.entity";
-import { EvaluacionCuestionarioVersionado } from "src/evaluacion-cuestionario-versionado/evaluacion-cuestionario-versionado.entity";
+import { EvaluacionCuestionarioVersionado } from "src/evaluacion-versionado/evaluacion-cuestionario-versionado.entity";
 import { Cuestionario } from "src/cuestionario/cuestionario.entity";
 
 @Entity()

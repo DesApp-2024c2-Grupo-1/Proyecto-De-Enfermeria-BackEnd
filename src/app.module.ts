@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 
 // Entidades
 import { Alumno } from './alumno/alumno.entity';
-import { EvaluacionCuestionarioVersionado } from './evaluacion-cuestionario-versionado/evaluacion-cuestionario-versionado.entity';
+import { EvaluacionCuestionarioVersionado } from './evaluacion-versionado/evaluacion-cuestionario-versionado.entity';
 import { EvaluacionRealizada } from './evaluacion-realizada/evaluacion-realizada.entity';
 import { Docente } from './docente/docente.entity';
 import { Evaluacion } from './evaluacion/evaluacion.entity';
@@ -12,7 +12,7 @@ import { Cuestionario } from './cuestionario/cuestionario.entity';
 
 // Modulos
 import { AlumnoModule } from './alumno/alumno.module';
-import { EvaluacionCuestionarioVersionadoModule } from './evaluacion-cuestionario-versionado/evaluacion-cuestionario-versionado.module';
+import { EvaluacionCuestionarioVersionadoModule } from './evaluacion-versionado/evaluacion-cuestionario-versionado.module';
 import { EvaluacionRealizadaModule } from './evaluacion-realizada/evaluacion-realizada.module';
 import { DocenteModule } from './docente/docente.module';
 import { EvaluacionModule } from './evaluacion/evaluacion.module';
