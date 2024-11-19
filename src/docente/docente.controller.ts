@@ -21,6 +21,11 @@ export class DocenteController {
         return this.docenteService.findByDni(dni);
     }
 
+    @Get('/email')
+    getDocenteByEmail(@Param('email') email: string) {
+        return this.docenteService.findByEmail(email)
+    }
+
     @Post()
     createDocente(@Body() docenteData: Docente) {
         return this.docenteService.create(docenteData);

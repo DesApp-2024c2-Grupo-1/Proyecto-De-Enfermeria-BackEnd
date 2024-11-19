@@ -21,7 +21,7 @@ export class DocenteService {
   async findById(id: number) {
     const docente = await this.docenteRepository.findOne({
       where: { id },
-      select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+      select: ['id', 'nombre', 'apellido'],
     });
     return docente;
   }
@@ -29,9 +29,16 @@ export class DocenteService {
   async findByDni(dni: number) {
     const docente = await this.docenteRepository.findOne({
       where: { dni },
-      select: ['id', 'nombre', 'apellido', 'email', 'dni'],
+      select: ['id', 'nombre', 'apellido'],
     });
     return docente;
+  }
+
+  async findByEmail(email: string) {
+    const docente = await this.docenteRepository.findOne({
+      where: { email },
+      select: ['id', 'nombre', 'apellido']
+    })
   }
 
   async create(docenteData: Docente) {
