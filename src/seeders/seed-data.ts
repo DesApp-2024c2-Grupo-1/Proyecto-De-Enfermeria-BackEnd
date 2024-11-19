@@ -12,7 +12,7 @@ async function seedDatabase() {
     const evaluacionRepository: Repository<Evaluacion> = AppDataSource.getRepository(Evaluacion);
     const preguntaRepository: Repository<Pregunta> = AppDataSource.getRepository(Pregunta);
 
-    //Agregar datos iniciales de alumnos
+    //Agregar datos iniciales para alumnos
     const existingAlumnos = await alumnoRepository.count();
     if (existingAlumnos === 0) {
         const alumnos = [
@@ -26,7 +26,7 @@ async function seedDatabase() {
     }
 
 
-    // Agregar datos iniciales para Docente
+    // Agregar datos iniciales para docentes
     const existingDocentes = await docenteRepository.count();
     if (existingDocentes === 0) {
         const docentes = [
@@ -38,6 +38,7 @@ async function seedDatabase() {
     await docenteRepository.save(docentes);
     }
 
+    // Agregar datos iniciales para evaluaciones
     const existingEvaluaciones = await evaluacionRepository.count();
     if (existingEvaluaciones === 0) {
         const evaluaciones = [
@@ -49,6 +50,7 @@ async function seedDatabase() {
     await evaluacionRepository.save(evaluaciones);
     }
 
+    // Agregar datos iniciales para preguntas
     const existingPreguntas = await preguntaRepository.count();
     if (existingPreguntas === 0) {
         const preguntas = [
