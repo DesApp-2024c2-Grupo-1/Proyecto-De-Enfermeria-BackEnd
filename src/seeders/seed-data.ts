@@ -42,9 +42,9 @@ async function seedDatabase() {
     const existingEvaluaciones = await evaluacionRepository.count();
     if (existingEvaluaciones === 0) {
         const evaluaciones = [
+        { titulo: 'Determinar altura uterina', exigencia: '60%', docente: { id: 2 } },
         { titulo: 'Lavado de Manos', exigencia: '60%', docente: { id: 1 } },
         { titulo: 'Colocacion de elementos de seguridad', exigencia: '60%', docente: { id: 1 } },
-        { titulo: 'Medicion de altura uterina', exigencia: '60%', docente: { id: 2 } },
         { titulo: 'Control de signos vitales', exigencia: '60%', docente: { id: 3 } },
         ];
     await evaluacionRepository.save(evaluaciones);
@@ -55,6 +55,10 @@ async function seedDatabase() {
     if (existingPreguntas === 0) {
         const preguntas = [
             { pregunta: 'Disponer de los materiales necesarios para realizar el procedimiento. Cinta métrica', puntaje: 1, evaluacion: { id: 1 } },
+            { pregunta: 'Colocar a la persona gestante en posición decúbito dorsal', puntaje: 1, evaluacion: { id: 1 } },
+            { pregunta: 'Colocar la cinta métrica en el borde superior del pubis determinando la longitud uterina', puntaje: 2, evaluacion: { id: 1 } },
+            { pregunta: 'Sostener la cinta con el dedo índice de su mano derecha y luego deslice lamano izquierda junto con la cinta por todo el abdomen hasta el borde superior del fondo del útero', puntaje: 4, evaluacion: { id: 1 } },
+            { pregunta: 'Determinar la altura uterina. Registrar', puntaje: 2, evaluacion: { id: 1 } },
             { pregunta: 'Reúne el material ', puntaje: 1 , evaluacion: { id: 2 } },
         ];
         await preguntaRepository.save(preguntas);
