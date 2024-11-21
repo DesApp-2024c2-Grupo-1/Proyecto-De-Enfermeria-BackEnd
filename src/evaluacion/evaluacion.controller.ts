@@ -16,11 +16,19 @@ export class EvaluacionController {
         return this.evaluacionService.findById(id);
     }
 
+    /*
     @Post()
     createEvaluacion(@Body() evaluacionData: Evaluacion) {
         return this.evaluacionService.create(evaluacionData);
     }
+    */
 
+    @Post()
+    crearEvaluacion(@Body() data: any) {
+    return this.evaluacionService.createEvaluacionYPreguntas(data);
+  }
+
+/*
     @Delete('/:id')
     deleteEvaluacion(@Param('id') id: number) {
         return this.evaluacionService.delete(id);
@@ -30,4 +38,8 @@ export class EvaluacionController {
     modificarAlumno(@Param('id') id: number, @Body() evaluacionData: Evaluacion) {
         return this.evaluacionService.modifyById(id, evaluacionData);
     }
+*/
+
+
+    
 }
