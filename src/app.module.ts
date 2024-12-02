@@ -4,7 +4,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 
 // Entidades
 import { Alumno } from './alumno/alumno.entity';
-import { EvaluacionVersionado } from './evaluacion-versionado/evaluacion-versionado.entity';
 import { EvaluacionRealizada } from './evaluacion-realizada/evaluacion-realizada.entity';
 import { Docente } from './docente/docente.entity';
 import { Evaluacion } from './evaluacion/evaluacion.entity';
@@ -12,7 +11,6 @@ import { Pregunta } from './pregunta/pregunta.entity';
 
 // Modulos
 import { AlumnoModule } from './alumno/alumno.module';
-import { EvaluacionVersionadoModule } from './evaluacion-versionado/evaluacion-versionado.module';
 import { EvaluacionRealizadaModule } from './evaluacion-realizada/evaluacion-realizada.module';
 import { DocenteModule } from './docente/docente.module';
 import { EvaluacionModule } from './evaluacion/evaluacion.module';
@@ -36,7 +34,6 @@ import { PreguntaModule } from './pregunta/pregunta.module';
         database: configService.get<string>('DATABASE_NAME'),
         entities: [
           Alumno, 
-          EvaluacionVersionado, 
           EvaluacionRealizada, 
           Docente, 
           Evaluacion,
@@ -47,7 +44,6 @@ import { PreguntaModule } from './pregunta/pregunta.module';
       })
     }),
     AlumnoModule,
-    EvaluacionVersionadoModule,
     EvaluacionRealizadaModule,
     DocenteModule,
     EvaluacionModule,

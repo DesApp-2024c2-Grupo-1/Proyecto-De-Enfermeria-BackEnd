@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Delete, Put, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Param, Body, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Alumno } from 'src/alumno/alumno.entity';
 import { AlumnoService } from './alumno.service'
+import { PostAlumnoRequestDTO } from './AlumnoDTO/crearAlumno.dto';
 
 @Controller('/alumno')
 export class AlumnoController {
@@ -32,7 +33,8 @@ export class AlumnoController {
     }
 
     @Post()
-    createAlumno(@Body() alumnoData: Alumno) {
+    @UsePipes(new ValidationPipe({whitelist: true}))
+    createAlumno(@Body() alumnoData: PostAlumnoRequestDTO): Promise<Alumno> {
         return this.alumnoService.create(alumnoData);
     }
 
