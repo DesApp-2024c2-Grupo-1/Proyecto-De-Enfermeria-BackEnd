@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Delete, Body, Param, Put } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Evaluacion } from './evaluacion.entity';
 import { EvaluacionService } from './evaluacion.service';
+import { PostEvaluacionRequestDTO } from './EvaluacionDTO/crearEvaluacion.dto';
 
 @Controller('/evaluacion')
 export class EvaluacionController {
@@ -24,7 +25,7 @@ export class EvaluacionController {
     */
 
     @Post()
-    crearEvaluacion(@Body() data: any) {
+    crearEvaluacion(@Body(new ValidationPipe()) data: PostEvaluacionRequestDTO) {
     return this.evaluacionService.createEvaluacionYPreguntas(data);
   }
 
