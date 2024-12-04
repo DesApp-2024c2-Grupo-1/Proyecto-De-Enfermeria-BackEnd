@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString, MinLength } from "class-validator";
+import { IsInt, IsNotEmpty, IsString, MinLength, Min, Max } from "class-validator";
 
 
 export class PostPreguntaRequestDTO {
@@ -11,5 +11,6 @@ export class PostPreguntaRequestDTO {
 
     @IsInt()
     @IsNotEmpty()
+    @Min(1)
     puntaje: number;
 }
