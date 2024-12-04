@@ -4,7 +4,7 @@ import { Evaluacion } from "src/evaluacion/evaluacion.entity";
 @Entity()
 export class Pregunta {
     @PrimaryGeneratedColumn()
-    id: number;
+    id?: number;
 
     @Column()
     pregunta: string;

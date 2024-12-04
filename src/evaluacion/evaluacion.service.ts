@@ -16,7 +16,6 @@ export class EvaluacionService {
 
   async createEvaluacionYPreguntas(evaluacionyPreguntasData: {
     titulo: string;
-    exigencia: string;
     docente: DeepPartial<Docente>;
     preguntas: { pregunta: string; puntaje: number }[];
   }) {
@@ -25,7 +24,6 @@ export class EvaluacionService {
     //evaluacion
     const nuevaEvaluacion = this.evaluacionRepository.create({
       titulo,
-
       docente,
     });
     const evaluacionGuardada =

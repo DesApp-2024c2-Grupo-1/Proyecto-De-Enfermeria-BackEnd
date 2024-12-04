@@ -42,10 +42,10 @@ async function seedDatabase() {
     const existingEvaluaciones = await evaluacionRepository.count();
     if (existingEvaluaciones === 0) {
         const evaluaciones = [
-        { titulo: 'Determinar altura uterina', exigencia: '60%', docente: { id: 2 } },
-        { titulo: 'Lavado de Manos', exigencia: '60%', docente: { id: 1 } },
-        { titulo: 'Colocacion de elementos de seguridad', exigencia: '60%', docente: { id: 1 } },
-        { titulo: 'Control de signos vitales', exigencia: '60%', docente: { id: 3 } },
+        { titulo: 'Determinar altura uterina', docente: { id: 2 } },
+        { titulo: 'Lavado de Manos', docente: { id: 1 } },
+        { titulo: 'Colocacion de elementos de seguridad', docente: { id: 1 } },
+        { titulo: 'Control de signos vitales', docente: { id: 3 } },
         ];
     await evaluacionRepository.save(evaluaciones);
     }

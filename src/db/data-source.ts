@@ -1,6 +1,5 @@
 import { DataSource } from 'typeorm';
 import { Alumno } from '../alumno/alumno.entity';
-import { EvaluacionVersionado } from '../evaluacion-versionado/evaluacion-versionado.entity';
 import { EvaluacionRealizada } from '../evaluacion-realizada/evaluacion-realizada.entity';
 import { Docente } from '../docente/docente.entity';
 import { Evaluacion } from '../evaluacion/evaluacion.entity';
@@ -19,8 +18,7 @@ export const AppDataSource = new DataSource({
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
         entities: [
-          Alumno, 
-          EvaluacionVersionado, 
+          Alumno,
           EvaluacionRealizada, 
           Docente, 
           Evaluacion,
