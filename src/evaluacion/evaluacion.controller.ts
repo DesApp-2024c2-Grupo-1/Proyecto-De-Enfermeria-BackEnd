@@ -25,7 +25,7 @@ export class EvaluacionController {
     */
 
     @Post()
-    crearEvaluacion(@Body(new ValidationPipe()) data: PostEvaluacionRequestDTO) {
+    crearEvaluacion(@Body() data: any) {
     return this.evaluacionService.createEvaluacionYPreguntas(data);
   }
 
