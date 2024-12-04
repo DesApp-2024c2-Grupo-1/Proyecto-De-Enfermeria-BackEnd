@@ -23,9 +23,9 @@ export class Docente {
     password: string;
 
     @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.docente)
-    evaluacionRealizada: EvaluacionRealizada[];
+    evaluacionRealizada?: EvaluacionRealizada[];
 
     @OneToMany(() => Evaluacion, (evaluacion) => evaluacion.docente)
-    evaluacion: Evaluacion[];
+    evaluacion?: Evaluacion[];
 
 }

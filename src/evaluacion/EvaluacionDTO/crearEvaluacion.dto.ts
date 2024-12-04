@@ -16,7 +16,6 @@ export class PostEvaluacionRequestDTO {
     docente: PostDocenteRequestDTO
 
     @IsArray()
-    @MinLength(1)
     @ValidateNested({each: true})
     @Type(() => PostPreguntaRequestDTO)
     preguntas: PostPreguntaRequestDTO[];
