@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Docente } from './docente.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -43,6 +43,20 @@ export class DocenteService {
   }
 
   async create(docenteData: Docente) {
+
+    const { dni, email } = docenteData
+    const existingDocente = await this.docenteRepository.findOne({
+      where: [{ dni }, { email }],
+    });
+
+    if (existingDocente) {
+      throw new BadRequestException(
+        existingDocente.dni === dni
+          ? 'El DNI ya está en uso'
+          : 'El email ya está en uso',
+      );
+    }
+
     const nuevoDocente = this.docenteRepository.create(docenteData);
     return await this.docenteRepository.save(nuevoDocente);
   }
