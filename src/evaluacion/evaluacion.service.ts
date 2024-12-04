@@ -20,12 +20,12 @@ export class EvaluacionService {
     docente: DeepPartial<Docente>;
     preguntas: { pregunta: string; puntaje: number }[];
   }) {
-    const { titulo, exigencia, docente, preguntas } = evaluacionyPreguntasData;
+    const { titulo, docente, preguntas } = evaluacionyPreguntasData;
 
     //evaluacion
     const nuevaEvaluacion = this.evaluacionRepository.create({
       titulo,
-      exigencia,
+
       docente,
     });
     const evaluacionGuardada =
@@ -51,7 +51,7 @@ export class EvaluacionService {
 
   async findAll() {
     const evaluaciones = await this.evaluacionRepository.find({
-      select: ['id', 'titulo', 'exigencia'],
+      select: ['id', 'titulo'],
     });
 
     return evaluaciones;
@@ -60,7 +60,7 @@ export class EvaluacionService {
   async findById(id: number) {
     const evaluacion = await this.evaluacionRepository.findOne({
       where: { id },
-      select: ['id', 'titulo', 'exigencia'],
+      select: ['id', 'titulo'],
       relations: ['pregunta'],
     });
 
