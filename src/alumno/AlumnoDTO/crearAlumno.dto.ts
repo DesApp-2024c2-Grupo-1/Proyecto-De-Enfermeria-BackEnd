@@ -9,7 +9,7 @@ export class PostAlumnoRequestDTO {
 @IsNotEmpty({message: "nombre no puede estar vacío"})
 nombre: string;
 
-@IsString({message: "apellido"})
+@IsString()
 @MinLength(3, {message: "apellido debe tener al menos 3 letras"})
 @IsNotEmpty({message: "apellido no puede estar vacío"})
 apellido: string;
