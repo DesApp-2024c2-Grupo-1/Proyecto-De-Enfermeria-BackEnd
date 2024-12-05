@@ -2,6 +2,7 @@ import { Controller, Get, Post, Delete, Body, Param, Put, UsePipes, ValidationPi
 import { Docente } from './docente.entity';
 import { DocenteService } from './docente.service';
 import { PostDocenteRequestDTO } from './DocenteDTO/crearDocente.dto';
+import { PutDocenteRequestDTO } from './DocenteDTO/putDocente.dto';
 
 @Controller('/docente')
 export class DocenteController {
@@ -39,7 +40,8 @@ export class DocenteController {
     }
 
     @Put('/:id')
-    modificarDocente(@Param('id') id: number, @Body() docenteData: Docente) {
+    @UsePipes(new ValidationPipe({whitelist: true}))
+    modificarDocente(@Param('id') id: number, @Body() docenteData: PutDocenteRequestDTO) {
         return this.docenteService.modifyById(id, docenteData);
     }
 

@@ -8,19 +8,19 @@ export class Docente {
     id?: number;
 
     @Column()
-    nombre: string;
+    nombre?: string;
 
     @Column()
-    apellido: string;
+    apellido?: string;
 
     @Column({unique: true})
-    email: string;
+    email?: string;
 
     @Column({unique: true})
-    dni: number;
+    dni?: number;
 
     @Column()
-    password: string;
+    password?: string;
 
     @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.docente)
     evaluacionRealizada?: EvaluacionRealizada[];
