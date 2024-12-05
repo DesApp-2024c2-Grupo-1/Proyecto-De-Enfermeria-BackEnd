@@ -7,8 +7,8 @@ import { PostPreguntaRequestDTO } from "src/pregunta/PreguntaDTO/crearPregunta.d
 export class PostEvaluacionRequestDTO {
 
     @IsString()
-    @MinLength(5, {message: "titulo debe tener al menos 5 caracteres"})
-    @IsNotEmpty()
+    @MinLength(5, {message: "El título debe tener al menos 5 caracteres"})
+    @IsNotEmpty({message: "El título no puede estar vacío"})
     titulo: string;
 
     @IsNotEmpty()
@@ -18,7 +18,7 @@ export class PostEvaluacionRequestDTO {
     @IsArray()
     @ValidateNested({each: true})
     @Type(() => PostPreguntaRequestDTO)
-    @ArrayNotEmpty({message: "preguntas no puede estar vacio"})
+    @ArrayNotEmpty({message: "Debes agregar al menos 1 pregunta"})
     preguntas: PostPreguntaRequestDTO[];
 
    /* evaluacionRealizada: EvaluacionRealizada[];*/

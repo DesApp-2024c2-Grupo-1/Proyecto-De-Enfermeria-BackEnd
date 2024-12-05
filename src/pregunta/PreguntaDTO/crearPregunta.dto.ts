@@ -5,12 +5,12 @@ export class PostPreguntaRequestDTO {
 
 
     @IsString()
-    @IsNotEmpty({message: "pregunta no puede estar vacio"})
-    @MinLength(5, {message: "pregunta debe tener al menos 5 caracteres"})
+    @IsNotEmpty({message: "La pregunta no puede estar vacía"})
+    @MinLength(5, {message: "La pregunta debe tener al menos 5 caracteres"})
     pregunta: string;
 
     @IsInt()
-    @IsNotEmpty({message: "puntaje no puede estar vacio"})
-    @Min(1, {message: "puntaje debe ser como minimo 1"})
+    @IsNotEmpty({message: "El puntaje no puede estar vacío"})
+    @Min(1, {message: "El puntaje debe ser como mínimo 1"})
     puntaje: number;
 }
