@@ -14,11 +14,11 @@ nombre: string;
 @IsNotEmpty({message: "apellido no puede estar vacío"})
 apellido: string;
 
-@IsEmail()
+@IsEmail({}, { message: "El email debe ser válido" })
 @IsNotEmpty({message: "email no puede estar vacio"})
 email: string;
 
-@IsInt({message: "dni debe ser un numero"})
+@IsInt({message: "El dni debe ser un numero"})
 @Min(1000000, {message: "dni debe ser un numero de al menos 7 caracteres"})
 @IsNotEmpty({message: "dni no puede estar vacio"})
 dni: number;
