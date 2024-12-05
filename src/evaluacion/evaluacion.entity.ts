@@ -8,7 +8,7 @@ export class Evaluacion {
     @PrimaryGeneratedColumn()
     id?: number;
 
-    @Column()
+    @Column({ unique: true })
     titulo: string;
 
     @ManyToOne(() => Docente, (docente) => docente.evaluacion, { nullable: false })
