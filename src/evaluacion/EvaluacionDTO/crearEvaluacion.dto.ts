@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsArray, IsNotEmpty, IsString, MinLength, ValidateNested } from "class-validator";
+import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString, MinLength, ValidateNested } from "class-validator";
 import { PostDocenteRequestDTO } from "src/docente/DocenteDTO/crearDocente.dto";
 //import { EvaluacionRealizada } from "src/evaluacion-realizada/evaluacion-realizada.entity";
 import { PostPreguntaRequestDTO } from "src/pregunta/PreguntaDTO/crearPregunta.dto";
@@ -18,6 +18,7 @@ export class PostEvaluacionRequestDTO {
     @IsArray()
     @ValidateNested({each: true})
     @Type(() => PostPreguntaRequestDTO)
+    @ArrayNotEmpty({message: "preguntas no puede estar vacio"})
     preguntas: PostPreguntaRequestDTO[];
 
    /* evaluacionRealizada: EvaluacionRealizada[];*/
