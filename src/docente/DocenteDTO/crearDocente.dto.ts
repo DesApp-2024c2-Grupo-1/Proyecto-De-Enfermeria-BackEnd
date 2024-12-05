@@ -1,4 +1,4 @@
-import { IsEmail, IsInt, IsNotEmpty, IsString, Min, MinLength } from 'class-validator'
+import { IsEmail, IsInt, IsNotEmpty, IsString, Min, Max, MinLength } from 'class-validator'
 import { EvaluacionRealizada } from 'src/evaluacion-realizada/evaluacion-realizada.entity';
 import { Evaluacion } from 'src/evaluacion/evaluacion.entity';
 
@@ -19,7 +19,8 @@ apellido: string;
 email: string;
 
 @IsInt({message: "El DNI debe ser un número"})
-@Min(1000000, {message: "El DNI debe ser un número de al menos 7 caracteres"})
+@Min(10000000, {message: "El DNI debe ser un número de al menos 8 caracteres"})
+@Max(99999999, {message: "El DNI no puede tener mas de 8 caracteres"})
 @IsNotEmpty({message: "El DNI no puede estar vacío"})
 dni: number;
 
