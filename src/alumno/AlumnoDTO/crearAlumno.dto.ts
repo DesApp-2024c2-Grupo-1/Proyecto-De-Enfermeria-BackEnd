@@ -19,8 +19,8 @@ apellido: string;
 email: string;
 
 @IsInt()
-@Min(10000000, {message: "El DNI debe ser un número de al menos 8 caracteres"})
-@Max(99999999, {message: "El DNI no puede tener mas de 8 caracteres"})
+@Min(1000000, {message: "El DNI debe ser un número de al menos 8 caracteres"})
+@Max(10000000, {message: "El DNI no puede tener mas de 8 caracteres"})
 @IsNotEmpty({message: "El DNI no puede estar vacío"})
 dni: number;
 

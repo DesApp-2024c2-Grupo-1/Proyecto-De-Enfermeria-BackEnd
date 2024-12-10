@@ -16,10 +16,10 @@ async function seedDatabase() {
     const existingAlumnos = await alumnoRepository.count();
     if (existingAlumnos === 0) {
         const alumnos = [
-        { nombre: 'Pablo', apellido: 'Israelsky', dni: 123123123, email: 'pabloisraelsky@gmail.com' },
-        { nombre: 'Maia', apellido: 'Barrionuevo', dni: 321321312, email: 'maiabarrionuevo@gmail.com' },
-        { nombre: 'Maximiliano', apellido: 'Almada', dni: 456456456, email: 'maxialmada@gmail.com' },
-        { nombre: 'Priscila', apellido: 'Jofre Gil', dni: 654654654, email: 'priscilajofregil@gmail.com' },
+        { nombre: 'Pablo', apellido: 'Israelsky', dni: 12312312, email: 'pabloisraelsky@gmail.com' },
+        { nombre: 'Maia', apellido: 'Barrionuevo', dni: 32132131, email: 'maiabarrionuevo@gmail.com' },
+        { nombre: 'Maximiliano', apellido: 'Almada', dni: 45645645, email: 'maxialmada@gmail.com' },
+        { nombre: 'Priscila', apellido: 'Jofre Gil', dni: 65465465, email: 'priscilajofregil@gmail.com' },
         { nombre: 'Elizabeth', apellido: 'Albornoz', dni: 11111111, email: 'elialbornoz@gmail.com' },
         { nombre: 'Franco', apellido: 'Orellana', dni: 22222222, email: 'franorellana@gmail.com' },
         { nombre: 'Claudia', apellido: 'Gil', dni: 33333333, email: 'claudiagil@gmail.com' },
