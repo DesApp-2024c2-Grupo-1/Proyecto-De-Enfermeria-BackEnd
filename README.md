@@ -51,6 +51,8 @@ services:
     volumes:
       - ./Proyecto-De-Enfermeria-FrontEnd:/app:cached
       - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=1
     command: npm run dev
 
 volumes:
