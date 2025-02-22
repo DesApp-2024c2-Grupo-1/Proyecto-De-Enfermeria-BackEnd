@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Delete, Body, Param, Put } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, Put, UsePipes, ValidationPipe } from '@nestjs/common';
 import { EvaluacionRealizada } from './evaluacion-realizada.entity';
 import { EvaluacionRealizadaService } from './evaluacion-realizada.service';
+import { PostEvaluacionRealizadaDTO } from './EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto';
 
 @Controller('/evaluacion-realizada')
 export class EvaluacionRealizadaController {
@@ -17,10 +18,12 @@ export class EvaluacionRealizadaController {
     }
 
     @Post()
-    createEvaluacionRealizada(@Body() evaluacionRealizadaData: EvaluacionRealizada) {
-        return this.evaluacionRealizadaService.create(evaluacionRealizadaData);
+    @UsePipes(new ValidationPipe({whitelist: true}))
+    crearEvaluacionRealizada(@Body() data: PostEvaluacionRealizadaDTO) {
+        return this.evaluacionRealizadaService.create(data);
     }
 
+    /*
     @Delete('/:id')
     deleteEvaluacionRealizada(@Param('id') id: number) {
         return this.evaluacionRealizadaService.delete(id);
@@ -30,4 +33,5 @@ export class EvaluacionRealizadaController {
     modificarAlumno(@Param('id') id: number, @Body() alumnoData: EvaluacionRealizada) {
         return this.evaluacionRealizadaService.modifyById(id, alumnoData);
     }
+        */
 }

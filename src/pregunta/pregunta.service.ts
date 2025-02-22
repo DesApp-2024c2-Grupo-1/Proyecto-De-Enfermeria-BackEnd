@@ -26,10 +26,12 @@ export class PreguntaService {
         return pregunta;
     }
 
-    async create(preguntaData: Pregunta) {
+   /*
+ async create(preguntaData: Pregunta) {
         const nuevaPregunta = this.preguntaRepository.create(preguntaData);
         return await this.preguntaRepository.save(nuevaPregunta);
     }
+   */
     
     async delete(id: number) {
         await this.preguntaRepository.delete(id);

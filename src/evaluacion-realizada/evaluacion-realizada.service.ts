@@ -34,6 +34,11 @@ export class EvaluacionRealizadaService {
     return evaluacionRealizada;
   }
 
+
+  
+
+  /*
+
   async create(evaluacionRealizadaData: EvaluacionRealizada) {
     const nuevoEvaluacionRealizada = this.evaluacionRealizadaRepository.create(
       evaluacionRealizadaData,
@@ -43,6 +48,9 @@ export class EvaluacionRealizadaService {
     );
   }
 
+  */
+
+  
   async delete(id: number) {
     const salida = await this.evaluacionRealizadaRepository.delete(id);
 
