@@ -1,20 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { EvaluacionRealizada } from './evaluacion-realizada.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { EvaluacionRealizada } from './evaluacion-realizada.entity';
+import { PreguntaRespondida } from 'src/pregunta-respondida/pregunta-respondida.entity';
+
 
 @Injectable()
 export class EvaluacionRealizadaService {
   constructor(
     @InjectRepository(EvaluacionRealizada)
     private readonly evaluacionRealizadaRepository: Repository<EvaluacionRealizada>,
+    @InjectRepository(PreguntaRespondida)
+    private readonly preguntaRespondidaRepository: Repository<PreguntaRespondida>,
   ) {}
 
   async findAll() {
     const evaluacionesRealizadas =
       await this.evaluacionRealizadaRepository.find({
         select: ['id', 'fecha'],
-        relations: ['alumno', 'docente', 'evaluacion', 'evaluacionVersionado'],
+        relations: ['alumno', 'docente', 'evaluacion', 'preguntaRespondida'],
       });
 
     return evaluacionesRealizadas;

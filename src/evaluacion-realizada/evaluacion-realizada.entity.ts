@@ -27,6 +27,6 @@ export class EvaluacionRealizada {
     @ManyToOne(() => Evaluacion, (evaluacion) => evaluacion.evaluacionRealizada, { nullable: false })
     evaluacion: Evaluacion;
 
-    @OneToMany(() => PreguntaRespondida, (preguntaRespondida) => preguntaRespondida.evalaucionRealizada, { nullable: false })
+    @OneToMany(() => PreguntaRespondida, (preguntaRespondida) => preguntaRespondida.evalaucionRealizada)
     preguntaRespondida: PreguntaRespondida[]
 }

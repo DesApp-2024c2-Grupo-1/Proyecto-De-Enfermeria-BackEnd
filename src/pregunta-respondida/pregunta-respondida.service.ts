@@ -11,6 +11,22 @@ export class PreguntaRespondidaService {
     private readonly preguntaRespondidaRepository: Repository<PreguntaRespondida>,
   ) {}
 
+  async findAll() {
+    const preguntasRespondidas = await this.preguntaRespondidaRepository.find({
+      select: ['id', 'respuesta'],
+      //relations: []
+    });
+    return preguntasRespondidas;
+  }
+
+  async findById(id: number) {
+    const preguntaRespondida = await this.preguntaRespondidaRepository.findOne({
+      where: { id },
+      select: ['id', 'respuesta'],
+    });
+    return preguntaRespondida;
+}
+
   async create(preguntaRespondidaData: {
     respuesta: boolean;
     pregunta: DeepPartial<Pregunta>;
@@ -23,11 +39,5 @@ export class PreguntaRespondidaService {
     await this.preguntaRespondidaRepository.save(nuevaPreguntaRespondida);
   }
 
-  async findAll() {
-    const preguntasRespondidas = await this.preguntaRespondidaRepository.find({
-      select: ['id', 'respuesta'],
-      //relations: []
-    });
-    return preguntasRespondidas;
-  }
+  
 }
