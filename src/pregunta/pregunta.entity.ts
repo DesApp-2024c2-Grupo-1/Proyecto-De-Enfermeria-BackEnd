@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
 import { Evaluacion } from "src/evaluacion/evaluacion.entity";
+import { PreguntaRespondida } from "src/pregunta-respondida/pregunta-respondida.entity";
 
 @Entity()
 export class Pregunta {
@@ -15,4 +16,6 @@ export class Pregunta {
     @ManyToOne(() => Evaluacion, (evaluacion) => evaluacion.pregunta, { nullable: false })
     evaluacion: Evaluacion;
 
+    @OneToMany(() => PreguntaRespondida, (preguntaRespondida) => preguntaRespondida.pregunta, { nullable: false })
+    preguntaRespondida: PreguntaRespondida[]
 }
