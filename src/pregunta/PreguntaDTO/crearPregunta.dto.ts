@@ -1,4 +1,5 @@
-import { IsInt, IsNotEmpty, IsString, MinLength, Min, Max } from "class-validator";
+import { IsInt, IsNotEmpty, IsString, MinLength, Min, Max, IsOptional } from "class-validator";
+import { PreguntaRespondida } from "src/pregunta-respondida/pregunta-respondida.entity";
 
 
 export class PostPreguntaRequestDTO {
@@ -12,4 +13,7 @@ export class PostPreguntaRequestDTO {
     @IsNotEmpty({message: "El puntaje no puede estar vacío"})
     @Min(1, {message: "El puntaje debe ser como mínimo 1"})
     puntaje: number;
+
+    @IsOptional()
+    preguntaRespondida:PreguntaRespondida
 }

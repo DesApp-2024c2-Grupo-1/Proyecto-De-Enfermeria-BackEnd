@@ -5,6 +5,7 @@ import { Docente } from '../docente/docente.entity';
 import { Evaluacion } from '../evaluacion/evaluacion.entity';
 import { Pregunta } from 'src/pregunta/pregunta.entity';
 import {  ConfigService, ConfigModule } from '@nestjs/config'
+import { PreguntaRespondida } from 'src/pregunta-respondida/pregunta-respondida.entity';
 
 ConfigModule.forRoot();
 
@@ -22,7 +23,8 @@ export const AppDataSource = new DataSource({
           EvaluacionRealizada, 
           Docente, 
           Evaluacion,
-          Pregunta
+          Pregunta,
+          PreguntaRespondida
         ],
         synchronize: true,
   });
