@@ -1,7 +1,8 @@
 import { Type } from "class-transformer";
 import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString, MinLength, ValidateNested } from "class-validator";
 import { PostDocenteRequestDTO } from "src/docente/DocenteDTO/crearDocente.dto";
-//import { EvaluacionRealizada } from "src/evaluacion-realizada/evaluacion-realizada.entity";
+import { EvaluacionRealizada } from "src/evaluacion-realizada/evaluacion-realizada.entity";
+import { PostEvaluacionRealizadaDTO } from "src/evaluacion-realizada/EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto";
 import { PostPreguntaRequestDTO } from "src/pregunta/PreguntaDTO/crearPregunta.dto";
 
 export class PostEvaluacionRequestDTO {
@@ -21,5 +22,6 @@ export class PostEvaluacionRequestDTO {
     @ArrayNotEmpty({message: "Debes agregar al menos 1 pregunta"})
     preguntas: PostPreguntaRequestDTO[];
 
-   /* evaluacionRealizada: EvaluacionRealizada[];*/
+    @Type(() => PostEvaluacionRealizadaDTO)
+    evaluacionRealizada: EvaluacionRealizada[]
 }

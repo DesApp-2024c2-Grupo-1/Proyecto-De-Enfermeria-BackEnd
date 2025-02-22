@@ -3,7 +3,6 @@ import { IsInt, IsNotEmpty, IsString, MinLength, Min, Max } from "class-validato
 
 export class PostPreguntaRequestDTO {
 
-
     @IsString()
     @IsNotEmpty({message: "La pregunta no puede estar vacía"})
     @MinLength(5, {message: "La pregunta debe tener al menos 5 caracteres"})
