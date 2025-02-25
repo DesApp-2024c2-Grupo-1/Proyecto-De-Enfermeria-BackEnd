@@ -1,32 +1,47 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
-import { Docente } from "src/docente/docente.entity";
-import { Alumno } from "src/alumno/alumno.entity";
-import { Evaluacion } from "src/evaluacion/evaluacion.entity";
-import { PreguntaRespondida } from "src/pregunta-respondida/pregunta-respondida.entity";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+import { Docente } from 'src/docente/docente.entity';
+import { Alumno } from 'src/alumno/alumno.entity';
+import { Evaluacion } from 'src/evaluacion/evaluacion.entity';
+import { PreguntaRespondida } from 'src/pregunta-respondida/pregunta-respondida.entity';
 
 @Entity()
 export class EvaluacionRealizada {
-    @PrimaryGeneratedColumn()
-    id?: number;
+  @PrimaryGeneratedColumn()
+  id?: number;
 
-    @Column()
-    fecha: Date;
+  @Column()
+  fecha: Date;
 
-    @Column()
-    modificacionPuntaje: Number;
+  @Column()
+  modificacionPuntaje?: Number;
 
-    @Column()
-    observacion: string;
+  @Column()
+  observacion?: string;
 
-    @ManyToOne(() => Docente, (docente) => docente.evaluacionRealizada, { nullable: false })
-    docente: Docente;
+  @ManyToOne(() => Docente, (docente) => docente.evaluacionRealizada, {
+    nullable: false,
+  })
+  docente: Docente;
 
-    @ManyToOne(() => Alumno, (alumno) => alumno.evaluacionRealizada, { nullable: false })
-    alumno: Alumno;
+  @ManyToOne(() => Alumno, (alumno) => alumno.evaluacionRealizada, {
+    nullable: false,
+  })
+  alumno: Alumno;
 
-    @ManyToOne(() => Evaluacion, (evaluacion) => evaluacion.evaluacionRealizada, { nullable: false })
-    evaluacion: Evaluacion;
+  @ManyToOne(() => Evaluacion, (evaluacion) => evaluacion.evaluacionRealizada, {
+    nullable: false,
+  })
+  evaluacion: Evaluacion;
 
-    @OneToMany(() => PreguntaRespondida, (preguntaRespondida) => preguntaRespondida.evaluacionRealizada)
-    preguntaRespondida: PreguntaRespondida[]
+  @OneToMany(
+    () => PreguntaRespondida,
+    (preguntaRespondida) => preguntaRespondida.evaluacionRealizada,
+  )
+  preguntaRespondida: PreguntaRespondida[];
 }
