@@ -18,10 +18,10 @@ export class EvaluacionRealizada {
   @Column()
   fecha: Date;
 
-  @Column()
+  @Column({ nullable: true })
   modificacionPuntaje?: Number;
 
-  @Column()
+  @Column({ nullable: true })
   observacion?: string;
 
   @ManyToOne(() => Docente, (docente) => docente.evaluacionRealizada, {

@@ -59,7 +59,7 @@ export class EvaluacionService {
     const evaluacion = await this.evaluacionRepository.findOne({
       where: { id },
       select: ['id', 'titulo'],
-      relations: ['pregunta'],
+      relations: ['preguntas'],
     });
 
     return evaluacion;

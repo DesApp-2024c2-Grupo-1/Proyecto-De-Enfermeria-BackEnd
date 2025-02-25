@@ -45,7 +45,7 @@ export class EvaluacionRealizadaService {
       }
 
       // Validar cantidad de respuestas
-      if (preguntaRespondida.length !== evaluacionExistente.pregunta.length) {
+      if (preguntaRespondida.length !== evaluacionExistente.preguntas.length) {
         throw new BadRequestException(
           'La cantidad de respuestas no coincide con la cantidad de preguntas',
         );
@@ -62,12 +62,12 @@ export class EvaluacionRealizadaService {
       await manager.save(nuevaEvaluacionRealizada);
 
       // Crear Preguntas Respondidas
-      const preguntasRespondidas = evaluacionExistente.pregunta.map(
-        (pregunta, index) =>
+      const preguntasRespondidas = evaluacionExistente.preguntas.map(
+        (preguntas, index) =>
           manager.create(PreguntaRespondida, {
-            evaluacionRealizada: nuevaEvaluacionRealizada,
-            pregunta,
             respuesta: preguntaRespondida[index].respuesta, // Acceder correctamente al valor
+            preguntas,
+            evaluacionRealizada: nuevaEvaluacionRealizada,
           }),
       );
 

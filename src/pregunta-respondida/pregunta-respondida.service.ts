@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, Repository } from 'typeorm';
 import { PreguntaRespondida } from './pregunta-respondida.entity';
 import { Pregunta } from 'src/pregunta/pregunta.entity';
+import { EvaluacionRealizada } from 'src/evaluacion-realizada/evaluacion-realizada.entity';
 
 @Injectable()
 export class PreguntaRespondidaService {
@@ -25,11 +26,12 @@ export class PreguntaRespondidaService {
       select: ['id', 'respuesta'],
     });
     return preguntaRespondida;
-}
+  }
 
   async create(preguntaRespondidaData: {
     respuesta: boolean;
     pregunta: DeepPartial<Pregunta>;
+    evaluacionRealizada: DeepPartial<EvaluacionRealizada>;
   }) {
     const { respuesta, pregunta } = preguntaRespondidaData;
     const nuevaPreguntaRespondida = this.preguntaRespondidaRepository.create({
@@ -38,6 +40,4 @@ export class PreguntaRespondidaService {
     });
     await this.preguntaRespondidaRepository.save(nuevaPreguntaRespondida);
   }
-
-  
 }
