@@ -30,13 +30,14 @@ export class PreguntaRespondidaService {
 
   async create(preguntaRespondidaData: {
     respuesta: boolean;
-    pregunta: DeepPartial<Pregunta>;
     evaluacionRealizada: DeepPartial<EvaluacionRealizada>;
+    pregunta: DeepPartial<Pregunta>;
   }) {
-    const { respuesta, pregunta } = preguntaRespondidaData;
+    const { respuesta, pregunta, evaluacionRealizada } = preguntaRespondidaData;
     const nuevaPreguntaRespondida = this.preguntaRespondidaRepository.create({
       respuesta,
       pregunta,
+      evaluacionRealizada,
     });
     await this.preguntaRespondidaRepository.save(nuevaPreguntaRespondida);
   }

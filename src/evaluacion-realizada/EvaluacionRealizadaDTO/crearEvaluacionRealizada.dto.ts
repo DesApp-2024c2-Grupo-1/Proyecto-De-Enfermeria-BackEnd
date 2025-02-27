@@ -16,6 +16,9 @@ import { PostEvaluacionRequestDTO } from 'src/evaluacion/EvaluacionDTO/crearEval
 
 export class PostEvaluacionRealizadaDTO {
   @IsOptional()
+  id?: number;
+
+  @IsOptional()
   @IsString()
   @MinLength(5)
   observacion?: string;
@@ -38,5 +41,9 @@ export class PostEvaluacionRealizadaDTO {
   @Type(() => PostEvaluacionRequestDTO)
   evaluacion: PostEvaluacionRequestDTO;
 
-  preguntaRespondida: PostPreguntaRespondidaRequestDTO[];
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => PostPreguntaRespondidaRequestDTO)
+  preguntaRespondida?: PostPreguntaRespondidaRequestDTO[];
 }

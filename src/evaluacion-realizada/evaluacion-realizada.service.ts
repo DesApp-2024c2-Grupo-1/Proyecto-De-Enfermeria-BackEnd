@@ -25,7 +25,6 @@ export class EvaluacionRealizadaService {
   async crearEvaluacionRealizada(data: PostEvaluacionRealizadaDTO) {
     const { alumno, docente, evaluacion, preguntaRespondida, fecha } = data;
 
-    // Usar transacción para garantizar atomicidad
     return await this.dataSource.transaction(async (manager) => {
       const alumnoExistente = await manager.findOne(Alumno, {
         where: { id: alumno.id },
@@ -44,14 +43,14 @@ export class EvaluacionRealizadaService {
         );
       }
 
-      // Validar cantidad de respuestas
+      /*
       if (preguntaRespondida.length !== evaluacionExistente.preguntas.length) {
         throw new BadRequestException(
           'La cantidad de respuestas no coincide con la cantidad de preguntas',
         );
       }
+        */
 
-      // Crear Evaluación Realizada
       const nuevaEvaluacionRealizada = manager.create(EvaluacionRealizada, {
         alumno: alumnoExistente,
         docente: docenteExistente,
@@ -63,12 +62,19 @@ export class EvaluacionRealizadaService {
 
       // Crear Preguntas Respondidas
       const preguntasRespondidas = evaluacionExistente.preguntas.map(
-        (preguntas, index) =>
-          manager.create(PreguntaRespondida, {
-            respuesta: preguntaRespondida[index].respuesta, // Acceder correctamente al valor
-            preguntas,
+        (pregunta, index) => {
+          if (!preguntaRespondida[index]) {
+            throw new BadRequestException(
+              `No se encontró una respuesta para la pregunta en la posición ${index}`,
+            );
+          }
+
+          return manager.create(PreguntaRespondida, {
+            respuesta: Boolean(preguntaRespondida[index]),
+            pregunta: { id: pregunta.id },
             evaluacionRealizada: nuevaEvaluacionRealizada,
-          }),
+          });
+        },
       );
 
       await manager.save(preguntasRespondidas);
@@ -81,7 +87,13 @@ export class EvaluacionRealizadaService {
     const evaluacionesRealizadas =
       await this.evaluacionRealizadaRepository.find({
         select: ['id', 'fecha'],
-        relations: ['alumno', 'docente', 'evaluacion', 'preguntaRespondida'],
+        relations: [
+          'alumno',
+          'docente',
+          'evaluacion',
+          'preguntaRespondida',
+          'preguntaRespondida.pregunta',
+        ],
       });
 
     return evaluacionesRealizadas;
@@ -96,19 +108,6 @@ export class EvaluacionRealizadaService {
 
     return evaluacionRealizada;
   }
-
-  /*
-
-  async create(evaluacionRealizadaData: EvaluacionRealizada) {
-    const nuevoEvaluacionRealizada = this.evaluacionRealizadaRepository.create(
-      evaluacionRealizadaData,
-    );
-    return await this.evaluacionRealizadaRepository.save(
-      nuevoEvaluacionRealizada,
-    );
-  }
-
-  */
 
   async delete(id: number) {
     const salida = await this.evaluacionRealizadaRepository.delete(id);

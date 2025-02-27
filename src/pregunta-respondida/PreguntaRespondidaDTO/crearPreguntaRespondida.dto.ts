@@ -1,17 +1,20 @@
-import { IsNotEmpty } from "class-validator"
-import { Type } from "class-transformer";
-import { PostPreguntaRequestDTO } from "src/pregunta/PreguntaDTO/crearPregunta.dto";
-import { PostEvaluacionRealizadaDTO } from "src/evaluacion-realizada/EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto"
+import { IsNotEmpty, IsOptional } from 'class-validator';
+import { Type } from 'class-transformer';
+import { PostPreguntaRequestDTO } from 'src/pregunta/PreguntaDTO/crearPregunta.dto';
+import { PostEvaluacionRealizadaDTO } from 'src/evaluacion-realizada/EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto';
 
 export class PostPreguntaRespondidaRequestDTO {
+  @IsOptional()
+  id?: number;
 
-    respuesta: boolean
+  @IsNotEmpty()
+  respuesta: boolean;
 
-    @IsNotEmpty()
-    @Type(() => PostEvaluacionRealizadaDTO)
-    evalaucionRealizada: PostEvaluacionRealizadaDTO
+  @IsOptional()
+  @Type(() => PostEvaluacionRealizadaDTO)
+  evaluacionRealizada?: PostEvaluacionRealizadaDTO;
 
-    @IsNotEmpty()
-    @Type(() => PostPreguntaRequestDTO)
-    preguntas: PostPreguntaRequestDTO;
+  @IsOptional()
+  @Type(() => PostPreguntaRequestDTO)
+  preguntas?: PostPreguntaRequestDTO[];
 }
