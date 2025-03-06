@@ -23,7 +23,16 @@ export class EvaluacionRealizadaService {
   ) {}
 
   async crearEvaluacionRealizada(data: PostEvaluacionRealizadaDTO) {
-    const { alumno, docente, evaluacion, preguntaRespondida, fecha } = data;
+    const {
+      alumno,
+      docente,
+      evaluacion,
+      preguntaRespondida,
+      fecha,
+      observacion,
+      modificacionPuntaje,
+      lugarPractica,
+    } = data;
 
     return await this.dataSource.transaction(async (manager) => {
       const alumnoExistente = await manager.findOne(Alumno, {
@@ -56,6 +65,9 @@ export class EvaluacionRealizadaService {
         docente: docenteExistente,
         evaluacion: evaluacionExistente,
         fecha: fecha ? new Date(fecha) : new Date(),
+        observacion: observacion,
+        modificacionPuntaje: modificacionPuntaje,
+        lugarPractica: lugarPractica,
       });
 
       await manager.save(nuevaEvaluacionRealizada);

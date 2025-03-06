@@ -21,11 +21,16 @@ export class PostEvaluacionRealizadaDTO {
   @IsOptional()
   @IsString()
   @MinLength(5)
-  observacion?: string;
+  observacion: string;
 
   @IsOptional()
   @IsInt()
-  modificacionPuntaje?: Number;
+  modificacionPuntaje: Number;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(5)
+  lugarPractica: string;
 
   fecha: Date;
 
