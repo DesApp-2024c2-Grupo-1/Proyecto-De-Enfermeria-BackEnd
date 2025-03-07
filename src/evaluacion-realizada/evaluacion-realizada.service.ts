@@ -70,6 +70,8 @@ export class EvaluacionRealizadaService {
         lugarPractica: lugarPractica,
       });
 
+      console.log(observacion);
+
       await manager.save(nuevaEvaluacionRealizada);
 
       // Crear Preguntas Respondidas

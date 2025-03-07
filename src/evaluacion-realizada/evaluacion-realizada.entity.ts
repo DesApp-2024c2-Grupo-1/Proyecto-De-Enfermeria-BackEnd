@@ -22,7 +22,7 @@ export class EvaluacionRealizada {
   modificacionPuntaje: Number;
 
   @Column({ nullable: true })
-  observacion: string;
+  observacion?: string;
 
   @Column({ nullable: false })
   lugarPractica: string;
