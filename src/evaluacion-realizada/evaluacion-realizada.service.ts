@@ -101,13 +101,6 @@ export class EvaluacionRealizadaService {
     const evaluacionesRealizadas =
       await this.evaluacionRealizadaRepository.find({
         select: ['id', 'fecha'],
-        relations: [
-          'alumno',
-          'docente',
-          'evaluacion',
-          'preguntaRespondida',
-          'preguntaRespondida.pregunta',
-        ],
       });
 
     return evaluacionesRealizadas;
@@ -121,6 +114,42 @@ export class EvaluacionRealizadaService {
       });
 
     return evaluacionRealizada;
+  }
+
+  async findAllEvaluacionesPorTitulo(tituloABuscar: string) {
+    return await this.evaluacionRealizadaRepository.find({
+      select: ['fecha'],
+      where: {
+        evaluacion: { titulo: tituloABuscar },
+      },
+      relations: ['evaluacion'],
+    });
+  }
+
+  async findAllEvaluacionesDeUnAlumno(alumnoId: number) {
+    return (
+      await this,
+      this.evaluacionRealizadaRepository.find({
+        select: ['fecha'],
+        where: { alumno: { id: alumnoId } },
+      })
+    );
+  }
+
+  async findAllEvaluacionesPorAlumnoYTitulo(
+    alumnoId: number,
+    tituloABuscar: string,
+  ) {
+    return (
+      await this,
+      this.evaluacionRealizadaRepository.find({
+        select: ['fecha'],
+        where: {
+          alumno: { id: alumnoId },
+          evaluacion: { titulo: tituloABuscar },
+        },
+      })
+    );
   }
 
   async delete(id: number) {

@@ -65,6 +65,12 @@ export class EvaluacionService {
     return evaluacion;
   }
 
+  async findByTitulo(tituloABuscar: string) {
+    return await this.evaluacionRepository.findOne({
+      where: { titulo: tituloABuscar },
+    });
+  }
+
   async create(evaluacionData: Evaluacion) {
     const nuevoEvaluacion = this.evaluacionRepository.create(evaluacionData);
     return await this.evaluacionRepository.save(nuevoEvaluacion);

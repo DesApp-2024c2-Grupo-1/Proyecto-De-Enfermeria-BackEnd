@@ -33,6 +33,26 @@ export class EvaluacionRealizadaController {
     return this.evaluacionRealizadaService.crearEvaluacionRealizada(data);
   }
 
+  @Get()
+  getAllEvaluacionesPorTitulo(@Param('titulo') titulo: string) {
+    return this.evaluacionRealizadaService.findAllEvaluacionesPorTitulo(titulo);
+  }
+
+  @Get()
+  findAllEvaluacionesDeUnAlumno(@Param('id') id: number) {
+    return this.evaluacionRealizadaService.findAllEvaluacionesDeUnAlumno(id);
+  }
+
+  @Get()
+  findAllEvaluacionesPorAlumnoYTitulo(
+    @Param('id') @Param('titulo') id: number,
+    titulo: string,
+  ) {
+    return this.evaluacionRealizadaService.findAllEvaluacionesPorAlumnoYTitulo(
+      id,
+      titulo,
+    );
+  }
   /*
     @Delete('/:id')
     deleteEvaluacionRealizada(@Param('id') id: number) {
