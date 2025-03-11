@@ -117,13 +117,20 @@ export class EvaluacionRealizadaService {
   }
 
   async findAllEvaluacionesPorTitulo(tituloABuscar: string) {
-    return await this.evaluacionRealizadaRepository.find({
-      select: ['fecha'],
+    const evaluaciones = await this.evaluacionRealizadaRepository.find({
+      select: ['id', 'fecha'],
       where: {
         evaluacion: { titulo: tituloABuscar },
       },
       relations: ['evaluacion'],
     });
+
+    const agregarNota = async (evaluacion: EvaluacionRealizada) => {
+      const nota = await this.calcularNota(evaluacion.id);
+      return { ...evaluacion, nota };
+    };
+
+    return Promise.all(evaluaciones.map(agregarNota));
   }
 
   async findAllEvaluacionesDeUnAlumno(alumnoId: number) {
@@ -150,6 +157,33 @@ export class EvaluacionRealizadaService {
         },
       })
     );
+  }
+
+  async calcularNota(evaluacionRealizadaId: number): Promise<string> {
+    const preguntasRespondidas = await this.preguntaRespondidaRepository.find({
+      where: { evaluacionRealizada: { id: evaluacionRealizadaId } },
+      relations: ['pregunta'],
+    });
+
+    const puntajeMaximo = preguntasRespondidas.reduce(
+      (total, preguntaRespondida) => {
+        return total + preguntaRespondida.pregunta.puntaje;
+      },
+      0,
+    );
+
+    const puntajeObtenido = preguntasRespondidas.reduce(
+      (total, preguntaRespondida) => {
+        return preguntaRespondida.respuesta
+          ? total + preguntaRespondida.pregunta.puntaje
+          : total;
+      },
+      0,
+    );
+
+    const nota = (puntajeObtenido / puntajeMaximo) * 100;
+
+    return `${nota.toFixed(2)}%`;
   }
 
   async delete(id: number) {
