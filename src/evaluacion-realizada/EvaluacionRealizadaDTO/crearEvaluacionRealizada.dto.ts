@@ -24,7 +24,7 @@ export class PostEvaluacionRealizadaDTO {
 
   @IsOptional()
   @IsInt()
-  modificacionPuntaje: Number;
+  modificacionPuntaje: number;
 
   @IsOptional()
   @IsString()
