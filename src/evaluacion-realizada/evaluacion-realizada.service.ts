@@ -70,8 +70,6 @@ export class EvaluacionRealizadaService {
         lugarPractica: lugarPractica,
       });
 
-      console.log(observacion);
-
       await manager.save(nuevaEvaluacionRealizada);
 
       // Crear Preguntas Respondidas
@@ -84,7 +82,7 @@ export class EvaluacionRealizadaService {
           }
 
           return manager.create(PreguntaRespondida, {
-            respuesta: Boolean(preguntaRespondida[index]),
+            respuesta: preguntaRespondida[index].respuesta,
             pregunta: { id: pregunta.id },
             evaluacionRealizada: nuevaEvaluacionRealizada,
           });
@@ -101,9 +99,15 @@ export class EvaluacionRealizadaService {
     const evaluacionesRealizadas =
       await this.evaluacionRealizadaRepository.find({
         select: ['id', 'fecha'],
+        relations: ['preguntaRespondida'],
       });
 
-    return evaluacionesRealizadas;
+    const agregarNota = async (evaluacion: EvaluacionRealizada) => {
+      const nota = await this.calcularNota(evaluacion.id);
+      return { ...evaluacion, nota };
+    };
+
+    return Promise.all(evaluacionesRealizadas.map(agregarNota));
   }
 
   async findById(id: number) {
