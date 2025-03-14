@@ -1,36 +1,51 @@
-import { Controller, Get, Post, Delete, Body, Param, Put, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Body,
+  Param,
+  Put,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Evaluacion } from './evaluacion.entity';
 import { EvaluacionService } from './evaluacion.service';
 import { PostEvaluacionRequestDTO } from './EvaluacionDTO/crearEvaluacion.dto';
 
 @Controller('/evaluacion')
 export class EvaluacionController {
-    constructor(private evaluacionService: EvaluacionService) {}
+  constructor(private evaluacionService: EvaluacionService) {}
 
-    @Get()
-    getAllEvaluaciones() {
-        return this.evaluacionService.findAll()
-    }
+  @Get()
+  getAllEvaluaciones() {
+    return this.evaluacionService.findAll();
+  }
 
-    @Get('/:id')
-    getEvaluacionById(@Param('id') id: number) {
-        return this.evaluacionService.findById(id);
-    }
+  @Get('/:id')
+  getEvaluacionById(@Param('id') id: number) {
+    return this.evaluacionService.findById(id);
+  }
 
-    /*
+  @Get()
+  getEvaluacionPorTitulo(@Param('titulo') titulo: string) {
+    return this.evaluacionService.findByTitulo(titulo);
+  }
+
+  /*
     @Post()
     createEvaluacion(@Body() evaluacionData: Evaluacion) {
         return this.evaluacionService.create(evaluacionData);
     }
     */
 
-    @Post()
-    @UsePipes(new ValidationPipe({whitelist: true}))
-    crearEvaluacion(@Body() data: PostEvaluacionRequestDTO) {
+  @Post()
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  crearEvaluacion(@Body() data: PostEvaluacionRequestDTO) {
     return this.evaluacionService.createEvaluacionYPreguntas(data);
   }
 
-/*
+  /*
     @Delete('/:id')
     deleteEvaluacion(@Param('id') id: number) {
         return this.evaluacionService.delete(id);
@@ -41,7 +56,4 @@ export class EvaluacionController {
         return this.evaluacionService.modifyById(id, evaluacionData);
     }
 */
-
-
-    
 }

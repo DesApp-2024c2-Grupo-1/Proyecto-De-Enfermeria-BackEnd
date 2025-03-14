@@ -59,10 +59,16 @@ export class EvaluacionService {
     const evaluacion = await this.evaluacionRepository.findOne({
       where: { id },
       select: ['id', 'titulo'],
-      relations: ['pregunta'],
+      relations: ['preguntas'],
     });
 
     return evaluacion;
+  }
+
+  async findByTitulo(tituloABuscar: string) {
+    return await this.evaluacionRepository.findOne({
+      where: { titulo: tituloABuscar },
+    });
   }
 
   async create(evaluacionData: Evaluacion) {

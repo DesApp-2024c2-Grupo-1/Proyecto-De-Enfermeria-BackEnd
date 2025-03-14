@@ -8,6 +8,7 @@ import { EvaluacionRealizada } from './evaluacion-realizada/evaluacion-realizada
 import { Docente } from './docente/docente.entity';
 import { Evaluacion } from './evaluacion/evaluacion.entity';
 import { Pregunta } from './pregunta/pregunta.entity';
+import { PreguntaRespondida } from './pregunta-respondida/pregunta-respondida.entity';
 
 // Modulos
 import { AlumnoModule } from './alumno/alumno.module';
@@ -15,6 +16,7 @@ import { EvaluacionRealizadaModule } from './evaluacion-realizada/evaluacion-rea
 import { DocenteModule } from './docente/docente.module';
 import { EvaluacionModule } from './evaluacion/evaluacion.module';
 import { PreguntaModule } from './pregunta/pregunta.module';
+import { PreguntaRespondidaModule } from './pregunta-respondida/pregunta-respondida.module';
 
 @Module({
   imports: [
@@ -37,7 +39,8 @@ import { PreguntaModule } from './pregunta/pregunta.module';
           EvaluacionRealizada, 
           Docente, 
           Evaluacion,
-          Pregunta
+          Pregunta,
+          PreguntaRespondida
         ],
         autoLoadEntities: true,
         synchronize: true,
@@ -47,8 +50,9 @@ import { PreguntaModule } from './pregunta/pregunta.module';
     EvaluacionRealizadaModule,
     DocenteModule,
     EvaluacionModule,
-    PreguntaModule
-  ]
+    PreguntaModule,
+    PreguntaRespondidaModule
+  ],
 })
 
 export class AppModule {}
