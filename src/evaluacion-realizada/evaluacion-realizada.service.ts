@@ -99,15 +99,20 @@ export class EvaluacionRealizadaService {
     const evaluacionesRealizadas =
       await this.evaluacionRealizadaRepository.find({
         select: ['id', 'fecha'],
-        relations: ['preguntaRespondida'],
       });
 
-    const agregarNota = async (evaluacion: EvaluacionRealizada) => {
+    const agregarNotaYFechaFormateada = async (
+      evaluacion: EvaluacionRealizada,
+    ) => {
       const nota = await this.calcularNota(evaluacion.id);
-      return { ...evaluacion, nota };
+      return {
+        ...evaluacion,
+        fecha: evaluacion.fecha.toISOString().split('T')[0],
+        nota,
+      };
     };
 
-    return Promise.all(evaluacionesRealizadas.map(agregarNota));
+    return Promise.all(evaluacionesRealizadas.map(agregarNotaYFechaFormateada));
   }
 
   async findById(id: number) {
@@ -115,9 +120,36 @@ export class EvaluacionRealizadaService {
       await this.evaluacionRealizadaRepository.findOne({
         where: { id },
         select: ['id', 'fecha'],
+        relations: [
+          'alumno',
+          'docente',
+          'preguntaRespondida',
+          'preguntaRespondida.pregunta',
+        ],
       });
 
-    return evaluacionRealizada;
+    const nota = await this.calcularNota(evaluacionRealizada.id);
+
+    return {
+      id: evaluacionRealizada.id,
+      fecha: evaluacionRealizada.fecha.toISOString().split('T')[0],
+      alumno: {
+        nombre: evaluacionRealizada.alumno.nombre,
+        apellido: evaluacionRealizada.alumno.apellido,
+        dni: evaluacionRealizada.alumno.dni,
+      },
+      docente: {
+        nombre: evaluacionRealizada.docente.nombre,
+        apellido: evaluacionRealizada.docente.apellido,
+      },
+      preguntaRespondida: evaluacionRealizada.preguntaRespondida.map((pr) => ({
+        respuesta: pr.respuesta,
+        pregunta: pr.pregunta.pregunta,
+      })),
+      modificacionPuntaje: evaluacionRealizada.modificacionPuntaje,
+      observacion: evaluacionRealizada.observacion,
+      nota,
+    };
   }
 
   async findAllEvaluacionesPorTitulo(tituloABuscar: string) {
@@ -169,6 +201,11 @@ export class EvaluacionRealizadaService {
       relations: ['pregunta'],
     });
 
+    const evaluacionRealizada =
+      await this.evaluacionRealizadaRepository.findOne({
+        where: { id: evaluacionRealizadaId },
+      });
+
     const puntajeMaximo = preguntasRespondidas.reduce(
       (total, preguntaRespondida) => {
         return total + preguntaRespondida.pregunta.puntaje;
@@ -185,7 +222,10 @@ export class EvaluacionRealizadaService {
       0,
     );
 
-    const nota = (puntajeObtenido / puntajeMaximo) * 100;
+    const nota =
+      ((puntajeObtenido + evaluacionRealizada.modificacionPuntaje) /
+        puntajeMaximo) *
+      100;
 
     return `${nota.toFixed(2)}%`;
   }

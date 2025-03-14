@@ -38,7 +38,7 @@ export class EvaluacionRealizadaController {
     return this.evaluacionRealizadaService.findAllEvaluacionesPorTitulo(titulo);
   }
 
-  @Get()
+  @Get('/:id')
   findAllEvaluacionesDeUnAlumno(@Param('id') id: number) {
     return this.evaluacionRealizadaService.findAllEvaluacionesDeUnAlumno(id);
   }
