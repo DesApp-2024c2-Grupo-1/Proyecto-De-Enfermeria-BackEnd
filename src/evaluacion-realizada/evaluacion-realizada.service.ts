@@ -11,6 +11,7 @@ import { Alumno } from 'src/alumno/alumno.entity';
 import { Docente } from 'src/docente/docente.entity';
 import { Evaluacion } from 'src/evaluacion/evaluacion.entity';
 import { PostEvaluacionRealizadaDTO } from './EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto';
+import { min } from 'class-validator';
 
 @Injectable()
 export class EvaluacionRealizadaService {
@@ -222,10 +223,12 @@ export class EvaluacionRealizadaService {
       0,
     );
 
-    const nota =
+    const nota = Math.min(
+      100,
       ((puntajeObtenido + evaluacionRealizada.modificacionPuntaje) /
         puntajeMaximo) *
-      100;
+        100,
+    );
 
     return `${nota.toFixed(2)}%`;
   }
