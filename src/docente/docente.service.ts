@@ -26,12 +26,18 @@ export class DocenteService {
     return docente;
   }
 
-  async findByDni(dni: number) {
+  async loginDocente(dni: number, password: string) {
     const docente = await this.docenteRepository.findOne({
       where: { dni },
       select: ['id', 'nombre', 'apellido', 'email', 'password'],
     });
-    return docente;
+  
+    if (!docente || docente.password !== password) {
+      throw new Error('Credenciales incorrectas');
+    }
+  
+    const { password: _, ...docenteData } = docente;
+    return docenteData;
   }
 
   async findByEmail(email: string) {

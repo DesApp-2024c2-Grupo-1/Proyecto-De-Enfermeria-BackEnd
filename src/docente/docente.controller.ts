@@ -18,9 +18,9 @@ export class DocenteController {
         return this.docenteService.findById(id);
     }
 
-    @Get('/dni/:dni')
-    getDocenteByDni(@Param('dni') dni: number) {
-        return this.docenteService.findByDni(dni);
+    @Post('/login')
+    login(@Body() body: {dni: number; password: string}) {
+        return this.docenteService.loginDocente(body.dni, body.password);
     }
 
     @Get('/email')
