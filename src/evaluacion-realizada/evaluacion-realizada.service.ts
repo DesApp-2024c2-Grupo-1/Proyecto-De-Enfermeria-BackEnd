@@ -146,6 +146,7 @@ export class EvaluacionRealizadaService {
       preguntaRespondida: evaluacionRealizada.preguntaRespondida.map((pr) => ({
         respuesta: pr.respuesta,
         pregunta: pr.pregunta.pregunta,
+        puntaje: pr.pregunta.puntaje
       })),
       modificacionPuntaje: evaluacionRealizada.modificacionPuntaje,
       observacion: evaluacionRealizada.observacion,
@@ -232,7 +233,7 @@ export class EvaluacionRealizadaService {
 
     return `${nota.toFixed(2)}%`;
   }
-
+/*
   async delete(id: number) {
     const salida = await this.evaluacionRealizadaRepository.delete(id);
 
@@ -245,4 +246,7 @@ export class EvaluacionRealizadaService {
     Object.assign(evaluacionRealizada, evaluacionRealizadaData);
     this.evaluacionRealizadaRepository.save(evaluacionRealizada);
   }
+
+*/
+
 }
