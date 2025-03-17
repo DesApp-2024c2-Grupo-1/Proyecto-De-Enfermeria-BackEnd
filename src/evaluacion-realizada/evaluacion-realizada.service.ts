@@ -198,7 +198,7 @@ export class EvaluacionRealizadaService {
       where: {
         evaluacion: { titulo: tituloABuscar },
       },
-      relations: ['evaluacion'],
+      relations: ['evaluacion', 'alumno'],
     });
 
     const agregarNota = async (evaluacion: EvaluacionRealizada) => {
@@ -210,11 +210,22 @@ export class EvaluacionRealizadaService {
   }
 
   async findAllEvaluacionesDeUnAlumno(alumnoId: number) {
+    console.log("alumnos encontrados")
     return (
       await this,
       this.evaluacionRealizadaRepository.find({
         select: ['fecha'],
         where: { alumno: { id: alumnoId } },
+      })
+    );
+  }
+
+  async findAllAlumnosPorEvaluacion(evaluacionId: number) {
+    return (
+      await this,
+      this.evaluacionRealizadaRepository.find({
+        select: ['fecha'],
+        where: { evaluacion: { id: evaluacionId } },
       })
     );
   }

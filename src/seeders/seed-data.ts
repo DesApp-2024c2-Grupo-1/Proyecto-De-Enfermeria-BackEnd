@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { Alumno } from '../alumno/alumno.entity';
 import { Docente } from '../docente/docente.entity';
 import { Evaluacion } from '../evaluacion/evaluacion.entity';
+import { EvaluacionRealizada } from '../evaluacion-realizada/evaluacion-realizada.entity';
 import { Pregunta } from '../pregunta/pregunta.entity';
 
 async function seedDatabase() {
@@ -11,6 +12,7 @@ async function seedDatabase() {
     const docenteRepository: Repository<Docente> = AppDataSource.getRepository(Docente);
     const evaluacionRepository: Repository<Evaluacion> = AppDataSource.getRepository(Evaluacion);
     const preguntaRepository: Repository<Pregunta> = AppDataSource.getRepository(Pregunta);
+    const evaluacionRealizadaRepository: Repository<EvaluacionRealizada> = AppDataSource.getRepository(EvaluacionRealizada);
 
     //Agregar datos iniciales para alumnos
     const existingAlumnos = await alumnoRepository.count();
@@ -52,6 +54,7 @@ async function seedDatabase() {
         ];
     await evaluacionRepository.save(evaluaciones);
     }
+
 
     // Agregar datos iniciales para preguntas
     const existingPreguntas = await preguntaRepository.count();
@@ -123,6 +126,16 @@ async function seedDatabase() {
         ];
         await preguntaRepository.save(preguntas);
         console.log('Preguntas iniciales insertadas.');
+    }
+    const existingEvaluacionesRealizadas = await evaluacionRealizadaRepository.count();
+    if (existingEvaluacionesRealizadas === 0) {
+        const evaluaciones = [
+        { titulo: 'Determinar altura uterina', docente: { id: 2 } },
+        { titulo: 'Lavado de Manos', docente: { id: 1 } },
+        { titulo: 'Colocacion de elementos de seguridad', docente: { id: 1 } },
+        { titulo: 'Control de signos vitales', docente: { id: 3 } },
+        ];
+    await evaluacionRepository.save(evaluaciones);
     }
 }
 
