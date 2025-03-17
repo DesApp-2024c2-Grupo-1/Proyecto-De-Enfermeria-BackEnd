@@ -116,6 +116,44 @@ export class EvaluacionRealizadaService {
     return Promise.all(evaluacionesRealizadas.map(agregarNotaYFechaFormateada));
   }
 
+  async findEvaluacionDeAlumno(idEvaluacion: number, alumnoId: number) {
+    const evaluacionRealizada =
+      await this.evaluacionRealizadaRepository.findOne({
+        where: { id: idEvaluacion, alumno: { id:alumnoId } },
+        select: ['id', 'fecha'],
+        relations: [
+          'alumno',
+          'docente',
+          'preguntaRespondida',
+          'preguntaRespondida.pregunta',
+        ],
+      });
+
+    const nota = await this.calcularNota(evaluacionRealizada.id);
+
+    return {
+      id: evaluacionRealizada.id,
+      fecha: evaluacionRealizada.fecha.toISOString().split('T')[0],
+      alumno: {
+        nombre: evaluacionRealizada.alumno.nombre,
+        apellido: evaluacionRealizada.alumno.apellido,
+        dni: evaluacionRealizada.alumno.dni,
+      },
+      docente: {
+        nombre: evaluacionRealizada.docente.nombre,
+        apellido: evaluacionRealizada.docente.apellido,
+      },
+      preguntaRespondida: evaluacionRealizada.preguntaRespondida.map((pr) => ({
+        respuesta: pr.respuesta,
+        pregunta: pr.pregunta.pregunta,
+        puntaje: pr.pregunta.puntaje
+      })),
+      modificacionPuntaje: evaluacionRealizada.modificacionPuntaje,
+      observacion: evaluacionRealizada.observacion,
+      nota,
+    };
+  }
+
   async findById(id: number) {
     const evaluacionRealizada =
       await this.evaluacionRealizadaRepository.findOne({
