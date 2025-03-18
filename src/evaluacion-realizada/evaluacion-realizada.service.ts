@@ -218,7 +218,7 @@ export class EvaluacionRealizadaService {
   
     const agregarNota = async (evaluacion: EvaluacionRealizada) => {
       const nota = await this.calcularNota(evaluacion.id);
-      return { ...evaluacion, nota };
+      return { ...evaluacion, fecha: evaluacion.fecha.toISOString().split('T')[0], nota };
     };
   
     return Promise.all(evaluacionesDeUnAlumno.map(agregarNota));
