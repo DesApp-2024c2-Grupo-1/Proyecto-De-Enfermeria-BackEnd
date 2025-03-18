@@ -53,6 +53,15 @@ export class EvaluacionRealizadaController {
       titulo,
     );
   }
+  @Get('/:id')
+  findAllAlumnosPorEvaluacion(
+    @Param('id') id: number,
+  ) {
+    return this.evaluacionRealizadaService.findAllAlumnosPorEvaluacion(
+      id,
+    );
+  }
+
   /*
     @Delete('/:id')
     deleteEvaluacionRealizada(@Param('id') id: number) {

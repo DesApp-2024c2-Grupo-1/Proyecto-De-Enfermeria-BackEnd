@@ -225,7 +225,7 @@ export class EvaluacionRealizadaService {
     const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
       where: { evaluacion: { id: evaluacionId } },
       relations: ['alumno'],
-      select: ['id', 'fecha'],
+      select: ['id', 'fecha', 'alumno'],
     });
 
     console.log(evaluacionesRealizadas);
@@ -234,7 +234,7 @@ export class EvaluacionRealizadaService {
       id: evalRealizada.id,
       fecha: evalRealizada.fecha.toISOString().split('T')[0], 
       alumno: {
-        id: evalRealizada.alumno,
+        id: evalRealizada.alumno.id,
         nombre: evalRealizada.alumno.nombre,
         apellido: evalRealizada.alumno.apellido,
         dni: evalRealizada.alumno.dni,
