@@ -11,7 +11,6 @@ import { Alumno } from 'src/alumno/alumno.entity';
 import { Docente } from 'src/docente/docente.entity';
 import { Evaluacion } from 'src/evaluacion/evaluacion.entity';
 import { PostEvaluacionRealizadaDTO } from './EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto';
-import { min } from 'class-validator';
 
 @Injectable()
 export class EvaluacionRealizadaService {
@@ -158,7 +157,7 @@ export class EvaluacionRealizadaService {
     const evaluacionRealizada =
       await this.evaluacionRealizadaRepository.findOne({
         where: { id },
-        select: ['id', 'fecha'],
+        select: ['id', 'fecha', 'preguntaRespondida', 'modificacionPuntaje', 'observacion', 'lugarPractica'],
         relations: [
           'alumno',
           'docente',
@@ -188,6 +187,7 @@ export class EvaluacionRealizadaService {
       })),
       modificacionPuntaje: evaluacionRealizada.modificacionPuntaje,
       observacion: evaluacionRealizada.observacion,
+      lugarPractica: evaluacionRealizada.lugarPractica,
       nota,
     };
   }
@@ -198,7 +198,7 @@ export class EvaluacionRealizadaService {
       where: {
         evaluacion: { titulo: tituloABuscar },
       },
-      relations: ['evaluacion'],
+      relations: ['evaluacion', 'alumno'],
     });
 
     const agregarNota = async (evaluacion: EvaluacionRealizada) => {
@@ -209,14 +209,61 @@ export class EvaluacionRealizadaService {
     return Promise.all(evaluaciones.map(agregarNota));
   }
 
-  async findAllEvaluacionesDeUnAlumno(alumnoId: number) {
-    return (
-      await this,
-      this.evaluacionRealizadaRepository.find({
-        select: ['fecha'],
-        where: { alumno: { id: alumnoId } },
-      })
-    );
+  async findAllEvaluacionesDeUnAlumno(evaluacionId: number, alumnoId: number ) {
+    const evaluacionesDeUnAlumno = await this.evaluacionRealizadaRepository.find({
+      select: ['id', 'fecha'], 
+      where: { alumno: { id: alumnoId }, evaluacion: {id: evaluacionId} },
+      relations: ["alumno", "evaluacion"], 
+    });
+
+  
+    const agregarNota = async (evaluacion: EvaluacionRealizada) => {
+      const nota = await this.calcularNota(evaluacion.id);
+      return { ...evaluacion, fecha: evaluacion.fecha.toISOString().split('T')[0], nota };
+    };
+  
+    return Promise.all(evaluacionesDeUnAlumno.map(agregarNota));
+  }
+
+
+  async findAllEvaluacionesPorAlumno( alumnoId: number ) {
+    const evaluacionesDeUnAlumno = await this.evaluacionRealizadaRepository.find({
+      select: ['id', 'fecha'], 
+      where: { alumno: { id: alumnoId } },
+      relations: ["evaluacion"], 
+    });
+
+    const agregarNota = async (evaluacion: EvaluacionRealizada) => {
+      const nota = await this.calcularNota(evaluacion.id);
+      return { ...evaluacion, fecha: evaluacion.fecha.toISOString().split('T')[0], nota };
+    };
+  
+    return Promise.all(evaluacionesDeUnAlumno.map(agregarNota));
+  }
+
+
+async findAllAlumnosPorEvaluacion(evaluacionId: number) {
+  
+    const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
+      where: { evaluacion: { id: evaluacionId} },
+      relations: ['alumno', 'evaluacion'],
+      select: ['id', 'fecha', 'alumno',],
+    });
+    const alumnosUnicos = []
+
+
+    evaluacionesRealizadas.forEach((evalRealizada) => {
+      if (!alumnosUnicos.find((alumno) => alumno.alumnoId === evalRealizada.alumno.id)) {
+        alumnosUnicos.push({
+          alumnoId: evalRealizada.alumno.id,
+          nombre: evalRealizada.alumno.nombre,
+          apellido: evalRealizada.alumno.apellido,
+          dni: evalRealizada.alumno.dni,
+        });
+      }
+    });
+
+    return alumnosUnicos;
   }
 
   async findAllEvaluacionesPorAlumnoYTitulo(

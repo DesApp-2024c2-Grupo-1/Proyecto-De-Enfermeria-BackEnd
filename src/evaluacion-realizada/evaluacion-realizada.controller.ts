@@ -38,9 +38,9 @@ export class EvaluacionRealizadaController {
     return this.evaluacionRealizadaService.findAllEvaluacionesPorTitulo(titulo);
   }
 
-  @Get('/:id')
-  findAllEvaluacionesDeUnAlumno(@Param('id') id: number) {
-    return this.evaluacionRealizadaService.findAllEvaluacionesDeUnAlumno(id);
+  @Get('evaluaciones-alumno/:idEvaluacion/:idAlumno')
+  findAllEvaluacionesDeUnAlumno(@Param('idEvaluacion') idEvaluacion: number, @Param('idAlumno') idAlumno: number) {
+    return this.evaluacionRealizadaService.findAllEvaluacionesDeUnAlumno(idEvaluacion, idAlumno);
   }
 
   @Get()
@@ -51,6 +51,24 @@ export class EvaluacionRealizadaController {
     return this.evaluacionRealizadaService.findAllEvaluacionesPorAlumnoYTitulo(
       id,
       titulo,
+    );
+  }
+
+  @Get('evaluaciones-realizadas/:id')
+  findAllAlumnosPorEvaluacion(
+    @Param('id') id: number,
+  ) {
+    return this.evaluacionRealizadaService.findAllAlumnosPorEvaluacion(
+      id,
+    );
+  }
+
+  @Get('evaluaciones-realizadas-por-alumno/:id')
+  findAllEvaluacionesPorAlumno(
+    @Param('id') id: number,
+  ) {
+    return this.evaluacionRealizadaService.findAllEvaluacionesPorAlumno(
+      id,
     );
   }
   /*
