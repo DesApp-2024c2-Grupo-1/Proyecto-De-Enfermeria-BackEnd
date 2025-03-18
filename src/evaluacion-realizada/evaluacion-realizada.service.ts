@@ -215,6 +215,7 @@ export class EvaluacionRealizadaService {
       where: { alumno: { id: alumnoId }, evaluacion: {id: evaluacionId} },
       relations: ["alumno", "evaluacion"], 
     });
+
   
     const agregarNota = async (evaluacion: EvaluacionRealizada) => {
       const nota = await this.calcularNota(evaluacion.id);
@@ -224,6 +225,23 @@ export class EvaluacionRealizadaService {
     return Promise.all(evaluacionesDeUnAlumno.map(agregarNota));
   }
 
+
+  async findAllEvaluacionesPorAlumno( alumnoId: number ) {
+    const evaluacionesDeUnAlumno = await this.evaluacionRealizadaRepository.find({
+      select: ['id', 'fecha'], 
+      where: { alumno: { id: alumnoId } },
+      relations: ["evaluacion"], 
+    });
+
+    const agregarNota = async (evaluacion: EvaluacionRealizada) => {
+      const nota = await this.calcularNota(evaluacion.id);
+      return { ...evaluacion, fecha: evaluacion.fecha.toISOString().split('T')[0], nota };
+    };
+  
+    return Promise.all(evaluacionesDeUnAlumno.map(agregarNota));
+  }
+
+
 async findAllAlumnosPorEvaluacion(evaluacionId: number) {
   
     const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
@@ -232,6 +250,7 @@ async findAllAlumnosPorEvaluacion(evaluacionId: number) {
       select: ['id', 'fecha', 'alumno',],
     });
     const alumnosUnicos = []
+
 
     evaluacionesRealizadas.forEach((evalRealizada) => {
       if (!alumnosUnicos.find((alumno) => alumno.alumnoId === evalRealizada.alumno.id)) {

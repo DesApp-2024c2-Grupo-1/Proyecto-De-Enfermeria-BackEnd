@@ -63,6 +63,14 @@ export class EvaluacionRealizadaController {
     );
   }
 
+  @Get('evaluaciones-realizadas-por-alumno/:id')
+  findAllEvaluacionesPorAlumno(
+    @Param('id') id: number,
+  ) {
+    return this.evaluacionRealizadaService.findAllEvaluacionesPorAlumno(
+      id,
+    );
+  }
   /*
     @Delete('/:id')
     deleteEvaluacionRealizada(@Param('id') id: number) {
