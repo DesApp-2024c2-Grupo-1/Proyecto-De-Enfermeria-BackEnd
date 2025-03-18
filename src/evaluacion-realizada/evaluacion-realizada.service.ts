@@ -158,7 +158,7 @@ export class EvaluacionRealizadaService {
     const evaluacionRealizada =
       await this.evaluacionRealizadaRepository.findOne({
         where: { id },
-        select: ['id', 'fecha'],
+        select: ['id', 'fecha', 'preguntaRespondida'],
         relations: [
           'alumno',
           'docente',
