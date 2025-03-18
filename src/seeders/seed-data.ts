@@ -127,6 +127,7 @@ async function seedDatabase() {
         await preguntaRepository.save(preguntas);
         console.log('Preguntas iniciales insertadas.');
     }
+    /*
     const existingEvaluacionesRealizadas = await evaluacionRealizadaRepository.count();
     if (existingEvaluacionesRealizadas === 0) {
         const evaluaciones = [
@@ -137,6 +138,7 @@ async function seedDatabase() {
         ];
     await evaluacionRepository.save(evaluaciones);
     }
+    */
 }
 
 export default seedDatabase;

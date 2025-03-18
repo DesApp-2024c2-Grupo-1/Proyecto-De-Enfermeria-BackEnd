@@ -11,7 +11,6 @@ import { Alumno } from 'src/alumno/alumno.entity';
 import { Docente } from 'src/docente/docente.entity';
 import { Evaluacion } from 'src/evaluacion/evaluacion.entity';
 import { PostEvaluacionRealizadaDTO } from './EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto';
-import { min } from 'class-validator';
 
 @Injectable()
 export class EvaluacionRealizadaService {
@@ -158,7 +157,7 @@ export class EvaluacionRealizadaService {
     const evaluacionRealizada =
       await this.evaluacionRealizadaRepository.findOne({
         where: { id },
-        select: ['id', 'fecha', 'preguntaRespondida'],
+        select: ['id', 'fecha', 'preguntaRespondida', 'modificacionPuntaje', 'observacion', 'lugarPractica'],
         relations: [
           'alumno',
           'docente',
@@ -188,6 +187,7 @@ export class EvaluacionRealizadaService {
       })),
       modificacionPuntaje: evaluacionRealizada.modificacionPuntaje,
       observacion: evaluacionRealizada.observacion,
+      lugarPractica: evaluacionRealizada.lugarPractica,
       nota,
     };
   }
