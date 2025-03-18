@@ -220,10 +220,10 @@ export class EvaluacionRealizadaService {
     );
   }
 
-  async findAllAlumnosPorEvaluacion(evaluacionId: number) {
+  /*async findAllAlumnosPorTituloDeEvaluacion(evaluacionTitulo: string) {
     console.log("alumnos encontrados")
     const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
-      where: { evaluacion: { id: evaluacionId } },
+      where: { evaluacion: { titulo:evaluacionTitulo } },
       relations: ['alumno'],
       select: ['id', 'fecha', 'alumno'],
     });
@@ -235,6 +235,30 @@ export class EvaluacionRealizadaService {
       fecha: evalRealizada.fecha.toISOString().split('T')[0], 
       alumno: {
         id: evalRealizada.alumno.id,
+        nombre: evalRealizada.alumno.nombre,
+        apellido: evalRealizada.alumno.apellido,
+        dni: evalRealizada.alumno.dni,
+      },
+    }));
+  }
+*/
+
+async findAllAlumnosPorEvaluacion(evaluacionId: number) {
+    console.log("alumnos encontrados")
+    const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
+      where: { evaluacion: { id: evaluacionId} },
+      relations: ['alumno', 'evaluacion'],
+      select: ['id', 'fecha', 'alumno',],
+    });
+
+    console.log(evaluacionesRealizadas);
+
+    return evaluacionesRealizadas.map((evalRealizada) => ({
+      evalRealizadaId: evalRealizada.id,
+      evaluacionId: evalRealizada.evaluacion.id,
+      fecha: evalRealizada.fecha.toISOString().split('T')[0], 
+      alumno: {
+        alumnoId: evalRealizada.alumno.id,
         nombre: evalRealizada.alumno.nombre,
         apellido: evalRealizada.alumno.apellido,
         dni: evalRealizada.alumno.dni,
