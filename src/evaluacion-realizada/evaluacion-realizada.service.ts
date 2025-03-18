@@ -209,42 +209,23 @@ export class EvaluacionRealizadaService {
     return Promise.all(evaluaciones.map(agregarNota));
   }
 
-  async findAllEvaluacionesDeUnAlumno(alumnoId: number) {
-    
-    return (
-      await this,
-      this.evaluacionRealizadaRepository.find({
-        select: ['fecha'],
-        where: { alumno: { id: alumnoId } },
-      })
-    );
-  }
-
-  /*async findAllAlumnosPorTituloDeEvaluacion(evaluacionTitulo: string) {
-    console.log("alumnos encontrados")
-    const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
-      where: { evaluacion: { titulo:evaluacionTitulo } },
-      relations: ['alumno'],
-      select: ['id', 'fecha', 'alumno'],
+  async findAllEvaluacionesDeUnAlumno(evaluacionId: number, alumnoId: number ) {
+    const evaluacionesDeUnAlumno = await this.evaluacionRealizadaRepository.find({
+      select: ['id', 'fecha'], 
+      where: { alumno: { id: alumnoId }, evaluacion: {id: evaluacionId} },
+      relations: ["alumno", "evaluacion"], 
     });
-
-    console.log(evaluacionesRealizadas);
-
-    return evaluacionesRealizadas.map((evalRealizada) => ({
-      id: evalRealizada.id,
-      fecha: evalRealizada.fecha.toISOString().split('T')[0], 
-      alumno: {
-        id: evalRealizada.alumno.id,
-        nombre: evalRealizada.alumno.nombre,
-        apellido: evalRealizada.alumno.apellido,
-        dni: evalRealizada.alumno.dni,
-      },
-    }));
+  
+    const agregarNota = async (evaluacion: EvaluacionRealizada) => {
+      const nota = await this.calcularNota(evaluacion.id);
+      return { ...evaluacion, nota };
+    };
+  
+    return Promise.all(evaluacionesDeUnAlumno.map(agregarNota));
   }
-*/
 
 async findAllAlumnosPorEvaluacion(evaluacionId: number) {
-    console.log("alumnos encontrados")
+  
     const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
       where: { evaluacion: { id: evaluacionId} },
       relations: ['alumno', 'evaluacion'],
@@ -262,8 +243,6 @@ async findAllAlumnosPorEvaluacion(evaluacionId: number) {
         });
       }
     });
-
-    console.log(alumnosUnicos);
 
     return alumnosUnicos;
   }
