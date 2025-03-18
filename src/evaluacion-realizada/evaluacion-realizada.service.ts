@@ -250,20 +250,22 @@ async findAllAlumnosPorEvaluacion(evaluacionId: number) {
       relations: ['alumno', 'evaluacion'],
       select: ['id', 'fecha', 'alumno',],
     });
+    const alumnosUnicos = []
 
-    console.log(evaluacionesRealizadas);
+    evaluacionesRealizadas.forEach((evalRealizada) => {
+      if (!alumnosUnicos.find((alumno) => alumno.alumnoId === evalRealizada.alumno.id)) {
+        alumnosUnicos.push({
+          alumnoId: evalRealizada.alumno.id,
+          nombre: evalRealizada.alumno.nombre,
+          apellido: evalRealizada.alumno.apellido,
+          dni: evalRealizada.alumno.dni,
+        });
+      }
+    });
 
-    return evaluacionesRealizadas.map((evalRealizada) => ({
-      evalRealizadaId: evalRealizada.id,
-      evaluacionId: evalRealizada.evaluacion.id,
-      fecha: evalRealizada.fecha.toISOString().split('T')[0], 
-      alumno: {
-        alumnoId: evalRealizada.alumno.id,
-        nombre: evalRealizada.alumno.nombre,
-        apellido: evalRealizada.alumno.apellido,
-        dni: evalRealizada.alumno.dni,
-      },
-    }));
+    console.log(alumnosUnicos);
+
+    return alumnosUnicos;
   }
 
   async findAllEvaluacionesPorAlumnoYTitulo(
