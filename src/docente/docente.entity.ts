@@ -1,31 +1,42 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { EvaluacionRealizada } from './../evaluacion-realizada/evaluacion-realizada.entity';
-import { Evaluacion } from "src/evaluacion/evaluacion.entity";
+import { Evaluacion } from 'src/evaluacion/evaluacion.entity';
 
 @Entity()
 export class Docente {
-    @PrimaryGeneratedColumn()
-    id?: number;
+  @PrimaryGeneratedColumn()
+  id?: number;
 
-    @Column()
-    nombre?: string;
+  @Column()
+  nombre?: string;
 
-    @Column()
-    apellido?: string;
+  @Column()
+  apellido?: string;
 
-    @Column({unique: true})
-    email?: string;
+  @Column({ unique: true })
+  email?: string;
 
-    @Column({unique: true})
-    dni?: number;
+  @Column({ unique: true })
+  dni?: number;
 
-    @Column()
-    password?: string;
+  @Column()
+  password?: string;
 
-    @OneToMany(() => EvaluacionRealizada, (evaluacionRealizada) => evaluacionRealizada.docente)
-    evaluacionRealizada?: EvaluacionRealizada[];
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  altaFecha?: Date;
 
-    @OneToMany(() => Evaluacion, (evaluacion) => evaluacion.docente)
-    evaluacion?: Evaluacion[];
+  @Column({ nullable: true })
+  bajaFecha?: Date;
 
+  @Column({ nullable: true })
+  modFecha?: Date;
+
+  @OneToMany(
+    () => EvaluacionRealizada,
+    (evaluacionRealizada) => evaluacionRealizada.docente,
+  )
+  evaluacionRealizada?: EvaluacionRealizada[];
+
+  @OneToMany(() => Evaluacion, (evaluacion) => evaluacion.docente)
+  evaluacion?: Evaluacion[];
 }

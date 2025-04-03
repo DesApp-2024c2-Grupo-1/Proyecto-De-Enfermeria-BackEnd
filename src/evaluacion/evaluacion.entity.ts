@@ -17,6 +17,15 @@ export class Evaluacion {
   @Column({ unique: true })
   titulo: string;
 
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  altaFecha?: Date;
+
+  @Column({ nullable: true })
+  bajaFecha?: Date;
+
+  @Column({ nullable: true })
+  modFecha?: Date;
+
   @ManyToOne(() => Docente, (docente) => docente.evaluacion, {
     nullable: false,
   })

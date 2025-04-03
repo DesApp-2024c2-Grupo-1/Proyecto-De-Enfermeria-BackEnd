@@ -53,12 +53,7 @@ export class AlumnoService {
   }
 
   async create(alumnoData: Alumno) {
-    const nuevoAlumno = this.alumnoRepository.create({
-      nombre: alumnoData.nombre,
-      apellido: alumnoData.apellido,
-      email: alumnoData.email,
-      dni: alumnoData.dni,
-    });
+    const nuevoAlumno = this.alumnoRepository.create(alumnoData);
     return await this.alumnoRepository.save(nuevoAlumno);
   }
 
