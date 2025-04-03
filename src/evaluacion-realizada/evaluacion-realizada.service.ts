@@ -300,17 +300,17 @@ export class EvaluacionRealizadaService {
   }
 
   // Para el dropdown
-  async findEvaluacionesDeUnAlumno(alumnoId: number) {
+  async findEvaluacionesDeUnAlumno(evaluacionId: number) {
     const evaluacionesRealizadas =
       await this.evaluacionRealizadaRepository.find({
         select: ['id', 'fecha'],
-        where: { alumno: { id: alumnoId } },
+        where: { evaluacion: { id: evaluacionId } },
         relations: ['evaluacion', 'alumno'],
       });
 
     if (evaluacionesRealizadas.length === 0) {
       throw new Error(
-        `No se encontraron evaluaciones para el alumno con ID ${alumnoId}`,
+        `No se encontraron evaluaciones para el alumno con ID ${evaluacionId}`,
       );
     }
 
