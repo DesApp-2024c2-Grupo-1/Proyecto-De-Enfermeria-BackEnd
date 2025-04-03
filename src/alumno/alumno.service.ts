@@ -38,7 +38,7 @@ export class AlumnoService {
     const alumno = await this.alumnoRepository.findOne({
       where: { id },
       select: ['id', 'nombre', 'apellido', 'dni'],
-      relations: ['evaluacionRealizada']
+      relations: ['evaluacionRealizada'],
     });
     return alumno;
   }
@@ -47,13 +47,18 @@ export class AlumnoService {
     const alumno = await this.alumnoRepository.findOne({
       where: { dni },
       select: ['id', 'nombre', 'apellido'],
-      relations: ['evaluacionRealizada']
+      relations: ['evaluacionRealizada'],
     });
     return alumno;
   }
 
   async create(alumnoData: Alumno) {
-    const nuevoAlumno = this.alumnoRepository.create(alumnoData);
+    const nuevoAlumno = this.alumnoRepository.create({
+      nombre: alumnoData.nombre,
+      apellido: alumnoData.apellido,
+      email: alumnoData.email,
+      dni: alumnoData.dni,
+    });
     return await this.alumnoRepository.save(nuevoAlumno);
   }
 
