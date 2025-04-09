@@ -30,6 +30,8 @@ export class PostEvaluacionRequestDTO {
   @ArrayNotEmpty({ message: 'Debes agregar al menos 1 pregunta' })
   preguntas: PostPreguntaRequestDTO[];
 
+  altaFecha?: Date;
+
   @Type(() => PostEvaluacionRealizadaDTO)
   evaluacionRealizada: EvaluacionRealizada[];
 }

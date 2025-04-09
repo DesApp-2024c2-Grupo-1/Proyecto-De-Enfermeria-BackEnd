@@ -34,5 +34,7 @@ export class PostAlumnoRequestDTO {
   @IsNotEmpty({ message: 'El DNI no puede estar vacío' })
   dni: number;
 
+  altaFecha?: Date;
+
   evaluacionRealizada: EvaluacionRealizada[];
 }

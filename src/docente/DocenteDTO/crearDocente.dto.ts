@@ -40,6 +40,8 @@ export class PostDocenteRequestDTO {
   @IsNotEmpty({ message: 'La contraseña no puede estar vacio' })
   password: string;
 
+  altaFecha?: Date;
+
   evaluacion: Evaluacion[];
 
   evaluacionRealizada: EvaluacionRealizada[];
