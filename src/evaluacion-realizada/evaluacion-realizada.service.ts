@@ -254,33 +254,45 @@ export class EvaluacionRealizadaService {
     };
 
     return Promise.all(evaluacionesDeUnAlumno.map(agregarNota));
+    
   }
 
   async findAllAlumnosPorEvaluacion(evaluacionId: number) {
-    const evaluacionesRealizadas =
-      await this.evaluacionRealizadaRepository.find({
-        where: { evaluacion: { id: evaluacionId } },
-        relations: ['alumno', 'evaluacion'],
-        select: ['id', 'fecha', 'alumno'],
-      });
-    const alumnosUnicos = [];
-
-    evaluacionesRealizadas.forEach((evalRealizada) => {
-      if (
-        !alumnosUnicos.find(
-          (alumno) => alumno.alumnoId === evalRealizada.alumno.id,
-        )
-      ) {
-        alumnosUnicos.push({
-          alumnoId: evalRealizada.alumno.id,
-          nombre: evalRealizada.alumno.nombre,
-          apellido: evalRealizada.alumno.apellido,
-          dni: evalRealizada.alumno.dni,
+    const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
+      where: { evaluacion: { id: evaluacionId } },
+      relations: ['alumno'],
+      select: ['id', 'fecha'],
+    });
+  
+    const alumnosMap = new Map<number, {
+      alumnoId: number;
+      nombre: string;
+      apellido: string;
+      dni: number;
+      evaluacionesRealizadas: { id: number; fecha: string; nota: string }[];
+    }>();
+  
+    for (const evalRealizada of evaluacionesRealizadas) {
+      const alumno = evalRealizada.alumno;
+  
+      if (!alumnosMap.has(alumno.id)) {
+        alumnosMap.set(alumno.id, {
+          alumnoId: alumno.id,
+          nombre: alumno.nombre,
+          apellido: alumno.apellido,
+          dni: alumno.dni,
+          evaluacionesRealizadas: [],
         });
       }
-    });
-
-    return alumnosUnicos;
+  
+      alumnosMap.get(alumno.id).evaluacionesRealizadas.push({
+        id: evalRealizada.id,
+        fecha: evalRealizada.fecha.toISOString().split('T')[0],
+        nota: await this.calcularNota(evalRealizada.id),
+      });
+    }
+  
+    return Array.from(alumnosMap.values());
   }
 
   async findAllEvaluacionesPorAlumnoYTitulo(
@@ -365,7 +377,7 @@ export class EvaluacionRealizadaService {
       ((puntajeObtenido + evaluacionRealizada.modificacionPuntaje) /
         puntajeMaximo) *
         100,
-    );
+    ); 
 
     return `${nota.toFixed(2)}%`;
   }
