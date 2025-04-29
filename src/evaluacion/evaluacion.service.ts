@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Evaluacion } from './evaluacion.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, Repository } from 'typeorm';
 import { Pregunta } from 'src/pregunta/pregunta.entity';
 import { Docente } from 'src/docente/docente.entity';
+import { TipoEvaluacion } from 'src/tipo-evaluacion/tipo-evaluacion.entity';
 
 @Injectable()
 export class EvaluacionService {
@@ -12,16 +13,22 @@ export class EvaluacionService {
     private readonly evaluacionRepository: Repository<Evaluacion>,
     @InjectRepository(Pregunta)
     private readonly preguntaRepository: Repository<Pregunta>,
+    @InjectRepository(TipoEvaluacion)
+    private readonly tipoEvaluacionRepository: Repository<TipoEvaluacion>,
   ) {}
 
   async createEvaluacionYPreguntas(evaluacionyPreguntasData: {
     titulo: string;
     docente: DeepPartial<Docente>;
+    tipoEvaluacion: DeepPartial<TipoEvaluacion>;
     preguntas: { pregunta: string; puntaje: number }[];
   }) {
     const { titulo, docente, preguntas } = evaluacionyPreguntasData;
 
-    //evaluacion
+    //Tipo Evaluacion
+    const nuevoTipo = this.tipoEvaluacionRepository.create();
+
+    //Evaluacion
     const nuevaEvaluacion = this.evaluacionRepository.create({
       titulo,
       docente,
@@ -43,6 +50,7 @@ export class EvaluacionService {
 
     return {
       evaluacion: evaluacionGuardada,
+      tipoEvaluacion: nuevoTipo,
       preguntas: preguntasGuardadas,
     };
   }
