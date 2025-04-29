@@ -7,12 +7,12 @@ export class LugarEvaluacionController {
     constructor(private lugarEvaluacionService: LugarEvaluacionService) {}
 
     @Get()
-    getAllDocentes() {
+    getAllLugarEvaluacion() {
         return this.lugarEvaluacionService.findAll()
     }
 
     @Get('/:id')
-    getDocenteById(@Param('id') id: number) {
+    getLugarEvaluacionById(@Param('id') id: number) {
         return this.lugarEvaluacionService.findById(id);
     }
 

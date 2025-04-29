@@ -11,4 +11,4 @@ import { LugarEvaluacion } from './lugar-evaluacion.entity';
   providers: [LugarEvaluacionService],
   exports: [TypeOrmModule]
 })
-export class AlumnoModule {}
+export class LugarEvaluacionModule {}
