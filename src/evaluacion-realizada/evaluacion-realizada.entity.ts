@@ -49,9 +49,9 @@ export class EvaluacionRealizada {
   )
   preguntaRespondida: PreguntaRespondida[];
 
-  @OneToMany(
+  @ManyToOne(
     () => LugarEvaluacion,
     (lugarEvaluacion) => lugarEvaluacion.evaluacionRealizada,
   )
-  lugarEvaluacion: LugarEvaluacion[];
+  lugarEvaluacion: LugarEvaluacion;
 }

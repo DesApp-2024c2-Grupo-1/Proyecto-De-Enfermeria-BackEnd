@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { EvaluacionRealizada } from 'src/evaluacion-realizada/evaluacion-realizada.entity';
+import { OneToMany } from 'typeorm';
 
 @Entity()
 export class LugarEvaluacion {
@@ -9,9 +10,9 @@ export class LugarEvaluacion {
   @Column()
   nombre: string;
  
-  @ManyToOne(
+  @OneToMany(
     () => EvaluacionRealizada,
-    (evaluacionRealizada) => evaluacionRealizada.preguntaRespondida,
+    (evaluacionRealizada) => evaluacionRealizada.lugarEvaluacion,
     { nullable: false },
   )
   evaluacionRealizada: EvaluacionRealizada;
