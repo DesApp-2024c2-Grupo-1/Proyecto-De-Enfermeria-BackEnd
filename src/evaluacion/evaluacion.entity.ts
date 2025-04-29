@@ -32,11 +32,10 @@ export class Evaluacion {
   })
   docente: Docente;
 
-  @OneToMany(
-    () => TipoEvaluacion,
-    (tipoEvaluacion) => tipoEvaluacion.evaluacion,
-  )
-  tipoEvaluacion: TipoEvaluacion[];
+  @ManyToOne(() => TipoEvaluacion, (tipo) => tipo.evaluaciones, {
+    nullable: false,
+  })
+  tipoEvaluacion: TipoEvaluacion;
 
   @OneToMany(() => Pregunta, (pregunta) => pregunta.evaluacion)
   preguntas: Pregunta[];

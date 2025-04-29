@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 // Entidades
 import { Alumno } from './alumno/alumno.entity';
@@ -9,6 +9,7 @@ import { Docente } from './docente/docente.entity';
 import { Evaluacion } from './evaluacion/evaluacion.entity';
 import { Pregunta } from './pregunta/pregunta.entity';
 import { PreguntaRespondida } from './pregunta-respondida/pregunta-respondida.entity';
+import { TipoEvaluacion } from './tipo-evaluacion/tipo-evaluacion.entity';
 
 // Modulos
 import { AlumnoModule } from './alumno/alumno.module';
@@ -36,16 +37,17 @@ import { TipoEvaluacionModule } from './tipo-evaluacion/tipo-evaluacion.module';
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
         entities: [
-          Alumno, 
-          EvaluacionRealizada, 
-          Docente, 
+          Alumno,
+          EvaluacionRealizada,
+          Docente,
           Evaluacion,
           Pregunta,
-          PreguntaRespondida
+          PreguntaRespondida,
+          TipoEvaluacion,
         ],
         autoLoadEntities: true,
         synchronize: true,
-      })
+      }),
     }),
     AlumnoModule,
     EvaluacionRealizadaModule,
@@ -53,8 +55,7 @@ import { TipoEvaluacionModule } from './tipo-evaluacion/tipo-evaluacion.module';
     EvaluacionModule,
     PreguntaModule,
     PreguntaRespondidaModule,
-    TipoEvaluacionModule
+    TipoEvaluacionModule,
   ],
 })
-
 export class AppModule {}
