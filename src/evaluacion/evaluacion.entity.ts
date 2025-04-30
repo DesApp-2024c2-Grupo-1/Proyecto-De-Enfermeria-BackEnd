@@ -33,7 +33,7 @@ export class Evaluacion {
   docente: Docente;
 
   @ManyToOne(() => TipoEvaluacion, (tipo) => tipo.evaluaciones, {
-    nullable: false,
+    nullable: true,
   })
   tipoEvaluacion: TipoEvaluacion;
 
