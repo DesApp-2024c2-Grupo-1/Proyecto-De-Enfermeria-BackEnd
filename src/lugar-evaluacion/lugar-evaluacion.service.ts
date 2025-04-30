@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { LugarEvaluacion } from './lugar-evaluacion.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { LugarEvaluacion } from 'src/lugar-evaluacion/lugar-evaluacion.entity';
 
 @Injectable()
 export class LugarEvaluacionService {
@@ -25,5 +25,10 @@ export class LugarEvaluacionService {
     });
     return lugar;
   }
+
+  async create(LugarEvaluacionData: LugarEvaluacion) {
+      const nuevoLugar = this.lugarEvaluacionRepository.create(LugarEvaluacionData);
+      return await this.lugarEvaluacionRepository.save(nuevoLugar);
+    }
 
 }
