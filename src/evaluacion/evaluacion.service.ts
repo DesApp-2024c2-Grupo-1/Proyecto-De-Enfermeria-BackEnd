@@ -20,18 +20,19 @@ export class EvaluacionService {
   async createEvaluacionYPreguntas(evaluacionyPreguntasData: {
     titulo: string;
     docente: DeepPartial<Docente>;
-    tipoEvaluacion: DeepPartial<TipoEvaluacion>;
     preguntas: { pregunta: string; puntaje: number }[];
   }) {
     const { titulo, docente, preguntas } = evaluacionyPreguntasData;
 
     //Tipo Evaluacion
     const nuevoTipo = this.tipoEvaluacionRepository.create();
-
+    const nuevoTipoGuardado = await this.tipoEvaluacionRepository.save(nuevoTipo)
+    
     //Evaluacion
     const nuevaEvaluacion = this.evaluacionRepository.create({
       titulo,
       docente,
+      tipoEvaluacion: nuevoTipoGuardado
     });
     const evaluacionGuardada =
       await this.evaluacionRepository.save(nuevaEvaluacion);
@@ -50,7 +51,6 @@ export class EvaluacionService {
 
     return {
       evaluacion: evaluacionGuardada,
-      tipoEvaluacion: nuevoTipo,
       preguntas: preguntasGuardadas,
     };
   }
@@ -58,6 +58,7 @@ export class EvaluacionService {
   async findAll() {
     const evaluaciones = await this.evaluacionRepository.find({
       select: ['id', 'titulo'],
+      relations: ['tipoEvaluacion']
     });
 
     return evaluaciones;
