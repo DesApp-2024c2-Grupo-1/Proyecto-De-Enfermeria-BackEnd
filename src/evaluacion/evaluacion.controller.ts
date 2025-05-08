@@ -32,6 +32,11 @@ export class EvaluacionController {
     return this.evaluacionService.findByTitulo(titulo);
   }
 
+  @Put('/:id')
+  deshabilitarEvaluacion(@Param('id')id: number){
+    return this.evaluacionService.deshabilitarEvaluacion(id);
+  }
+
   /*
     @Post()
     createEvaluacion(@Body() evaluacionData: Evaluacion) {

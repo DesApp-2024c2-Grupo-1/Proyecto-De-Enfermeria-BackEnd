@@ -80,6 +80,12 @@ export class EvaluacionService {
     });
   }
 
+  async deshabilitarEvaluacion(id: number) {
+    await this.evaluacionRepository.update(id, {
+      bajaFecha: new Date()
+    });
+  }
+
   async create(evaluacionData: Evaluacion) {
     const nuevoEvaluacion = this.evaluacionRepository.create(evaluacionData);
     return await this.evaluacionRepository.save(nuevoEvaluacion);
