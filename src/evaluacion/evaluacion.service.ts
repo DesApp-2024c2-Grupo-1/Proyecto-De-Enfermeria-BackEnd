@@ -5,6 +5,7 @@ import { DeepPartial, Repository } from 'typeorm';
 import { Pregunta } from 'src/pregunta/pregunta.entity';
 import { Docente } from 'src/docente/docente.entity';
 import { TipoEvaluacion } from 'src/tipo-evaluacion/tipo-evaluacion.entity';
+import { PutEvaluacionRequestDTO } from './EvaluacionDTO/updateEvaluacion.dto';
 
 @Injectable()
 export class EvaluacionService {
@@ -82,8 +83,19 @@ export class EvaluacionService {
 
   async deshabilitarEvaluacion(id: number) {
     await this.evaluacionRepository.update(id, {
-      bajaFecha: new Date()
+      bajaFecha: new Date(),
+      modFecha: new Date()
     });
+  }
+
+  //testear esto
+  async modificarEvaluacion(modificarEvaluacionData: PutEvaluacionRequestDTO){
+    const { titulo, docente, preguntas, evaluacion } = modificarEvaluacionData;
+    const evaluacionVieja = await this.evaluacionRepository.findOne({where: {id: evaluacion}, relations: ['tipoEvaluacion']})
+    await this.deshabilitarEvaluacion(evaluacionVieja.id)
+    const nuevaEvaluacion = this.createEvaluacionYPreguntas({titulo, docente, preguntas})
+    const nuevaEvaluacionConTipo = {nuevaEvaluacion, tipoEvaluacion: evaluacionVieja.tipoEvaluacion}
+    return this.evaluacionRepository.save(nuevaEvaluacionConTipo)
   }
 
   async create(evaluacionData: Evaluacion) {
