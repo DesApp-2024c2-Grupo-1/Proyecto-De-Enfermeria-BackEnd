@@ -13,6 +13,7 @@ import { PostDocenteRequestDTO } from 'src/docente/DocenteDTO/crearDocente.dto';
 import { PostAlumnoRequestDTO } from 'src/alumno/AlumnoDTO/crearAlumno.dto';
 import { PostPreguntaRespondidaRequestDTO } from 'src/pregunta-respondida/PreguntaRespondidaDTO/crearPreguntaRespondida.dto';
 import { PostEvaluacionRequestDTO } from 'src/evaluacion/EvaluacionDTO/crearEvaluacion.dto';
+import { PostLugarEvaluacionDTO } from 'src/lugar-evaluacion/LugarEvaluacionDTO/crearLugarEvaluacion.dto';
 
 export class PostEvaluacionRealizadaDTO {
   @IsOptional()
@@ -25,10 +26,6 @@ export class PostEvaluacionRealizadaDTO {
   @IsOptional()
   @IsInt()
   modificacionPuntaje: number;
-
-  @IsOptional()
-  @IsString()
-  lugarPractica: string;
 
   fecha: Date;
 
@@ -49,4 +46,9 @@ export class PostEvaluacionRealizadaDTO {
   @ValidateNested({ each: true })
   @Type(() => PostPreguntaRespondidaRequestDTO)
   preguntaRespondida?: PostPreguntaRespondidaRequestDTO[];
+
+  @IsNotEmpty()
+  @Type(() => PostLugarEvaluacionDTO)
+  lugarEvaluacion: PostLugarEvaluacionDTO;
+
 }

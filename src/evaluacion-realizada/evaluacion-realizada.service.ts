@@ -10,6 +10,7 @@ import { PreguntaRespondida } from 'src/pregunta-respondida/pregunta-respondida.
 import { Alumno } from 'src/alumno/alumno.entity';
 import { Docente } from 'src/docente/docente.entity';
 import { Evaluacion } from 'src/evaluacion/evaluacion.entity';
+import { LugarEvaluacion } from 'src/lugar-evaluacion/lugar-evaluacion.entity';
 import { PostEvaluacionRealizadaDTO } from './EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto';
 
 @Injectable()
@@ -20,6 +21,8 @@ export class EvaluacionRealizadaService {
     @InjectRepository(PreguntaRespondida)
     private readonly preguntaRespondidaRepository: Repository<PreguntaRespondida>,
     private readonly dataSource: DataSource,
+    @InjectRepository(LugarEvaluacion)
+    private readonly lugarEvaluacionRepository: Repository<LugarEvaluacion>,
   ) {}
 
   async crearEvaluacionRealizada(data: PostEvaluacionRealizadaDTO) {
@@ -31,7 +34,7 @@ export class EvaluacionRealizadaService {
       fecha,
       observacion,
       modificacionPuntaje,
-      lugarPractica,
+      lugarEvaluacion,
     } = data;
 
     return await this.dataSource.transaction(async (manager) => {
@@ -44,6 +47,10 @@ export class EvaluacionRealizadaService {
       const evaluacionExistente = await manager.findOne(Evaluacion, {
         where: { id: evaluacion.id },
         relations: ['preguntas'],
+      });
+
+      const lugarEvaluacionExistente = await manager.findOne(LugarEvaluacion, {
+        where: { id: lugarEvaluacion.id },
       });
 
       if (!alumnoExistente || !docenteExistente || !evaluacionExistente) {
@@ -67,7 +74,7 @@ export class EvaluacionRealizadaService {
         fecha: fecha ? new Date(fecha) : new Date(),
         observacion: observacion,
         modificacionPuntaje: modificacionPuntaje,
-        lugarPractica: lugarPractica,
+        lugarEvaluacion: lugarEvaluacionExistente,
       });
 
       await manager.save(nuevaEvaluacionRealizada);
@@ -125,6 +132,7 @@ export class EvaluacionRealizadaService {
           'docente',
           'preguntaRespondida',
           'preguntaRespondida.pregunta',
+          'lugarEvaluacion',
         ],
       });
 
@@ -149,6 +157,10 @@ export class EvaluacionRealizadaService {
       })),
       modificacionPuntaje: evaluacionRealizada.modificacionPuntaje,
       observacion: evaluacionRealizada.observacion,
+      lugarEvaluacion: {
+        id: evaluacionRealizada.lugarEvaluacion.id,
+        nombre: evaluacionRealizada.lugarEvaluacion.nombre,
+      },
       nota,
     };
   }
@@ -157,19 +169,14 @@ export class EvaluacionRealizadaService {
     const evaluacionRealizada =
       await this.evaluacionRealizadaRepository.findOne({
         where: { id },
-        select: [
-          'id',
-          'fecha',
-          'preguntaRespondida',
-          'modificacionPuntaje',
-          'observacion',
-          'lugarPractica',
-        ],
+        select: ['id', 'fecha', 'preguntaRespondida', 'modificacionPuntaje', 'observacion'],
+
         relations: [
           'alumno',
           'docente',
           'preguntaRespondida',
           'preguntaRespondida.pregunta',
+          'lugarEvaluacion',
         ],
       });
 
@@ -194,7 +201,10 @@ export class EvaluacionRealizadaService {
       })),
       modificacionPuntaje: evaluacionRealizada.modificacionPuntaje,
       observacion: evaluacionRealizada.observacion,
-      lugarPractica: evaluacionRealizada.lugarPractica,
+      lugarEvaluacion: {
+        id:evaluacionRealizada.lugarEvaluacion.id,
+        nombre: evaluacionRealizada.lugarEvaluacion.nombre,
+      },
       nota,
     };
   }
