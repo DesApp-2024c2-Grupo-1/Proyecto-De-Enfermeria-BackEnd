@@ -26,6 +26,9 @@ export class Evaluacion {
   @Column({ nullable: true })
   modFecha?: Date;
 
+  @Column({ nullable: true })
+  version?: Number;
+
   @ManyToOne(() => Docente, (docente) => docente.evaluacion, {
     nullable: false,
   })
