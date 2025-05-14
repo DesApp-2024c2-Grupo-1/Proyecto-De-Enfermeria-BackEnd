@@ -8,7 +8,6 @@ import {
 import { EvaluacionRealizada } from 'src/evaluacion-realizada/evaluacion-realizada.entity';
 import { Docente } from 'src/docente/docente.entity';
 import { Pregunta } from 'src/pregunta/pregunta.entity';
-import { TipoEvaluacion } from 'src/tipo-evaluacion/tipo-evaluacion.entity';
 
 @Entity()
 export class Evaluacion {
@@ -31,11 +30,6 @@ export class Evaluacion {
     nullable: false,
   })
   docente: Docente;
-
-  @ManyToOne(() => TipoEvaluacion, (tipo) => tipo.evaluaciones, {
-    nullable: true,
-  })
-  tipoEvaluacion: TipoEvaluacion;
 
   @OneToMany(() => Pregunta, (pregunta) => pregunta.evaluacion)
   preguntas: Pregunta[];

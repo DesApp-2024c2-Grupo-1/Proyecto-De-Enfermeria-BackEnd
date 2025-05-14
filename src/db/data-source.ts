@@ -6,7 +6,6 @@ import { Evaluacion } from '../evaluacion/evaluacion.entity';
 import { Pregunta } from 'src/pregunta/pregunta.entity';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import { PreguntaRespondida } from 'src/pregunta-respondida/pregunta-respondida.entity';
-import { TipoEvaluacion } from 'src/tipo-evaluacion/tipo-evaluacion.entity';
 
 ConfigModule.forRoot();
 
@@ -26,7 +25,6 @@ export const AppDataSource = new DataSource({
     Evaluacion,
     Pregunta,
     PreguntaRespondida,
-    TipoEvaluacion,
   ],
   synchronize: true,
 });

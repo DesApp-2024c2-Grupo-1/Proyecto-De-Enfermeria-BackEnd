@@ -11,7 +11,6 @@ import { PostDocenteRequestDTO } from 'src/docente/DocenteDTO/crearDocente.dto';
 import { EvaluacionRealizada } from 'src/evaluacion-realizada/evaluacion-realizada.entity';
 import { PostEvaluacionRealizadaDTO } from 'src/evaluacion-realizada/EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto';
 import { PostPreguntaRequestDTO } from 'src/pregunta/PreguntaDTO/crearPregunta.dto';
-import { TipoEvaluacion } from 'src/tipo-evaluacion/tipo-evaluacion.entity';
 
 export class PostEvaluacionRequestDTO {
   id?: number;
@@ -32,8 +31,6 @@ export class PostEvaluacionRequestDTO {
   preguntas: PostPreguntaRequestDTO[];
 
   altaFecha?: Date;
-
-  tipoEvaluacion: TipoEvaluacion;
 
   @Type(() => PostEvaluacionRealizadaDTO)
   evaluacionRealizada: EvaluacionRealizada[];

@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, Repository } from 'typeorm';
 import { Pregunta } from 'src/pregunta/pregunta.entity';
 import { Docente } from 'src/docente/docente.entity';
-import { TipoEvaluacion } from 'src/tipo-evaluacion/tipo-evaluacion.entity';
 import { PutEvaluacionRequestDTO } from './EvaluacionDTO/updateEvaluacion.dto';
 
 @Injectable()
@@ -14,8 +13,7 @@ export class EvaluacionService {
     private readonly evaluacionRepository: Repository<Evaluacion>,
     @InjectRepository(Pregunta)
     private readonly preguntaRepository: Repository<Pregunta>,
-    @InjectRepository(TipoEvaluacion)
-    private readonly tipoEvaluacionRepository: Repository<TipoEvaluacion>,
+  
   ) {}
 
   async createEvaluacionYPreguntas(evaluacionyPreguntasData: {
@@ -25,15 +23,11 @@ export class EvaluacionService {
   }) {
     const { titulo, docente, preguntas } = evaluacionyPreguntasData;
 
-    //Tipo Evaluacion
-    const nuevoTipo = this.tipoEvaluacionRepository.create();
-    const nuevoTipoGuardado = await this.tipoEvaluacionRepository.save(nuevoTipo)
     
     //Evaluacion
     const nuevaEvaluacion = this.evaluacionRepository.create({
       titulo,
       docente,
-      tipoEvaluacion: nuevoTipoGuardado
     });
     const evaluacionGuardada =
       await this.evaluacionRepository.save(nuevaEvaluacion);
@@ -59,7 +53,6 @@ export class EvaluacionService {
   async findAll() {
     const evaluaciones = await this.evaluacionRepository.find({
       select: ['id', 'titulo'],
-      relations: ['tipoEvaluacion']
     });
 
     return evaluaciones;
@@ -91,11 +84,10 @@ export class EvaluacionService {
   //testear esto
   async modificarEvaluacion(modificarEvaluacionData: PutEvaluacionRequestDTO){
     const { titulo, docente, preguntas, evaluacion } = modificarEvaluacionData;
-    const evaluacionVieja = await this.evaluacionRepository.findOne({where: {id: evaluacion}, relations: ['tipoEvaluacion']})
+    const evaluacionVieja = await this.evaluacionRepository.findOne({where: {id: evaluacion}})
     await this.deshabilitarEvaluacion(evaluacionVieja.id)
     const nuevaEvaluacion = this.createEvaluacionYPreguntas({titulo, docente, preguntas})
-    const nuevaEvaluacionConTipo = {nuevaEvaluacion, tipoEvaluacion: evaluacionVieja.tipoEvaluacion}
-    return this.evaluacionRepository.save(nuevaEvaluacionConTipo)
+    return this.evaluacionRepository.save(nuevaEvaluacion)
   }
 
   async create(evaluacionData: Evaluacion) {
