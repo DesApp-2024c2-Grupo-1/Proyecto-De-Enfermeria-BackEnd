@@ -39,8 +39,14 @@ export class EvaluacionRealizadaController {
   }
 
   @Get('evaluaciones-alumno/:idEvaluacion/:idAlumno')
-  findAllEvaluacionesDeUnAlumno(@Param('idEvaluacion') idEvaluacion: number, @Param('idAlumno') idAlumno: number) {
-    return this.evaluacionRealizadaService.findAllEvaluacionesDeUnAlumno(idEvaluacion, idAlumno);
+  findAllEvaluacionesDeUnAlumno(
+    @Param('idEvaluacion') idEvaluacion: number,
+    @Param('idAlumno') idAlumno: number,
+  ) {
+    return this.evaluacionRealizadaService.findAllEvaluacionesDeUnAlumno(
+      idEvaluacion,
+      idAlumno,
+    );
   }
 
   @Get()
@@ -55,21 +61,19 @@ export class EvaluacionRealizadaController {
   }
 
   @Get('evaluaciones-realizadas/:id')
-  findAllAlumnosPorEvaluacion(
-    @Param('id') id: number,
-  ) {
-    return this.evaluacionRealizadaService.findAllAlumnosPorEvaluacion(
-      id,
-    );
+  findAllAlumnosPorEvaluacion(@Param('id') id: number) {
+    return this.evaluacionRealizadaService.findAllAlumnosPorEvaluacion(id);
   }
 
   @Get('evaluaciones-realizadas-por-alumno/:id')
-  findAllEvaluacionesPorAlumno(
-    @Param('id') id: number,
-  ) {
-    return this.evaluacionRealizadaService.findAllEvaluacionesPorAlumno(
-      id,
-    );
+  findAllEvaluacionesPorAlumno(@Param('id') id: number) {
+    return this.evaluacionRealizadaService.findAllEvaluacionesPorAlumno(id);
+  }
+
+  //Para el dropdown
+  @Get('evaluaciones-realizadas-alumno/:id')
+  findEvaluacionesDeUnAlumno(@Param('id') alumnoId: number) {
+    return this.evaluacionRealizadaService.findEvaluacionesDeUnAlumno(alumnoId);
   }
   /*
     @Delete('/:id')
