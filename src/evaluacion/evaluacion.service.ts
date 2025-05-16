@@ -62,11 +62,19 @@ export class EvaluacionService {
   }
 
   async findAll() {
-    const evaluaciones = await this.evaluacionRepository.find({
-      select: ['id', 'titulo'],
-    });
+    //const evaluaciones = await this.evaluacionRepository.find({
+    //  where: {
+    //  bajaFecha: null,
+    //},
+    //  select: ['id', 'titulo'],
+    //});
 
-    return evaluaciones;
+    //return evaluaciones;
+    return await this.evaluacionRepository
+      .createQueryBuilder('evaluacion')
+      .select(['evaluacion.id', 'evaluacion.titulo'])
+      .where('evaluacion.bajaFecha IS NULL')
+      .getMany();
   }
 
   async findById(id: number) {
@@ -104,15 +112,35 @@ export class EvaluacionService {
       where: { id }, 
       select: ['id', 'titulo', 'version'],
     })
-    console.log(evaluacionVieja.titulo)
+
+    const { titulo, version } = evaluacionVieja;
     await this.deshabilitarEvaluacion(evaluacionVieja.id)
-    console.log(evaluacionVieja.titulo)
-    const nuevaEvaluacion = await this.createEvaluacionYPreguntas({
-      titulo: evaluacionVieja.titulo, 
-      docente, 
-      preguntas, 
-      version: evaluacionVieja.version + 1})
-    return this.evaluacionRepository.save(nuevaEvaluacion)
+
+    //Evaluacion con nueva version
+    const nuevaEvaluacion = this.evaluacionRepository.create({
+      titulo,
+      docente,
+      version: version + 1,
+    });
+    const evaluacionGuardada =
+      await this.evaluacionRepository.save(nuevaEvaluacion);
+
+    //preguntas
+    const preguntasGuardadas = await Promise.all(
+      preguntas.map(async (preguntaData) => {
+        const nuevaPregunta = this.preguntaRepository.create({
+          pregunta: preguntaData.pregunta,
+          puntaje: preguntaData.puntaje,
+          evaluacion: evaluacionGuardada,
+        });
+        return await this.preguntaRepository.save(nuevaPregunta);
+      }),
+    );
+
+    return {
+      evaluacion: evaluacionGuardada,
+      preguntas: preguntasGuardadas,
+    };
   }
 
   async create(evaluacionData: Evaluacion) {
