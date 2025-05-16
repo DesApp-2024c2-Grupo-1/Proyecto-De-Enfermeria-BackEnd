@@ -19,15 +19,26 @@ export class EvaluacionService {
   async createEvaluacionYPreguntas(evaluacionyPreguntasData: {
     titulo: string;
     docente: DeepPartial<Docente>;
+    version?: number;
     preguntas: { pregunta: string; puntaje: number }[];
   }) {
-    const { titulo, docente, preguntas } = evaluacionyPreguntasData;
+    const { titulo, docente, preguntas, version } = evaluacionyPreguntasData;
 
-    
+    const evaluacion = await this.evaluacionRepository.findOne({where: {titulo: titulo}})
+
+    //if (evaluacion) {
+    //  throw Error("Ya existe una evaluacion con el titulo ingresado")
+    //}
+
+    //if (evaluacion.bajaFecha){
+    //  throw new Error("Ya existe una evaluacion habilitada con el titulo ingresado");
+    //}
+
     //Evaluacion
     const nuevaEvaluacion = this.evaluacionRepository.create({
       titulo,
       docente,
+      version,
     });
     const evaluacionGuardada =
       await this.evaluacionRepository.save(nuevaEvaluacion);
@@ -61,7 +72,7 @@ export class EvaluacionService {
   async findById(id: number) {
     const evaluacion = await this.evaluacionRepository.findOne({
       where: { id },
-      select: ['id', 'titulo'],
+      select: ['id', 'titulo', 'version', 'bajaFecha'],
       relations: ['preguntas'],
     });
 
@@ -75,18 +86,32 @@ export class EvaluacionService {
   }
 
   async deshabilitarEvaluacion(id: number) {
-    await this.evaluacionRepository.update(id, {
+    //const evaluacion = await this.evaluacionRepository.findOne({where: {id}})
+    //if (evaluacion.bajaFecha != null){
+    //  throw new Error("La evaluacion ya esta deshabilitada"); 
+    //} 
+
+   await this.evaluacionRepository.update(id, {
       bajaFecha: new Date(),
       modFecha: new Date()
     });
   }
 
   //testear esto
-  async modificarEvaluacion(modificarEvaluacionData: PutEvaluacionRequestDTO){
-    const { titulo, docente, preguntas, evaluacion } = modificarEvaluacionData;
-    const evaluacionVieja = await this.evaluacionRepository.findOne({where: {id: evaluacion}})
+  async modificarEvaluacion(modificarEvaluacionData: PutEvaluacionRequestDTO, id: number){
+    const { docente, preguntas } = modificarEvaluacionData;
+    const evaluacionVieja = await this.evaluacionRepository.findOne({
+      where: { id }, 
+      select: ['id', 'titulo', 'version'],
+    })
+    console.log(evaluacionVieja.titulo)
     await this.deshabilitarEvaluacion(evaluacionVieja.id)
-    const nuevaEvaluacion = this.createEvaluacionYPreguntas({titulo, docente, preguntas})
+    console.log(evaluacionVieja.titulo)
+    const nuevaEvaluacion = await this.createEvaluacionYPreguntas({
+      titulo: evaluacionVieja.titulo, 
+      docente, 
+      preguntas, 
+      version: evaluacionVieja.version + 1})
     return this.evaluacionRepository.save(nuevaEvaluacion)
   }
 

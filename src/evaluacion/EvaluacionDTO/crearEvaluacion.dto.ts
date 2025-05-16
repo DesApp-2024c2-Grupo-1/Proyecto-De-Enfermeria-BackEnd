@@ -32,6 +32,8 @@ export class PostEvaluacionRequestDTO {
 
   altaFecha?: Date;
 
+  version?: number;
+
   @Type(() => PostEvaluacionRealizadaDTO)
   evaluacionRealizada: EvaluacionRealizada[];
 }

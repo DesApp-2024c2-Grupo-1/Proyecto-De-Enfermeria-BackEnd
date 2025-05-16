@@ -15,11 +15,6 @@ import { PostPreguntaRequestDTO } from 'src/pregunta/PreguntaDTO/crearPregunta.d
 export class PutEvaluacionRequestDTO {
   id?: number;
 
-  @IsString()
-  @MinLength(5, { message: 'El título debe tener al menos 5 caracteres' })
-  @IsNotEmpty({ message: 'El título no puede estar vacío' })
-  titulo: string;
-
   @IsNotEmpty()
   @Type(() => PostDocenteRequestDTO)
   docente: PostDocenteRequestDTO;
@@ -36,5 +31,8 @@ export class PutEvaluacionRequestDTO {
   evaluacionRealizada: EvaluacionRealizada[];
 
   @IsInt()
-  evaluacion: number;
+  version: number
+
+  //@IsInt()
+  //evaluacion: number;
 }

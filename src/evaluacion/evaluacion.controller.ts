@@ -12,6 +12,7 @@ import {
 import { Evaluacion } from './evaluacion.entity';
 import { EvaluacionService } from './evaluacion.service';
 import { PostEvaluacionRequestDTO } from './EvaluacionDTO/crearEvaluacion.dto';
+import { PutEvaluacionRequestDTO } from './EvaluacionDTO/updateEvaluacion.dto';
 
 @Controller('/evaluacion')
 export class EvaluacionController {
@@ -35,6 +36,11 @@ export class EvaluacionController {
   @Put('/:id')
   deshabilitarEvaluacion(@Param('id')id: number){
     return this.evaluacionService.deshabilitarEvaluacion(id);
+  }
+
+  @Put('/modificar-evaluacion/:id')
+  modificarEvaluacion(@Body() data: PutEvaluacionRequestDTO, @Param('id')id: number){
+    return this.evaluacionService.modificarEvaluacion(data, id);
   }
 
   /*
