@@ -7,10 +7,11 @@ import { EvaluacionRealizada } from './evaluacion-realizada.entity';
 import { PreguntaRespondida } from 'src/pregunta-respondida/pregunta-respondida.entity';
 import { Pregunta } from 'src/pregunta/pregunta.entity';
 import { Alumno } from 'src/alumno/alumno.entity';
+import { LugarEvaluacion } from 'src/lugar-evaluacion/lugar-evaluacion.entity'
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EvaluacionRealizada, Pregunta, PreguntaRespondida, Alumno, Evaluacion])],
+  imports: [TypeOrmModule.forFeature([EvaluacionRealizada, Pregunta, PreguntaRespondida, Alumno, Evaluacion, LugarEvaluacion])],
   providers: [EvaluacionRealizadaService],
   controllers: [EvaluacionRealizadaController]
 })
