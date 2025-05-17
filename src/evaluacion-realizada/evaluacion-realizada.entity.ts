@@ -9,6 +9,7 @@ import { Docente } from 'src/docente/docente.entity';
 import { Alumno } from 'src/alumno/alumno.entity';
 import { Evaluacion } from 'src/evaluacion/evaluacion.entity';
 import { PreguntaRespondida } from 'src/pregunta-respondida/pregunta-respondida.entity';
+import { LugarEvaluacion } from 'src/lugar-evaluacion/lugar-evaluacion.entity';
 
 @Entity()
 export class EvaluacionRealizada {
@@ -47,4 +48,10 @@ export class EvaluacionRealizada {
     (preguntaRespondida) => preguntaRespondida.evaluacionRealizada,
   )
   preguntaRespondida: PreguntaRespondida[];
+
+  @ManyToOne(
+    () => LugarEvaluacion,
+    (lugarEvaluacion) => lugarEvaluacion.evaluacionRealizada,
+  )
+  lugarEvaluacion: LugarEvaluacion;
 }
