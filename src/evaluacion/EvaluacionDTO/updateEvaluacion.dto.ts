@@ -6,19 +6,14 @@ import {
   IsString,
   MinLength,
   ValidateNested,
+  IsInt,
 } from 'class-validator';
 import { PostDocenteRequestDTO } from 'src/docente/DocenteDTO/crearDocente.dto';
 import { EvaluacionRealizada } from 'src/evaluacion-realizada/evaluacion-realizada.entity';
 import { PostEvaluacionRealizadaDTO } from 'src/evaluacion-realizada/EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto';
 import { PostPreguntaRequestDTO } from 'src/pregunta/PreguntaDTO/crearPregunta.dto';
-
-export class PostEvaluacionRequestDTO {
+export class PutEvaluacionRequestDTO {
   id?: number;
-
-  @IsString()
-  @MinLength(5, { message: 'El título debe tener al menos 5 caracteres' })
-  @IsNotEmpty({ message: 'El título no puede estar vacío' })
-  titulo: string;
 
   @IsNotEmpty()
   @Type(() => PostDocenteRequestDTO)
@@ -32,8 +27,12 @@ export class PostEvaluacionRequestDTO {
 
   altaFecha?: Date;
 
-  version?: number;
-
   @Type(() => PostEvaluacionRealizadaDTO)
   evaluacionRealizada: EvaluacionRealizada[];
+
+  @IsInt()
+  version: number
+
+  //@IsInt()
+  //evaluacion: number;
 }

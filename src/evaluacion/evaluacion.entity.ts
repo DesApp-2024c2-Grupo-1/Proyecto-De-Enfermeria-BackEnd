@@ -14,7 +14,7 @@ export class Evaluacion {
   @PrimaryGeneratedColumn()
   id?: number;
 
-  @Column({ unique: true })
+  @Column()
   titulo: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -25,6 +25,9 @@ export class Evaluacion {
 
   @Column({ nullable: true })
   modFecha?: Date;
+
+  @Column({ nullable: true, default: 1 })
+  version?: number;
 
   @ManyToOne(() => Docente, (docente) => docente.evaluacion, {
     nullable: false,
