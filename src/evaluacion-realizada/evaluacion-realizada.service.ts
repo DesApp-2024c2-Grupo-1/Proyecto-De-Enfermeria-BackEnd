@@ -389,7 +389,7 @@ export class EvaluacionRealizadaService {
         100,
     ); 
 
-    return `${nota.toFixed(2)}%`;
+    return `${Math.round(nota)}%` ;
   }
   /*
   async delete(id: number) {
