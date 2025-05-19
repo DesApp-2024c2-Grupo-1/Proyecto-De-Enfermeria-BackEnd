@@ -5,6 +5,7 @@ import { Docente } from '../docente/docente.entity';
 import { Evaluacion } from '../evaluacion/evaluacion.entity';
 import { EvaluacionRealizada } from '../evaluacion-realizada/evaluacion-realizada.entity';
 import { Pregunta } from '../pregunta/pregunta.entity';
+import { LugarEvaluacion } from 'src/lugar-evaluacion/lugar-evaluacion.entity';
 
 async function seedDatabase() {
   // Repositorios
@@ -18,6 +19,22 @@ async function seedDatabase() {
     AppDataSource.getRepository(Pregunta);
   const evaluacionRealizadaRepository: Repository<EvaluacionRealizada> =
     AppDataSource.getRepository(EvaluacionRealizada);
+  const lugarEvaluacionRepository: Repository<LugarEvaluacion> =
+    AppDataSource.getRepository(LugarEvaluacion);
+
+  //Crear lugares de evaluacion
+  const existingLugares = await lugarEvaluacionRepository.count();
+  if (existingLugares === 0) {
+    const lugares = [
+      {
+        nombre: 'Campo Practico',
+      },
+      {
+        nombre: 'Centro de Simulacion',
+      },
+    ];
+    await lugarEvaluacionRepository.save(lugares);
+  }
 
   //Agregar datos iniciales para alumnos
   const existingAlumnos = await alumnoRepository.count();

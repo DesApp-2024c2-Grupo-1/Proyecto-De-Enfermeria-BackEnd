@@ -169,7 +169,13 @@ export class EvaluacionRealizadaService {
     const evaluacionRealizada =
       await this.evaluacionRealizadaRepository.findOne({
         where: { id },
-        select: ['id', 'fecha', 'preguntaRespondida', 'modificacionPuntaje', 'observacion'],
+        select: [
+          'id',
+          'fecha',
+          'preguntaRespondida',
+          'modificacionPuntaje',
+          'observacion',
+        ],
 
         relations: [
           'alumno',
@@ -202,7 +208,7 @@ export class EvaluacionRealizadaService {
       modificacionPuntaje: evaluacionRealizada.modificacionPuntaje,
       observacion: evaluacionRealizada.observacion,
       lugarEvaluacion: {
-        id:evaluacionRealizada.lugarEvaluacion.id,
+        id: evaluacionRealizada.lugarEvaluacion.id,
         nombre: evaluacionRealizada.lugarEvaluacion.nombre,
       },
       nota,
@@ -264,27 +270,30 @@ export class EvaluacionRealizadaService {
     };
 
     return Promise.all(evaluacionesDeUnAlumno.map(agregarNota));
-    
   }
 
   async findAllAlumnosPorEvaluacion(evaluacionId: number) {
-    const evaluacionesRealizadas = await this.evaluacionRealizadaRepository.find({
-      where: { evaluacion: { id: evaluacionId } },
-      relations: ['alumno'],
-      select: ['id', 'fecha'],
-    });
-  
-    const alumnosMap = new Map<number, {
-      alumnoId: number;
-      nombre: string;
-      apellido: string;
-      dni: number;
-      evaluacionesRealizadas: { id: number; fecha: string; nota: string }[];
-    }>();
-  
+    const evaluacionesRealizadas =
+      await this.evaluacionRealizadaRepository.find({
+        where: { evaluacion: { id: evaluacionId } },
+        relations: ['alumno'],
+        select: ['id', 'fecha'],
+      });
+
+    const alumnosMap = new Map<
+      number,
+      {
+        alumnoId: number;
+        nombre: string;
+        apellido: string;
+        dni: number;
+        evaluacionesRealizadas: { id: number; fecha: string; nota: string }[];
+      }
+    >();
+
     for (const evalRealizada of evaluacionesRealizadas) {
       const alumno = evalRealizada.alumno;
-  
+
       if (!alumnosMap.has(alumno.id)) {
         alumnosMap.set(alumno.id, {
           alumnoId: alumno.id,
@@ -294,14 +303,14 @@ export class EvaluacionRealizadaService {
           evaluacionesRealizadas: [],
         });
       }
-  
+
       alumnosMap.get(alumno.id).evaluacionesRealizadas.push({
         id: evalRealizada.id,
         fecha: evalRealizada.fecha.toISOString().split('T')[0],
         nota: await this.calcularNota(evalRealizada.id),
       });
     }
-  
+
     return Array.from(alumnosMap.values());
   }
 
@@ -387,9 +396,9 @@ export class EvaluacionRealizadaService {
       ((puntajeObtenido + evaluacionRealizada.modificacionPuntaje) /
         puntajeMaximo) *
         100,
-    ); 
+    );
 
-    return `${Math.round(nota)}%` ;
+    return `${Math.round(nota)}%`;
   }
   /*
   async delete(id: number) {

@@ -25,9 +25,6 @@ export class EvaluacionRealizada {
   @Column({ nullable: true })
   observacion?: string;
 
-  @Column({ nullable: false })
-  lugarPractica: string;
-
   @ManyToOne(() => Docente, (docente) => docente.evaluacionRealizada, {
     nullable: false,
   })

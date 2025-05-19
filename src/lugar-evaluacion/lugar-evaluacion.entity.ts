@@ -8,12 +8,12 @@ export class LugarEvaluacion {
   id?: number;
 
   @Column()
-  nombre: string;
- 
+  nombre?: string;
+
   @OneToMany(
     () => EvaluacionRealizada,
     (evaluacionRealizada) => evaluacionRealizada.lugarEvaluacion,
     { nullable: false },
   )
-  evaluacionRealizada: EvaluacionRealizada;
+  evaluacionRealizada?: EvaluacionRealizada;
 }
