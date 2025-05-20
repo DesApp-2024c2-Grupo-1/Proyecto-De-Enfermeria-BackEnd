@@ -49,6 +49,9 @@ export class EvaluacionRealizada {
   @ManyToOne(
     () => LugarEvaluacion,
     (lugarEvaluacion) => lugarEvaluacion.evaluacionRealizada,
+    {
+      nullable: false,
+    },
   )
   lugarEvaluacion: LugarEvaluacion;
 }

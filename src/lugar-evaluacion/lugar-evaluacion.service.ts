@@ -27,8 +27,8 @@ export class LugarEvaluacionService {
   }
 
   async create(LugarEvaluacionData: LugarEvaluacion) {
-      const nuevoLugar = this.lugarEvaluacionRepository.create(LugarEvaluacionData);
-      return await this.lugarEvaluacionRepository.save(nuevoLugar);
-    }
-
+    const nuevoLugar =
+      this.lugarEvaluacionRepository.create(LugarEvaluacionData);
+    return await this.lugarEvaluacionRepository.save(nuevoLugar);
+  }
 }

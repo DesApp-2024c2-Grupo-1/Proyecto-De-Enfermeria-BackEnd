@@ -20,9 +20,9 @@ export class EvaluacionRealizadaService {
     private readonly evaluacionRealizadaRepository: Repository<EvaluacionRealizada>,
     @InjectRepository(PreguntaRespondida)
     private readonly preguntaRespondidaRepository: Repository<PreguntaRespondida>,
-    private readonly dataSource: DataSource,
     @InjectRepository(LugarEvaluacion)
     private readonly lugarEvaluacionRepository: Repository<LugarEvaluacion>,
+    private readonly dataSource: DataSource,
   ) {}
 
   async crearEvaluacionRealizada(data: PostEvaluacionRealizadaDTO) {
@@ -48,11 +48,13 @@ export class EvaluacionRealizadaService {
         where: { id: evaluacion.id },
         relations: ['preguntas'],
       });
-
-      const lugarEvaluacionExistente = await manager.findOne(LugarEvaluacion, {
-        where: { id: lugarEvaluacion.id },
-      });
-
+      const lugarEvaluacionExistente =
+        await this.lugarEvaluacionRepository.findOneBy({
+          id: Number(lugarEvaluacion),
+        });
+      console.log(lugarEvaluacion);
+      console.log(lugarEvaluacionExistente);
+      console.log(lugarEvaluacionExistente.id);
       if (!alumnoExistente || !docenteExistente || !evaluacionExistente) {
         throw new NotFoundException(
           'Alumno, Docente o Evaluación no encontrados',

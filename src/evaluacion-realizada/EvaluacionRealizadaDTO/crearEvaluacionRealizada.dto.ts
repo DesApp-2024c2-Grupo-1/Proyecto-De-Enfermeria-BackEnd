@@ -50,5 +50,4 @@ export class PostEvaluacionRealizadaDTO {
   @IsNotEmpty()
   @Type(() => PostLugarEvaluacionDTO)
   lugarEvaluacion: PostLugarEvaluacionDTO;
-
 }
