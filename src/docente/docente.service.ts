@@ -11,14 +11,6 @@ export class DocenteService {
     private readonly docenteRepository: Repository<Docente>,
   ) {}
 
-  async findAll() {
-    const docentes = await this.docenteRepository.find({
-      //select: ['id', 'nombre', 'apellido', 'email', 'dni'],
-    });
-
-    return docentes;
-  }
-
   async findById(id: number) {
     const docente = await this.docenteRepository.findOne({
       where: { id },
@@ -39,14 +31,6 @@ export class DocenteService {
 
     const { password: _, ...docenteData } = docente;
     return docenteData;
-  }
-
-  async findByEmail(email: string) {
-    const docente = await this.docenteRepository.findOne({
-      where: { email },
-      select: ['id', 'nombre', 'apellido'],
-    });
-    return docente;
   }
 
   async create(docenteData: Docente): Promise<Docente> {
@@ -70,11 +54,6 @@ export class DocenteService {
     });
 
     return await this.docenteRepository.save(nuevoDocente);
-  }
-
-  async delete(id: number) {
-    const result = await this.docenteRepository.delete(id);
-    return result;
   }
 
   async modifyById(id: number, docenteData: Docente) {
