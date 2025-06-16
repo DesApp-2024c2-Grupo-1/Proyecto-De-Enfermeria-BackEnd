@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Delete,
   Body,
   Param,
   Put,
@@ -28,11 +27,6 @@ export class EvaluacionController {
     return this.evaluacionService.findById(id);
   }
 
-  @Get()
-  getEvaluacionPorTitulo(@Param('titulo') titulo: string) {
-    return this.evaluacionService.findByTitulo(titulo);
-  }
-
   @Get('/versiones/:id')
   getAllVersionesDeEvaluacionPorId(@Param('id') id: number) {
     return this.evaluacionService.findAllVersionesDeEvaluacionById(id);
@@ -51,28 +45,9 @@ export class EvaluacionController {
     return this.evaluacionService.modificarEvaluacion(data, id);
   }
 
-  /*
-    @Post()
-    createEvaluacion(@Body() evaluacionData: Evaluacion) {
-        return this.evaluacionService.create(evaluacionData);
-    }
-    */
-
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true }))
   crearEvaluacion(@Body() data: PostEvaluacionRequestDTO) {
     return this.evaluacionService.createEvaluacionYPreguntas(data);
   }
-
-  /*
-    @Delete('/:id')
-    deleteEvaluacion(@Param('id') id: number) {
-        return this.evaluacionService.delete(id);
-    }
-
-    @Put('/:id')
-    modificarAlumno(@Param('id') id: number, @Body() evaluacionData: Evaluacion) {
-        return this.evaluacionService.modifyById(id, evaluacionData);
-    }
-*/
 }

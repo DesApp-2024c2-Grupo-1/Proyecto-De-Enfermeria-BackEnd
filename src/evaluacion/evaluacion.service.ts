@@ -27,14 +27,6 @@ export class EvaluacionService {
       where: { titulo: titulo },
     });
 
-    //if (evaluacion) {
-    //  throw Error("Ya existe una evaluacion con el titulo ingresado")
-    //}
-
-    //if (evaluacion.bajaFecha){
-    //  throw new Error("Ya existe una evaluacion habilitada con el titulo ingresado");
-    //}
-
     //Evaluacion
     const nuevaEvaluacion = this.evaluacionRepository.create({
       titulo,
@@ -63,14 +55,6 @@ export class EvaluacionService {
   }
 
   async findAll() {
-    //const evaluaciones = await this.evaluacionRepository.find({
-    //  where: {
-    //  bajaFecha: null,
-    //},
-    //  select: ['id', 'titulo'],
-    //});
-
-    //return evaluaciones;
     return await this.evaluacionRepository
       .createQueryBuilder('evaluacion')
       .select(['evaluacion.id', 'evaluacion.titulo'])
@@ -88,25 +72,24 @@ export class EvaluacionService {
     return evaluacion;
   }
 
-  async findByTitulo(tituloABuscar: string) {
-    return await this.evaluacionRepository.findOne({
-      where: { titulo: tituloABuscar },
+  async findAllVersionesDeEvaluacionById(id: number) {
+    const evaluacion = await this.evaluacionRepository.findOne({
+      where: { id },
     });
+    const tituloEncontrado = evaluacion.titulo;
+    const evaluaciones = await this.evaluacionRepository.find({
+      where: { titulo: tituloEncontrado },
+    });
+    return evaluaciones;
   }
 
   async deshabilitarEvaluacion(id: number) {
-    //const evaluacion = await this.evaluacionRepository.findOne({where: {id}})
-    //if (evaluacion.bajaFecha != null){
-    //  throw new Error("La evaluacion ya esta deshabilitada");
-    //}
-
     await this.evaluacionRepository.update(id, {
       bajaFecha: new Date(),
       modFecha: new Date(),
     });
   }
 
-  //testear esto
   async modificarEvaluacion(
     modificarEvaluacionData: PutEvaluacionRequestDTO,
     id: number,
@@ -146,37 +129,4 @@ export class EvaluacionService {
       preguntas: preguntasGuardadas,
     };
   }
-
-  // chequear cual sirve mas entre estas dos
-  async findAllVersionesDeEvaluacionById(id: number) {
-    const evaluacion = await this.evaluacionRepository.findOne({
-      where: { id },
-    });
-    const tituloEncontrado = evaluacion.titulo;
-    const evaluaciones = await this.evaluacionRepository.find({
-      where: { titulo: tituloEncontrado },
-    });
-    return evaluaciones;
-  }
-
-  async create(evaluacionData: Evaluacion) {
-    const nuevoEvaluacion = this.evaluacionRepository.create(evaluacionData);
-    return await this.evaluacionRepository.save(nuevoEvaluacion);
-  }
-
-  /*
-
-      async delete(id: number) {
-        const salida = await this.evaluacionRepository.delete(id);
-      return salida
-      }
-      
-      async modifyById(id: number, evaluacionData: Evaluacion) {
-        const evaluacion = await this.evaluacionRepository.findOne({where: {id}})
-      Object.assign(evaluacion, evaluacionData)
-      this.evaluacionRepository.save(evaluacion)
-          
-      }
-
-      */
 }
