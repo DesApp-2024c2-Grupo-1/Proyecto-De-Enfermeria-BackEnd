@@ -59,14 +59,6 @@ export class EvaluacionRealizadaService {
         );
       }
 
-      /*
-      if (preguntaRespondida.length !== evaluacionExistente.preguntas.length) {
-        throw new BadRequestException(
-          'La cantidad de respuestas no coincide con la cantidad de preguntas',
-        );
-      }
-        */
-
       const nuevaEvaluacionRealizada = manager.create(EvaluacionRealizada, {
         alumno: alumnoExistente,
         docente: docenteExistente,
@@ -100,69 +92,6 @@ export class EvaluacionRealizadaService {
 
       return { message: 'Evaluación realizada registrada con éxito' };
     });
-  }
-
-  async findAll() {
-    const evaluacionesRealizadas =
-      await this.evaluacionRealizadaRepository.find({
-        select: ['id', 'fecha'],
-      });
-
-    const agregarNotaYFechaFormateada = async (
-      evaluacion: EvaluacionRealizada,
-    ) => {
-      const nota = await this.calcularNota(evaluacion.id);
-      return {
-        ...evaluacion,
-        fecha: evaluacion.fecha.toISOString().split('T')[0],
-        nota,
-      };
-    };
-
-    return Promise.all(evaluacionesRealizadas.map(agregarNotaYFechaFormateada));
-  }
-
-  async findEvaluacionDeAlumno(idEvaluacion: number, alumnoId: number) {
-    const evaluacionRealizada =
-      await this.evaluacionRealizadaRepository.findOne({
-        where: { id: idEvaluacion, alumno: { id: alumnoId } },
-        select: ['id', 'fecha'],
-        relations: [
-          'alumno',
-          'docente',
-          'preguntaRespondida',
-          'preguntaRespondida.pregunta',
-          'lugarEvaluacion',
-        ],
-      });
-
-    const nota = await this.calcularNota(evaluacionRealizada.id);
-
-    return {
-      id: evaluacionRealizada.id,
-      fecha: evaluacionRealizada.fecha.toISOString().split('T')[0],
-      alumno: {
-        nombre: evaluacionRealizada.alumno.nombre,
-        apellido: evaluacionRealizada.alumno.apellido,
-        dni: evaluacionRealizada.alumno.dni,
-      },
-      docente: {
-        nombre: evaluacionRealizada.docente.nombre,
-        apellido: evaluacionRealizada.docente.apellido,
-      },
-      preguntaRespondida: evaluacionRealizada.preguntaRespondida.map((pr) => ({
-        respuesta: pr.respuesta,
-        pregunta: pr.pregunta.pregunta,
-        puntaje: pr.pregunta.puntaje,
-      })),
-      modificacionPuntaje: evaluacionRealizada.modificacionPuntaje,
-      observacion: evaluacionRealizada.observacion,
-      lugarEvaluacion: {
-        id: evaluacionRealizada.lugarEvaluacion.id,
-        nombre: evaluacionRealizada.lugarEvaluacion.nombre,
-      },
-      nota,
-    };
   }
 
   async findById(id: number) {
@@ -213,23 +142,6 @@ export class EvaluacionRealizadaService {
       },
       nota,
     };
-  }
-
-  async findAllEvaluacionesPorTitulo(tituloABuscar: string) {
-    const evaluaciones = await this.evaluacionRealizadaRepository.find({
-      select: ['id', 'fecha'],
-      where: {
-        evaluacion: { titulo: tituloABuscar },
-      },
-      relations: ['evaluacion', 'alumno'],
-    });
-
-    const agregarNota = async (evaluacion: EvaluacionRealizada) => {
-      const nota = await this.calcularNota(evaluacion.id);
-      return { ...evaluacion, nota };
-    };
-
-    return Promise.all(evaluaciones.map(agregarNota));
   }
 
   async findAllEvaluacionesDeUnAlumno(evaluacionId: number, alumnoId: number) {
@@ -314,22 +226,6 @@ export class EvaluacionRealizadaService {
     return Array.from(alumnosMap.values());
   }
 
-  async findAllEvaluacionesPorAlumnoYTitulo(
-    alumnoId: number,
-    tituloABuscar: string,
-  ) {
-    return (
-      await this,
-      this.evaluacionRealizadaRepository.find({
-        select: ['fecha'],
-        where: {
-          alumno: { id: alumnoId },
-          evaluacion: { titulo: tituloABuscar },
-        },
-      })
-    );
-  }
-
   // Para el dropdown
   async findEvaluacionesDeUnAlumno(evaluacionId: number) {
     const evaluacionesRealizadas =
@@ -400,19 +296,4 @@ export class EvaluacionRealizadaService {
 
     return `${Math.round(nota)}%`;
   }
-  /*
-  async delete(id: number) {
-    const salida = await this.evaluacionRealizadaRepository.delete(id);
-
-    return salida;
-  }
-
-  async modifyById(id: number, evaluacionRealizadaData: EvaluacionRealizada) {
-    const evaluacionRealizada =
-      await this.evaluacionRealizadaRepository.findOne({ where: { id } });
-    Object.assign(evaluacionRealizada, evaluacionRealizadaData);
-    this.evaluacionRealizadaRepository.save(evaluacionRealizada);
-  }
-
-*/
 }
