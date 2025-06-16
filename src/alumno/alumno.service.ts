@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Alumno } from 'src/alumno/alumno.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PostAlumnoRequestDTO } from './AlumnoDTO/crearAlumno.dto';
 
 @Injectable()
 export class AlumnoService {
@@ -27,12 +28,12 @@ export class AlumnoService {
   }
 
   // aca no estamos usando el dto
-  async create(alumnoData: Alumno) {
+  async create(alumnoData: PostAlumnoRequestDTO) {
     const nuevoAlumno = this.alumnoRepository.create(alumnoData);
     return await this.alumnoRepository.save(nuevoAlumno);
   }
 
-  // este no lo usamos, pero dejamos la base a futuro
+  // este no lo usamos actualmente, pero dejamos la base a futuro
   async modifyById(id: number, alumnoData: Alumno) {
     const alumno = await this.alumnoRepository.findOne({ where: { id } });
     Object.assign(alumno, alumnoData);
