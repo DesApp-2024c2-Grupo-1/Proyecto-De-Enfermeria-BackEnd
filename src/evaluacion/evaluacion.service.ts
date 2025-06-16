@@ -59,6 +59,7 @@ export class EvaluacionService {
       .createQueryBuilder('evaluacion')
       .select(['evaluacion.id', 'evaluacion.titulo'])
       .where('evaluacion.bajaFecha IS NULL')
+      .orderBy('evaluacion.titulo', 'ASC')
       .getMany();
   }
 
