@@ -26,42 +26,13 @@ export class AlumnoService {
     return alumno;
   }
 
-  async findByDni(dni: number) {
-    const alumno = await this.alumnoRepository.findOne({
-      where: { dni },
-      select: ['id', 'nombre', 'apellido'],
-    });
-    return alumno;
-  }
-
-  async findByIdConEvaluaciones(id: number) {
-    const alumno = await this.alumnoRepository.findOne({
-      where: { id },
-      select: ['id', 'nombre', 'apellido', 'dni'],
-      relations: ['evaluacionRealizada'],
-    });
-    return alumno;
-  }
-
-  async findByDniConEvaluaciones(dni: number) {
-    const alumno = await this.alumnoRepository.findOne({
-      where: { dni },
-      select: ['id', 'nombre', 'apellido'],
-      relations: ['evaluacionRealizada'],
-    });
-    return alumno;
-  }
-
+  // aca no estamos usando el dto
   async create(alumnoData: Alumno) {
     const nuevoAlumno = this.alumnoRepository.create(alumnoData);
     return await this.alumnoRepository.save(nuevoAlumno);
   }
 
-  async delete(id: number) {
-    const result = await this.alumnoRepository.delete(id);
-    return result;
-  }
-
+  // este no lo usamos, pero dejamos la base a futuro
   async modifyById(id: number, alumnoData: Alumno) {
     const alumno = await this.alumnoRepository.findOne({ where: { id } });
     Object.assign(alumno, alumnoData);
