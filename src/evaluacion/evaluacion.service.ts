@@ -13,7 +13,6 @@ export class EvaluacionService {
     private readonly evaluacionRepository: Repository<Evaluacion>,
     @InjectRepository(Pregunta)
     private readonly preguntaRepository: Repository<Pregunta>,
-  
   ) {}
 
   async createEvaluacionYPreguntas(evaluacionyPreguntasData: {
@@ -24,7 +23,9 @@ export class EvaluacionService {
   }) {
     const { titulo, docente, preguntas, version } = evaluacionyPreguntasData;
 
-    const evaluacion = await this.evaluacionRepository.findOne({where: {titulo: titulo}})
+    const evaluacion = await this.evaluacionRepository.findOne({
+      where: { titulo: titulo },
+    });
 
     //if (evaluacion) {
     //  throw Error("Ya existe una evaluacion con el titulo ingresado")
@@ -96,25 +97,28 @@ export class EvaluacionService {
   async deshabilitarEvaluacion(id: number) {
     //const evaluacion = await this.evaluacionRepository.findOne({where: {id}})
     //if (evaluacion.bajaFecha != null){
-    //  throw new Error("La evaluacion ya esta deshabilitada"); 
-    //} 
+    //  throw new Error("La evaluacion ya esta deshabilitada");
+    //}
 
-   await this.evaluacionRepository.update(id, {
+    await this.evaluacionRepository.update(id, {
       bajaFecha: new Date(),
-      modFecha: new Date()
+      modFecha: new Date(),
     });
   }
 
   //testear esto
-  async modificarEvaluacion(modificarEvaluacionData: PutEvaluacionRequestDTO, id: number){
+  async modificarEvaluacion(
+    modificarEvaluacionData: PutEvaluacionRequestDTO,
+    id: number,
+  ) {
     const { docente, preguntas } = modificarEvaluacionData;
     const evaluacionVieja = await this.evaluacionRepository.findOne({
-      where: { id }, 
+      where: { id },
       select: ['id', 'titulo', 'version'],
-    })
+    });
 
     const { titulo, version } = evaluacionVieja;
-    await this.deshabilitarEvaluacion(evaluacionVieja.id)
+    await this.deshabilitarEvaluacion(evaluacionVieja.id);
 
     //Evaluacion con nueva version
     const nuevaEvaluacion = this.evaluacionRepository.create({
@@ -141,6 +145,18 @@ export class EvaluacionService {
       evaluacion: evaluacionGuardada,
       preguntas: preguntasGuardadas,
     };
+  }
+
+  // chequear cual sirve mas entre estas dos
+  async findAllVersionesDeEvaluacionById(id: number) {
+    const evaluacion = await this.evaluacionRepository.findOne({
+      where: { id },
+    });
+    const tituloEncontrado = evaluacion.titulo;
+    const evaluaciones = await this.evaluacionRepository.find({
+      where: { titulo: tituloEncontrado },
+    });
+    return evaluaciones;
   }
 
   async create(evaluacionData: Evaluacion) {

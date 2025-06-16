@@ -33,13 +33,21 @@ export class EvaluacionController {
     return this.evaluacionService.findByTitulo(titulo);
   }
 
+  @Get('/versiones/:id')
+  getAllVersionesDeEvaluacionPorId(@Param('id') id: number) {
+    return this.evaluacionService.findAllVersionesDeEvaluacionById(id);
+  }
+
   @Put('/:id')
-  deshabilitarEvaluacion(@Param('id')id: number){
+  deshabilitarEvaluacion(@Param('id') id: number) {
     return this.evaluacionService.deshabilitarEvaluacion(id);
   }
 
   @Put('/modificar-evaluacion/:id')
-  modificarEvaluacion(@Body() data: PutEvaluacionRequestDTO, @Param('id')id: number){
+  modificarEvaluacion(
+    @Body() data: PutEvaluacionRequestDTO,
+    @Param('id') id: number,
+  ) {
     return this.evaluacionService.modificarEvaluacion(data, id);
   }
 

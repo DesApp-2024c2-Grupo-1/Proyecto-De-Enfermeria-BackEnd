@@ -52,9 +52,7 @@ export class EvaluacionRealizadaService {
         await this.lugarEvaluacionRepository.findOneBy({
           id: Number(lugarEvaluacion),
         });
-      console.log(lugarEvaluacion);
-      console.log(lugarEvaluacionExistente);
-      console.log(lugarEvaluacionExistente.id);
+
       if (!alumnoExistente || !docenteExistente || !evaluacionExistente) {
         throw new NotFoundException(
           'Alumno, Docente o Evaluación no encontrados',
