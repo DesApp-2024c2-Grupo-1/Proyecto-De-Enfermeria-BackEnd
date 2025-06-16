@@ -18,6 +18,8 @@ export class EvaluacionRealizadaService {
   constructor(
     @InjectRepository(EvaluacionRealizada)
     private readonly evaluacionRealizadaRepository: Repository<EvaluacionRealizada>,
+    @InjectRepository(Evaluacion)
+    private readonly evaluacionRepository: Repository<Evaluacion>,
     @InjectRepository(PreguntaRespondida)
     private readonly preguntaRespondidaRepository: Repository<PreguntaRespondida>,
     @InjectRepository(LugarEvaluacion)
@@ -185,11 +187,16 @@ export class EvaluacionRealizadaService {
   }
 
   async findAllAlumnosPorEvaluacion(evaluacionId: number) {
+    const modeloBase = await this.evaluacionRepository.findOne({
+      where: { id: evaluacionId },
+    });
+    const tituloModeloBase = modeloBase.titulo;
+
     const evaluacionesRealizadas =
       await this.evaluacionRealizadaRepository.find({
-        where: { evaluacion: { id: evaluacionId } },
-        relations: ['alumno'],
         select: ['id', 'fecha'],
+        where: { evaluacion: { titulo: tituloModeloBase } },
+        relations: ['alumno'],
       });
 
     const alumnosMap = new Map<
