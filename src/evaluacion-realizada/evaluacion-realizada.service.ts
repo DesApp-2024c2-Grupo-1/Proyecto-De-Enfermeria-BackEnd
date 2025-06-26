@@ -121,7 +121,7 @@ export class EvaluacionRealizadaService {
 
     return {
       id: evaluacionRealizada.id,
-      fecha: evaluacionRealizada.fecha.toISOString().split('T')[0],
+      fecha: formatearFecha(evaluacionRealizada.fecha),
       alumno: {
         nombre: evaluacionRealizada.alumno.nombre,
         apellido: evaluacionRealizada.alumno.apellido,
@@ -158,7 +158,7 @@ export class EvaluacionRealizadaService {
       const nota = await this.calcularNota(evaluacion.id);
       return {
         ...evaluacion,
-        fecha: evaluacion.fecha.toISOString().split('T')[0],
+        fecha: formatearFecha(evaluacion.fecha),
         nota,
       };
     };
@@ -178,7 +178,7 @@ export class EvaluacionRealizadaService {
       const nota = await this.calcularNota(evaluacion.id);
       return {
         ...evaluacion,
-        fecha: evaluacion.fecha.toISOString().split('T')[0],
+        fecha: formatearFecha(evaluacion.fecha),
         nota,
       };
     };
@@ -225,7 +225,7 @@ export class EvaluacionRealizadaService {
 
       alumnosMap.get(alumno.id).evaluacionesRealizadas.push({
         id: evalRealizada.id,
-        fecha: evalRealizada.fecha.toISOString().split('T')[0],
+        fecha: formatearFecha(evalRealizada.fecha),
         nota: await this.calcularNota(evalRealizada.id),
       });
     }
@@ -254,7 +254,7 @@ export class EvaluacionRealizadaService {
       evaluacionesRealizadas.map(async (er) => ({
         id: er.id,
         nombre: er.evaluacion.titulo,
-        fecha: er.fecha.toISOString().split('T')[0],
+        fecha: formatearFecha(er.fecha),
         nota: await this.calcularNota(er.id),
       })),
     );
@@ -303,4 +303,9 @@ export class EvaluacionRealizadaService {
 
     return `${Math.round(nota)}%`;
   }
+}
+
+function formatearFecha(fechaString) {
+  const fecha = new Date(fechaString);
+  return new Intl.DateTimeFormat('es-AR').format(fecha);
 }
