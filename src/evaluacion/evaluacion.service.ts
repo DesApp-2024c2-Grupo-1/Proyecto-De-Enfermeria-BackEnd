@@ -70,7 +70,13 @@ export class EvaluacionService {
       relations: ['preguntas'],
     });
 
-    return evaluacion;
+    return {
+      id: evaluacion.id,
+      titulo: evaluacion.titulo,
+      version: evaluacion.version,
+      bajaFecha: new Date(evaluacion.bajaFecha).toLocaleDateString('es-AR'),
+      altaFecha: new Date(evaluacion.altaFecha).toLocaleDateString('es-AR')
+    }
   }
 
   async findAllVersionesDeEvaluacionById(id: number) {

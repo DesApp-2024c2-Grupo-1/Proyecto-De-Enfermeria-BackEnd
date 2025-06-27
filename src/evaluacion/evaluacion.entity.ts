@@ -20,7 +20,7 @@ export class Evaluacion {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   altaFecha?: Date;
 
-  @Column({ nullable: true })
+  @Column({ nullable: true, default: null })
   bajaFecha?: Date;
 
   @Column({ nullable: true })
