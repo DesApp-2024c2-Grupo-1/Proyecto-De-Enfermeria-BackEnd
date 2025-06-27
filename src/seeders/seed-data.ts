@@ -6,6 +6,7 @@ import { Evaluacion } from '../evaluacion/evaluacion.entity';
 import { EvaluacionRealizada } from '../evaluacion-realizada/evaluacion-realizada.entity';
 import { Pregunta } from '../pregunta/pregunta.entity';
 import { LugarEvaluacion } from 'src/lugar-evaluacion/lugar-evaluacion.entity';
+import { DocenteService } from 'src/docente/docente.service';
 
 async function seedDatabase() {
   // Repositorios
@@ -92,50 +93,25 @@ async function seedDatabase() {
     await alumnoRepository.save(alumnos);
   }
 
-  // Agregar datos iniciales para docentes
+  const docenteService = new DocenteService(docenteRepository);
   const existingDocentes = await docenteRepository.count();
   if (existingDocentes === 0) {
-    const docentes = [
-      {
-        nombre: 'Carlos',
-        apellido: 'Lombardi',
-        dni: 45454545,
-        email: 'carloslombardi@gmail.com',
-        password: 'asdf1234',
-      },
-      {
-        nombre: 'Cristian',
-        apellido: 'Schiffino',
-        dni: 34343434,
-        email: 'cristianschiffino@gmail.com',
-        password: 'asdf1234',
-      },
-      {
-        nombre: 'Hernan',
-        apellido: 'Guzman',
-        dni: 35353535,
-        email: 'hernanguzman@gmail.com',
-        password: 'asdf1234',
-      },
-      {
-        nombre: 'Patricio',
-        apellido: 'Contreras',
-        dni: 24242424,
-        email: 'patriciocontreras@gmail.com',
-        password: 'asdf1234',
-      },
-    ];
-    await docenteRepository.save(docentes);
+    await docenteService.create({
+      nombre: 'Docente',
+      apellido: 'Admin',
+      dni: 12345678,
+      email: 'docente.admmin@mail.com',
+      password: 'asdf1234',
+    });
   }
 
-  // Agregar datos iniciales para evaluaciones
   const existingEvaluaciones = await evaluacionRepository.count();
   if (existingEvaluaciones === 0) {
     const evaluaciones = [
-      { titulo: 'Determinar altura uterina', docente: { id: 2 } },
+      { titulo: 'Determinar altura uterina', docente: { id: 1 } },
       { titulo: 'Lavado de Manos', docente: { id: 1 } },
       { titulo: 'Colocacion de elementos de seguridad', docente: { id: 1 } },
-      { titulo: 'Control de signos vitales', docente: { id: 3 } },
+      { titulo: 'Control de signos vitales', docente: { id: 1 } },
     ];
     await evaluacionRepository.save(evaluaciones);
   }
@@ -481,18 +457,6 @@ async function seedDatabase() {
     await preguntaRepository.save(preguntas);
     console.log('Preguntas iniciales insertadas.');
   }
-  /*
-    const existingEvaluacionesRealizadas = await evaluacionRealizadaRepository.count();
-    if (existingEvaluacionesRealizadas === 0) {
-        const evaluaciones = [
-        { titulo: 'Determinar altura uterina', docente: { id: 2 } },
-        { titulo: 'Lavado de Manos', docente: { id: 1 } },
-        { titulo: 'Colocacion de elementos de seguridad', docente: { id: 1 } },
-        { titulo: 'Control de signos vitales', docente: { id: 3 } },
-        ];
-    await evaluacionRepository.save(evaluaciones);
-    }
-    */
 }
 
 export default seedDatabase;

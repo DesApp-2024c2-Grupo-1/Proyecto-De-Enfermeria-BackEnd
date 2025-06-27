@@ -17,11 +17,6 @@ import { PostEvaluacionRealizadaDTO } from './EvaluacionRealizadaDTO/crearEvalua
 export class EvaluacionRealizadaController {
   constructor(private evaluacionRealizadaService: EvaluacionRealizadaService) {}
 
-  @Get()
-  getAllEvaluacionesRealizadas() {
-    return this.evaluacionRealizadaService.findAll();
-  }
-
   @Get('/:id')
   getEvaluacionRealizadaById(@Param('id') id: number) {
     return this.evaluacionRealizadaService.findById(id);
@@ -33,11 +28,6 @@ export class EvaluacionRealizadaController {
     return this.evaluacionRealizadaService.crearEvaluacionRealizada(data);
   }
 
-  @Get()
-  getAllEvaluacionesPorTitulo(@Param('titulo') titulo: string) {
-    return this.evaluacionRealizadaService.findAllEvaluacionesPorTitulo(titulo);
-  }
-
   @Get('evaluaciones-alumno/:idEvaluacion/:idAlumno')
   findAllEvaluacionesDeUnAlumno(
     @Param('idEvaluacion') idEvaluacion: number,
@@ -46,17 +36,6 @@ export class EvaluacionRealizadaController {
     return this.evaluacionRealizadaService.findAllEvaluacionesDeUnAlumno(
       idEvaluacion,
       idAlumno,
-    );
-  }
-
-  @Get()
-  findAllEvaluacionesPorAlumnoYTitulo(
-    @Param('id') @Param('titulo') id: number,
-    titulo: string,
-  ) {
-    return this.evaluacionRealizadaService.findAllEvaluacionesPorAlumnoYTitulo(
-      id,
-      titulo,
     );
   }
 
@@ -75,15 +54,4 @@ export class EvaluacionRealizadaController {
   findEvaluacionesDeUnAlumno(@Param('id') alumnoId: number) {
     return this.evaluacionRealizadaService.findEvaluacionesDeUnAlumno(alumnoId);
   }
-  /*
-    @Delete('/:id')
-    deleteEvaluacionRealizada(@Param('id') id: number) {
-        return this.evaluacionRealizadaService.delete(id);
-    }
-
-    @Put('/:id')
-    modificarAlumno(@Param('id') id: number, @Body() alumnoData: EvaluacionRealizada) {
-        return this.evaluacionRealizadaService.modifyById(id, alumnoData);
-    }
-        */
 }

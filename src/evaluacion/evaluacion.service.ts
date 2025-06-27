@@ -13,7 +13,6 @@ export class EvaluacionService {
     private readonly evaluacionRepository: Repository<Evaluacion>,
     @InjectRepository(Pregunta)
     private readonly preguntaRepository: Repository<Pregunta>,
-  
   ) {}
 
   async createEvaluacionYPreguntas(evaluacionyPreguntasData: {
@@ -24,15 +23,9 @@ export class EvaluacionService {
   }) {
     const { titulo, docente, preguntas, version } = evaluacionyPreguntasData;
 
-    const evaluacion = await this.evaluacionRepository.findOne({where: {titulo: titulo}})
-
-    //if (evaluacion) {
-    //  throw Error("Ya existe una evaluacion con el titulo ingresado")
-    //}
-
-    //if (evaluacion.bajaFecha){
-    //  throw new Error("Ya existe una evaluacion habilitada con el titulo ingresado");
-    //}
+    const evaluacion = await this.evaluacionRepository.findOne({
+      where: { titulo: titulo },
+    });
 
     //Evaluacion
     const nuevaEvaluacion = this.evaluacionRepository.create({
@@ -62,18 +55,11 @@ export class EvaluacionService {
   }
 
   async findAll() {
-    //const evaluaciones = await this.evaluacionRepository.find({
-    //  where: {
-    //  bajaFecha: null,
-    //},
-    //  select: ['id', 'titulo'],
-    //});
-
-    //return evaluaciones;
     return await this.evaluacionRepository
       .createQueryBuilder('evaluacion')
       .select(['evaluacion.id', 'evaluacion.titulo'])
       .where('evaluacion.bajaFecha IS NULL')
+      .orderBy('evaluacion.titulo', 'ASC')
       .getMany();
   }
 
@@ -87,34 +73,45 @@ export class EvaluacionService {
     return evaluacion;
   }
 
-  async findByTitulo(tituloABuscar: string) {
-    return await this.evaluacionRepository.findOne({
-      where: { titulo: tituloABuscar },
+  async findAllVersionesDeEvaluacionById(id: number) {
+    const evaluacion = await this.evaluacionRepository.findOne({
+      where: { id },
     });
+    const tituloEncontrado = evaluacion.titulo;
+    const evaluaciones = await this.evaluacionRepository.find({
+      where: { titulo: tituloEncontrado },
+      select: ['id', 'titulo', 'version', 'modFecha'],
+    });
+
+    const evaluacionesFormateadas = evaluaciones.map((eva) => ({
+      ...eva,
+      modFecha: eva.modFecha
+        ? new Date(eva.modFecha).toLocaleDateString('es-AR')
+        : null,
+    }));
+
+    return evaluacionesFormateadas;
   }
 
   async deshabilitarEvaluacion(id: number) {
-    //const evaluacion = await this.evaluacionRepository.findOne({where: {id}})
-    //if (evaluacion.bajaFecha != null){
-    //  throw new Error("La evaluacion ya esta deshabilitada"); 
-    //} 
-
-   await this.evaluacionRepository.update(id, {
+    await this.evaluacionRepository.update(id, {
       bajaFecha: new Date(),
-      modFecha: new Date()
+      modFecha: new Date(),
     });
   }
 
-  //testear esto
-  async modificarEvaluacion(modificarEvaluacionData: PutEvaluacionRequestDTO, id: number){
+  async modificarEvaluacion(
+    modificarEvaluacionData: PutEvaluacionRequestDTO,
+    id: number,
+  ) {
     const { docente, preguntas } = modificarEvaluacionData;
     const evaluacionVieja = await this.evaluacionRepository.findOne({
-      where: { id }, 
+      where: { id },
       select: ['id', 'titulo', 'version'],
-    })
+    });
 
     const { titulo, version } = evaluacionVieja;
-    await this.deshabilitarEvaluacion(evaluacionVieja.id)
+    await this.deshabilitarEvaluacion(evaluacionVieja.id);
 
     //Evaluacion con nueva version
     const nuevaEvaluacion = this.evaluacionRepository.create({
@@ -142,25 +139,4 @@ export class EvaluacionService {
       preguntas: preguntasGuardadas,
     };
   }
-
-  async create(evaluacionData: Evaluacion) {
-    const nuevoEvaluacion = this.evaluacionRepository.create(evaluacionData);
-    return await this.evaluacionRepository.save(nuevoEvaluacion);
-  }
-
-  /*
-
-      async delete(id: number) {
-        const salida = await this.evaluacionRepository.delete(id);
-      return salida
-      }
-      
-      async modifyById(id: number, evaluacionData: Evaluacion) {
-        const evaluacion = await this.evaluacionRepository.findOne({where: {id}})
-      Object.assign(evaluacion, evaluacionData)
-      this.evaluacionRepository.save(evaluacion)
-          
-      }
-
-      */
 }

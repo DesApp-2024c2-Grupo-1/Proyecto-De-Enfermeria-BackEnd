@@ -1,51 +1,40 @@
-import { Controller, Get, Post, Delete, Put, Param, Body, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Put,
+  Param,
+  Body,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { Alumno } from 'src/alumno/alumno.entity';
-import { AlumnoService } from './alumno.service'
+import { AlumnoService } from './alumno.service';
 import { PostAlumnoRequestDTO } from './AlumnoDTO/crearAlumno.dto';
 
 @Controller('/alumno')
 export class AlumnoController {
-    constructor(private alumnoService: AlumnoService) {}
+  constructor(private alumnoService: AlumnoService) {}
 
-    @Get()
-    getAllAlumnos() {
-        return this.alumnoService.findAll()
-    }
+  @Get()
+  getAllAlumnos() {
+    return this.alumnoService.findAll();
+  }
 
-    @Get('/:id')
-    getAlumnoById(@Param('id') id: number) {
-        return this.alumnoService.findById(id);
-    }
+  @Get('/:id')
+  getAlumnoById(@Param('id') id: number) {
+    return this.alumnoService.findById(id);
+  }
 
-    @Get('/evaluacion/:id')
-    getAlumnoByIdConEvaluaciones(@Param('id') id: number){
-        return this.alumnoService.findByIdConEvaluaciones(id)
-    }
+  @Post()
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  createAlumno(@Body() alumnoData: PostAlumnoRequestDTO): Promise<Alumno> {
+    return this.alumnoService.create(alumnoData);
+  }
 
-    @Get('/dni/:dni')
-    getAlumnoByDni(@Param('dni') dni: string) {
-        return this.alumnoService.findByDni(Number(dni))
-    }
-
-    @Get('/dni/evaluacion/:dni')
-    getAlumnoByDniConEvaluaciones(@Param('dni') dni: string) {
-        return this.alumnoService.findByDniConEvaluaciones(Number(dni))
-    }
-
-    @Post()
-    @UsePipes(new ValidationPipe({whitelist: true}))
-    createAlumno(@Body() alumnoData: PostAlumnoRequestDTO): Promise<Alumno> {
-        return this.alumnoService.create(alumnoData);
-    }
-
-    @Delete('/:id')
-    deleteAlumno(@Param('id') id: number) {
-        return this.alumnoService.delete(id);
-    }
-
-    @Put('/:id')
-    modificarAlumno(@Param('id') id: number, @Body() alumnoData: Alumno) {
-        return this.alumnoService.modifyById(id, alumnoData);
-    }
-
+  @Put('/:id')
+  modificarAlumno(@Param('id') id: number, @Body() alumnoData: Alumno) {
+    return this.alumnoService.modifyById(id, alumnoData);
+  }
 }
