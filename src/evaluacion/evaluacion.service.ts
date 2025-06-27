@@ -66,7 +66,7 @@ export class EvaluacionService {
   async findById(id: number) {
     const evaluacion = await this.evaluacionRepository.findOne({
       where: { id },
-      select: ['id', 'titulo', 'version', 'bajaFecha'],
+      select: ['id', 'titulo', 'version', 'bajaFecha', 'altaFecha'],
       relations: ['preguntas'],
     });
 
