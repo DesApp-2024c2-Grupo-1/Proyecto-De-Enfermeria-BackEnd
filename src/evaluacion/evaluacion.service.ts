@@ -80,8 +80,17 @@ export class EvaluacionService {
     const tituloEncontrado = evaluacion.titulo;
     const evaluaciones = await this.evaluacionRepository.find({
       where: { titulo: tituloEncontrado },
+      select: ['id', 'titulo', 'version', 'modFecha'],
     });
-    return evaluaciones;
+
+    const evaluacionesFormateadas = evaluaciones.map((eva) => ({
+      ...eva,
+      modFecha: eva.modFecha
+        ? new Date(eva.modFecha).toLocaleDateString('es-AR')
+        : null,
+    }));
+
+    return evaluacionesFormateadas;
   }
 
   async deshabilitarEvaluacion(id: number) {
