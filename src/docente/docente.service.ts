@@ -3,12 +3,15 @@ import { Docente } from './docente.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { PostDocenteRequestDTO } from './DocenteDTO/crearDocente.dto';
+import { Password } from 'src/password/password.entity';
 
 @Injectable()
 export class DocenteService {
   constructor(
     @InjectRepository(Docente)
     private readonly docenteRepository: Repository<Docente>,
+    private readonly passwordRepository: Repository<Password>,
   ) {}
 
   async findById(id: number) {
@@ -25,7 +28,7 @@ export class DocenteService {
       select: ['id', 'nombre', 'apellido', 'email', 'password'],
     });
 
-    if (!docente || !(await bcrypt.compare(password, docente.password))) {
+    if (!docente || !(await bcrypt.compare(password, docente.password.password))) {
       throw new Error('Credenciales incorrectas');
     }
 
@@ -33,7 +36,7 @@ export class DocenteService {
     return docenteData;
   }
 
-  async create(docenteData: Docente): Promise<Docente> {
+  async create(docenteData: PostDocenteRequestDTO): Promise<Docente> {
     const { dni, email } = docenteData;
     const existingDocente = await this.docenteRepository.findOne({
       where: [{ dni }, { email }],
@@ -48,9 +51,13 @@ export class DocenteService {
     }
 
     const hashedPassword = await bcrypt.hash(docenteData.password, 10);
+    const pass = await this.passwordRepository.create({
+      password: hashedPassword
+    })
+
     const nuevoDocente = this.docenteRepository.create({
       ...docenteData,
-      password: hashedPassword,
+      password: pass,
     });
 
     return await this.docenteRepository.save(nuevoDocente);

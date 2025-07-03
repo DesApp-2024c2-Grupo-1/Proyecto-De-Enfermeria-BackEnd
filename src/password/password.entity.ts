@@ -16,13 +16,13 @@ export class Password {
   password: string;
 
   @Column({default: null})
-  modFecha: Date;
+  modFecha?: Date;
 
   @Column({default: null})
-  bajaFecha: Date;
+  bajaFecha?: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  altaFecha: Date;
+  altaFecha?: Date;
 
   @OneToOne(() => Docente, (docente) => docente.password)
   docente: Docente;
