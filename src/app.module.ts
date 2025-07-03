@@ -19,6 +19,7 @@ import { EvaluacionModule } from './evaluacion/evaluacion.module';
 import { PreguntaModule } from './pregunta/pregunta.module';
 import { PreguntaRespondidaModule } from './pregunta-respondida/pregunta-respondida.module';
 import { LugarEvaluacionModule } from './lugar-evaluacion/lugar-evaluacion.module';
+import { PasswordModule } from './password/password.module';
 
 @Module({
   imports: [
@@ -55,7 +56,8 @@ import { LugarEvaluacionModule } from './lugar-evaluacion/lugar-evaluacion.modul
     EvaluacionModule,
     PreguntaModule,
     PreguntaRespondidaModule,
-    LugarEvaluacionModule
+    LugarEvaluacionModule,
+    PasswordModule
   ],
 })
 export class AppModule {}

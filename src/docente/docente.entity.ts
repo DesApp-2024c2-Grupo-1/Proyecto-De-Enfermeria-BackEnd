@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { EvaluacionRealizada } from './../evaluacion-realizada/evaluacion-realizada.entity';
 import { Evaluacion } from 'src/evaluacion/evaluacion.entity';
+import { Password } from 'src/password/password.entity';
 
 @Entity()
 export class Docente {
@@ -19,8 +20,8 @@ export class Docente {
   @Column({ unique: true })
   dni?: number;
 
-  @Column()
-  password?: string;
+  //@Column()
+  //password?: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   altaFecha?: Date;
@@ -39,4 +40,8 @@ export class Docente {
 
   @OneToMany(() => Evaluacion, (evaluacion) => evaluacion.docente)
   evaluacion?: Evaluacion[];
+
+  @OneToOne(() => Password, (password) => password.docente)
+  @JoinColumn()
+  password: Password;
 }
