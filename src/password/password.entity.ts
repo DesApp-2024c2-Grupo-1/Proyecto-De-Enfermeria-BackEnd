@@ -2,7 +2,6 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
-  ManyToOne,
   OneToOne,
 } from 'typeorm';
 import { Docente } from 'src/docente/docente.entity';

@@ -42,7 +42,7 @@ export class PostDocenteRequestDTO {
 
   altaFecha?: Date;
 
-  evaluacion: Evaluacion[];
+  evaluacion?: Evaluacion[];
 
-  evaluacionRealizada: EvaluacionRealizada[];
+  evaluacionRealizada?: EvaluacionRealizada[];
 }

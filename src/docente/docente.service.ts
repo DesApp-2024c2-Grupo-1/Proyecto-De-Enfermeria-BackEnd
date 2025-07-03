@@ -5,14 +5,17 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { PostDocenteRequestDTO } from './DocenteDTO/crearDocente.dto';
 import { Password } from 'src/password/password.entity';
+import { PutDocenteRequestDTO } from './DocenteDTO/putDocente.dto';
 
 @Injectable()
 export class DocenteService {
   constructor(
     @InjectRepository(Docente)
     private readonly docenteRepository: Repository<Docente>,
+    @InjectRepository(Password)
     private readonly passwordRepository: Repository<Password>,
   ) {}
+
 
   async findById(id: number) {
     const docente = await this.docenteRepository.findOne({
@@ -55,7 +58,7 @@ export class DocenteService {
       password: hashedPassword
     })
 
-    const nuevoDocente = this.docenteRepository.create({
+    const nuevoDocente = await this.docenteRepository.create({
       ...docenteData,
       password: pass,
     });
@@ -63,7 +66,7 @@ export class DocenteService {
     return await this.docenteRepository.save(nuevoDocente);
   }
 
-  async modifyById(id: number, docenteData: Docente) {
+  async modifyById(id: number, docenteData: PutDocenteRequestDTO) {
     const docente = await this.docenteRepository.findOne({ where: { id } });
     Object.assign(docente, docenteData);
     this.docenteRepository.save(docente);
