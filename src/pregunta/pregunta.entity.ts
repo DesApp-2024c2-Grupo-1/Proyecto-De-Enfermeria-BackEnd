@@ -19,6 +19,9 @@ export class Pregunta {
   @Column()
   puntaje: number;
 
+  @Column()
+  orden: number;
+
   @ManyToOne(() => Evaluacion, (evaluacion) => evaluacion.preguntas, {
     nullable: false,
   })
