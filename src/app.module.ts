@@ -10,6 +10,7 @@ import { Evaluacion } from './evaluacion/evaluacion.entity';
 import { Pregunta } from './pregunta/pregunta.entity';
 import { PreguntaRespondida } from './pregunta-respondida/pregunta-respondida.entity';
 import { LugarEvaluacion } from './lugar-evaluacion/lugar-evaluacion.entity';
+import { Password } from './password/password.entity';
 
 // Modulos
 import { AlumnoModule } from './alumno/alumno.module';
@@ -19,6 +20,7 @@ import { EvaluacionModule } from './evaluacion/evaluacion.module';
 import { PreguntaModule } from './pregunta/pregunta.module';
 import { PreguntaRespondidaModule } from './pregunta-respondida/pregunta-respondida.module';
 import { LugarEvaluacionModule } from './lugar-evaluacion/lugar-evaluacion.module';
+import { PasswordModule } from './password/password.module';
 
 @Module({
   imports: [
@@ -43,7 +45,8 @@ import { LugarEvaluacionModule } from './lugar-evaluacion/lugar-evaluacion.modul
           Evaluacion,
           Pregunta,
           PreguntaRespondida,
-          LugarEvaluacion
+          LugarEvaluacion,
+          Password
         ],
         autoLoadEntities: true,
         synchronize: true,
@@ -55,7 +58,8 @@ import { LugarEvaluacionModule } from './lugar-evaluacion/lugar-evaluacion.modul
     EvaluacionModule,
     PreguntaModule,
     PreguntaRespondidaModule,
-    LugarEvaluacionModule
+    LugarEvaluacionModule,
+    PasswordModule
   ],
 })
 export class AppModule {}

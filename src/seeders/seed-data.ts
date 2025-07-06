@@ -7,6 +7,7 @@ import { EvaluacionRealizada } from '../evaluacion-realizada/evaluacion-realizad
 import { Pregunta } from '../pregunta/pregunta.entity';
 import { LugarEvaluacion } from 'src/lugar-evaluacion/lugar-evaluacion.entity';
 import { DocenteService } from 'src/docente/docente.service';
+import { Password } from 'src/password/password.entity';
 
 async function seedDatabase() {
   // Repositorios
@@ -14,6 +15,8 @@ async function seedDatabase() {
     AppDataSource.getRepository(Alumno);
   const docenteRepository: Repository<Docente> =
     AppDataSource.getRepository(Docente);
+  const passwordRepository: Repository<Password> =
+    AppDataSource.getRepository(Password) 
   const evaluacionRepository: Repository<Evaluacion> =
     AppDataSource.getRepository(Evaluacion);
   const preguntaRepository: Repository<Pregunta> =
@@ -93,7 +96,7 @@ async function seedDatabase() {
     await alumnoRepository.save(alumnos);
   }
 
-  const docenteService = new DocenteService(docenteRepository);
+  const docenteService = new DocenteService(docenteRepository, passwordRepository);
   const existingDocentes = await docenteRepository.count();
   if (existingDocentes === 0) {
     await docenteService.create({

@@ -39,10 +39,4 @@ export class PostDocenteRequestDTO {
   @MinLength(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
   @IsNotEmpty({ message: 'La contraseña no puede estar vacio' })
   password: string;
-
-  altaFecha?: Date;
-
-  evaluacion: Evaluacion[];
-
-  evaluacionRealizada: EvaluacionRealizada[];
 }

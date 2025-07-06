@@ -17,7 +17,7 @@ export class EvaluacionService {
 
   async createEvaluacionYPreguntas(evaluacionyPreguntasData: {
     titulo: string;
-    docente: DeepPartial<Docente>;
+    docente: Docente;
     version?: number;
     preguntas: { pregunta: string; puntaje: number }[];
   }) {

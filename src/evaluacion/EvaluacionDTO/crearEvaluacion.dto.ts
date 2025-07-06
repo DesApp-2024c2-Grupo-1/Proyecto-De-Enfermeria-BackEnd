@@ -7,6 +7,7 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
+import { Docente } from 'src/docente/docente.entity';
 import { PostDocenteRequestDTO } from 'src/docente/DocenteDTO/crearDocente.dto';
 import { EvaluacionRealizada } from 'src/evaluacion-realizada/evaluacion-realizada.entity';
 import { PostEvaluacionRealizadaDTO } from 'src/evaluacion-realizada/EvaluacionRealizadaDTO/crearEvaluacionRealizada.dto';
@@ -21,8 +22,8 @@ export class PostEvaluacionRequestDTO {
   titulo: string;
 
   @IsNotEmpty()
-  @Type(() => PostDocenteRequestDTO)
-  docente: PostDocenteRequestDTO;
+  @Type(() => Docente)
+  docente: Docente;
 
   @IsArray()
   @ValidateNested({ each: true })
