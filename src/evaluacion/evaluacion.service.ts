@@ -130,17 +130,19 @@ export class EvaluacionService {
       titulo,
       docente,
       version: version + 1,
+
     });
     const evaluacionGuardada =
       await this.evaluacionRepository.save(nuevaEvaluacion);
 
     //preguntas
     const preguntasGuardadas = await Promise.all(
-      preguntas.map(async (preguntaData) => {
+      preguntas.map(async (preguntaData, index) => {
         const nuevaPregunta = this.preguntaRepository.create({
           pregunta: preguntaData.pregunta,
           puntaje: preguntaData.puntaje,
           evaluacion: evaluacionGuardada,
+          orden: index
         });
         return await this.preguntaRepository.save(nuevaPregunta);
       }),
