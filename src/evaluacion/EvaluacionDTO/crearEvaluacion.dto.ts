@@ -44,7 +44,9 @@ export class PostEvaluacionRequestDTO {
     example: [
       {
         pregunta: 'Colocar a la persona gestante en posición decúbito dorsal',
-        puntaje: 1     
+        puntaje: 6,
+        evaluacion: { id: 1 },
+        orden: 1     
       }
     ]
   })
