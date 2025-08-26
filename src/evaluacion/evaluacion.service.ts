@@ -17,7 +17,7 @@ export class EvaluacionService {
 
   async createEvaluacionYPreguntas(evaluacionyPreguntasData: {
     titulo: string;
-    docente: DeepPartial<Docente>;
+    docente: Docente;
     version?: number;
     preguntas: { pregunta: string; puntaje: number }[];
   }) {
@@ -38,11 +38,12 @@ export class EvaluacionService {
 
     //preguntas
     const preguntasGuardadas = await Promise.all(
-      preguntas.map(async (preguntaData) => {
+      preguntas.map(async (preguntaData, index) => {
         const nuevaPregunta = this.preguntaRepository.create({
           pregunta: preguntaData.pregunta,
           puntaje: preguntaData.puntaje,
           evaluacion: evaluacionGuardada,
+          orden: index
         });
         return await this.preguntaRepository.save(nuevaPregunta);
       }),
@@ -68,8 +69,12 @@ export class EvaluacionService {
       where: { id },
       select: ['id', 'titulo', 'version', 'bajaFecha', 'altaFecha'],
       relations: ['preguntas'],
+      order: {
+        preguntas: {
+          orden: 'ASC',
+        },
+      },
     });
-
     return {
       id: evaluacion.id,
       titulo: evaluacion.titulo,
@@ -125,17 +130,19 @@ export class EvaluacionService {
       titulo,
       docente,
       version: version + 1,
+
     });
     const evaluacionGuardada =
       await this.evaluacionRepository.save(nuevaEvaluacion);
 
     //preguntas
     const preguntasGuardadas = await Promise.all(
-      preguntas.map(async (preguntaData) => {
+      preguntas.map(async (preguntaData, index) => {
         const nuevaPregunta = this.preguntaRepository.create({
           pregunta: preguntaData.pregunta,
           puntaje: preguntaData.puntaje,
           evaluacion: evaluacionGuardada,
+          orden: index
         });
         return await this.preguntaRepository.save(nuevaPregunta);
       }),

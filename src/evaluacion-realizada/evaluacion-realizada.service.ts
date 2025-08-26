@@ -115,6 +115,14 @@ export class EvaluacionRealizadaService {
           'preguntaRespondida.pregunta',
           'lugarEvaluacion',
         ],
+
+        order: {
+          preguntaRespondida: {
+            pregunta: {
+              orden: 'ASC',
+            }
+          }
+        }
       });
 
     const nota = await this.calcularNota(evaluacionRealizada.id);
