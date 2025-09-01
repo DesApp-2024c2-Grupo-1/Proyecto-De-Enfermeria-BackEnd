@@ -8,23 +8,28 @@ import {
   Put,
   UsePipes,
   ValidationPipe,
+  UseGuards
 } from '@nestjs/common';
 import { Docente } from './docente.entity';
 import { DocenteService } from './docente.service';
 import { PostDocenteRequestDTO } from './DocenteDTO/crearDocente.dto';
 import { PutDocenteRequestDTO } from './DocenteDTO/putDocente.dto';
+import { LoginDocenteDto } from './DocenteDTO/loginDocente.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('/docente')
 export class DocenteController {
   constructor(private docenteService: DocenteService) {}
 
   @Get('/:id')
+  @UseGuards(AuthGuard('jwt'))
   getDocenteById(@Param('id') id: number) {
     return this.docenteService.findById(id);
   }
 
   @Post('/login')
-  login(@Body() body: { dni: number; password: string }) {
+  @ApiBody({ type: LoginDocenteDto })
+  login(@Body() body: LoginDocenteDto) {
     return this.docenteService.loginDocente(body.dni, body.password);
   }
 

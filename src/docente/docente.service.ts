@@ -6,6 +6,7 @@ import * as bcrypt from 'bcryptjs';
 import { PostDocenteRequestDTO } from './DocenteDTO/crearDocente.dto';
 import { Password } from 'src/password/password.entity';
 import { PutDocenteRequestDTO } from './DocenteDTO/putDocente.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class DocenteService {
@@ -14,6 +15,7 @@ export class DocenteService {
     private readonly docenteRepository: Repository<Docente>,
     @InjectRepository(Password)
     private readonly passwordRepository: Repository<Password>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async findById(id: number) {
@@ -36,8 +38,23 @@ export class DocenteService {
       throw new Error('Credenciales incorrectas');
     }
 
+    const payload = { username: docente.nombre, sub: docente.id };
+    const token = this.jwtService.sign(payload);
+
+    return {
+    access_token: token,
+    docente: {
+      id: docente.id,
+      nombre: docente.nombre,
+      apellido: docente.apellido,
+      email: docente.email,
+    },
+  };
+
+    /*
     const { password: _, ...docenteData } = docente;
     return docenteData;
+    */
   }
 
   async create(docenteData: PostDocenteRequestDTO): Promise<Docente> {

@@ -14,7 +14,7 @@ async function bootstrap() {
   const configSwagger = new DocumentBuilder()
     .setTitle('API Registros de Evaluacion de Enfermeria')
     .setDescription('Documentacion de la API de registros de evaluacion')
-    //.addBearerAuth() //Si despues incluimos JWT deberiamos poner esto porque le daria el soporte visual para el token
+    .addBearerAuth() //Si despues incluimos JWT deberiamos poner esto porque le daria el soporte visual para el token
     .setVersion('1.0')
     .build()
 
