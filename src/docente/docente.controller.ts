@@ -16,6 +16,7 @@ import { PostDocenteRequestDTO } from './DocenteDTO/crearDocente.dto';
 import { PutDocenteRequestDTO } from './DocenteDTO/putDocente.dto';
 import { LoginDocenteDto } from './DocenteDTO/loginDocente.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBody } from '@nestjs/swagger';
 
 @Controller('/docente')
 export class DocenteController {
