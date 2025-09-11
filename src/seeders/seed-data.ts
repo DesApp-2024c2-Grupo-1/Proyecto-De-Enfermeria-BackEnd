@@ -8,6 +8,7 @@ import { Pregunta } from '../pregunta/pregunta.entity';
 import { LugarEvaluacion } from 'src/lugar-evaluacion/lugar-evaluacion.entity';
 import { DocenteService } from 'src/docente/docente.service';
 import { Password } from 'src/password/password.entity';
+import { JwtService } from '@nestjs/jwt';
 
 async function seedDatabase() {
   // Repositorios
@@ -96,7 +97,8 @@ async function seedDatabase() {
     await alumnoRepository.save(alumnos);
   }
 
-  const docenteService = new DocenteService(docenteRepository, passwordRepository);
+  const jwtService = new JwtService({})
+  const docenteService = new DocenteService(docenteRepository, passwordRepository, jwtService);
   const existingDocentes = await docenteRepository.count();
   if (existingDocentes === 0) {
     await docenteService.create({
