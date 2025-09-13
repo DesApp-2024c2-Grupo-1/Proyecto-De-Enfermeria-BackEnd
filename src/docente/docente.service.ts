@@ -21,7 +21,7 @@ export class DocenteService {
   async findById(id: number) {
     const docente = await this.docenteRepository.findOne({
       where: { id },
-      select: ['id', 'nombre', 'apellido', 'email'],
+      select: ['id', 'nombre', 'apellido', 'email', 'rol'],
       relations: ['password']
     });
     return docente;
@@ -38,7 +38,7 @@ export class DocenteService {
       throw new Error('Credenciales incorrectas');
     }
 
-    const payload = { username: docente.nombre, sub: docente.id };
+    const payload = { username: docente.nombre, sub: docente.id, rol: docente.rol };
     const token = this.jwtService.sign(payload);
 
     return {

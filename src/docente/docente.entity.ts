@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, OneToOne, JoinColumn
 import { EvaluacionRealizada } from './../evaluacion-realizada/evaluacion-realizada.entity';
 import { Evaluacion } from 'src/evaluacion/evaluacion.entity';
 import { Password } from 'src/password/password.entity'
+import { Rol } from 'src/auth/auth.roles.enum';
 
 @Entity()
 export class Docente {
@@ -20,8 +21,12 @@ export class Docente {
   @Column({ unique: true })
   dni?: number;
 
-  //@Column()
-  //password?: string;
+  @Column({
+    type: 'enum',
+    enum: Object.values(Rol),
+    default: 'docente',
+  })
+  rol: Rol
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   altaFecha?: Date;

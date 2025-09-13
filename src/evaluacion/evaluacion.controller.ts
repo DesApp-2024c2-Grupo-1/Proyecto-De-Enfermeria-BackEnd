@@ -7,16 +7,26 @@ import {
   Put,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { Evaluacion } from './evaluacion.entity';
 import { EvaluacionService } from './evaluacion.service';
 import { PostEvaluacionRequestDTO } from './EvaluacionDTO/crearEvaluacion.dto';
 import { PutEvaluacionRequestDTO } from './EvaluacionDTO/updateEvaluacion.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBody, ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { RolesGuard } from 'src/auth/auth.roles.guard';
+import { Roles } from 'src/auth/auth.roles.decorator';
+import { Rol } from 'src/auth/auth.roles.enum';
 
 @Controller('/evaluacion')
 export class EvaluacionController {
   constructor(private evaluacionService: EvaluacionService) {}
 
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Rol.Docente)
+  @ApiBearerAuth()
+  @ApiOperation({summary: 'Obtener docente por ID (requiere JWT)'})
   @Get()
   getAllEvaluaciones() {
     return this.evaluacionService.findAll();

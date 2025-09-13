@@ -17,16 +17,20 @@ import { PutDocenteRequestDTO } from './DocenteDTO/putDocente.dto';
 import { LoginDocenteDto } from './DocenteDTO/loginDocente.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBody, ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { RolesGuard } from 'src/auth/auth.roles.guard';
+import { Roles } from 'src/auth/auth.roles.decorator';
+import { Rol } from 'src/auth/auth.roles.enum';
 
 @ApiTags('Docente')
 @Controller('/docente')
 export class DocenteController {
   constructor(private docenteService: DocenteService) {}
 
+  //@UseGuards(AuthGuard('jwt'), RolesGuard)
+  //@Roles(Rol.Docente)
+  //@ApiBearerAuth()
+  //@ApiOperation({summary: 'Obtener docente por ID (requiere JWT)'})
   @Get('/:id')
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
-  @ApiOperation({summary: 'Obtener docente por ID (requiere JWT)'})
   getDocenteById(@Param('id') id: number) {
     return this.docenteService.findById(id);
   }
