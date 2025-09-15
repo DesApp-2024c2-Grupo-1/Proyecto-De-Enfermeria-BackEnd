@@ -25,7 +25,7 @@ export class EvaluacionController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(Rol.Alumno)
+  @Roles(Rol.Docente)
   @ApiBearerAuth()
   @ApiOperation({summary: 'Obtener docente por ID (requiere JWT)'})
   getAllEvaluaciones() {
