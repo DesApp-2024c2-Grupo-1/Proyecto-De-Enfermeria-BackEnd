@@ -7,6 +7,7 @@ import { PostDocenteRequestDTO } from './DocenteDTO/crearDocente.dto';
 import { Password } from 'src/password/password.entity';
 import { PutDocenteRequestDTO } from './DocenteDTO/putDocente.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Rol } from 'src/auth/auth.roles.enum';
 
 @Injectable()
 export class DocenteService {
@@ -30,7 +31,7 @@ export class DocenteService {
   async loginDocente(dni: number, password: string) {
     const docente = await this.docenteRepository.findOne({
       where: { dni },
-      select: ['id', 'nombre', 'apellido', 'email'],
+      select: ['id', 'nombre', 'apellido', 'email', 'rol'],
       relations: ['password']
     });
 

@@ -23,11 +23,11 @@ import { Rol } from 'src/auth/auth.roles.enum';
 export class EvaluacionController {
   constructor(private evaluacionService: EvaluacionService) {}
 
+  @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(Rol.Docente)
+  @Roles(Rol.Alumno)
   @ApiBearerAuth()
   @ApiOperation({summary: 'Obtener docente por ID (requiere JWT)'})
-  @Get()
   getAllEvaluaciones() {
     return this.evaluacionService.findAll();
   }
