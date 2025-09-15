@@ -26,11 +26,12 @@ import { Rol } from 'src/auth/auth.roles.enum';
 export class DocenteController {
   constructor(private docenteService: DocenteService) {}
 
-  //@UseGuards(AuthGuard('jwt'), RolesGuard)
-  //@Roles(Rol.Docente)
-  //@ApiBearerAuth()
-  //@ApiOperation({summary: 'Obtener docente por ID (requiere JWT)'})
   @Get('/:id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Rol.Docente, Rol.Admin)
+  @ApiBearerAuth()
+  @ApiOperation({summary: 'Consultar docente por ID (requiere JWT)'})
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   getDocenteById(@Param('id') id: number) {
     return this.docenteService.findById(id);
   }
@@ -50,6 +51,9 @@ export class DocenteController {
   }
 
   @Put('/:id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Rol.Docente, Rol.Admin)
+  @ApiBearerAuth()
   @UsePipes(new ValidationPipe({ whitelist: true }))
   @ApiOperation({ summary: 'Modificar un docente existente' })
   modificarDocente(

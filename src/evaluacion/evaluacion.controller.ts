@@ -25,29 +25,45 @@ export class EvaluacionController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Roles(Rol.Docente)
+  @Roles(Rol.Docente, Rol.Admin)
   @ApiBearerAuth()
-  @ApiOperation({summary: 'Obtener docente por ID (requiere JWT)'})
+  @ApiOperation({summary: 'Obtener todas las evaluaciones (requiere JWT)'})
   getAllEvaluaciones() {
     return this.evaluacionService.findAll();
   }
 
   @Get('/:id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Rol.Docente, Rol.Admin)
+  @ApiBearerAuth()
+  @ApiOperation({summary: 'Obtener evaluacion por ID (requiere JWT)'})
   getEvaluacionById(@Param('id') id: number) {
     return this.evaluacionService.findById(id);
   }
 
   @Get('/versiones/:id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Rol.Docente, Rol.Admin)
+  @ApiBearerAuth()
+  @ApiOperation({summary: 'Obtener version de evaluacion por ID (requiere JWT)'})
   getAllVersionesDeEvaluacionPorId(@Param('id') id: number) {
     return this.evaluacionService.findAllVersionesDeEvaluacionById(id);
   }
 
   @Put('/:id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Rol.Docente, Rol.Admin)
+  @ApiBearerAuth()
+  @ApiOperation({summary: 'Deshabilitar evaluacion por ID (requiere JWT)'})
   deshabilitarEvaluacion(@Param('id') id: number) {
     return this.evaluacionService.deshabilitarEvaluacion(id);
   }
 
   @Put('/modificar-evaluacion/:id')
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Rol.Docente, Rol.Admin)
+  @ApiBearerAuth()
+  @ApiOperation({summary: 'Modificar evaluacion por ID (requiere JWT)'})
   modificarEvaluacion(
     @Body() data: PutEvaluacionRequestDTO,
     @Param('id') id: number,
@@ -56,6 +72,10 @@ export class EvaluacionController {
   }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Roles(Rol.Docente, Rol.Admin)
+  @ApiBearerAuth()
+  @ApiOperation({summary: 'Crear evaluacion por ID (requiere JWT)'})
   @UsePipes(new ValidationPipe({ whitelist: true }))
   crearEvaluacion(@Body() data: PostEvaluacionRequestDTO) {
     return this.evaluacionService.createEvaluacionYPreguntas(data);
