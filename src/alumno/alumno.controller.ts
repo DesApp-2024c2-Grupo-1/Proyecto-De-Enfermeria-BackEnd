@@ -8,10 +8,13 @@ import {
   Body,
   UsePipes,
   ValidationPipe,
+  Res
 } from '@nestjs/common';
 import { Alumno } from 'src/alumno/alumno.entity';
 import { AlumnoService } from './alumno.service';
 import { PostAlumnoRequestDTO } from './AlumnoDTO/crearAlumno.dto';
+import * as ExcelJS from "exceljs";
+import { Response } from "express";
 
 @Controller('/alumno')
 export class AlumnoController {
@@ -22,7 +25,33 @@ export class AlumnoController {
     return this.alumnoService.findAll();
   }
 
-  @Get('/:id')
+ 
+
+  @Get('/exportar/excel')
+  async exportarAlumnosAExcel(@Res() res: Response) {
+    const alumnos = await this.alumnoService.findAll();
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Alumnos');
+
+    worksheet.addRow(['ID', 'Nombre', 'Apellido', 'Email']);
+
+    alumnos.forEach(alumno => {
+      worksheet.addRow([alumno.id, alumno.nombre, alumno.apellido, alumno.email]);
+    }
+    );
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    
+res.setHeader(
+  'Content-Type',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+);
+res.setHeader('Content-Disposition', 'attachment; filename=alumnos.xlsx');
+res.send(buffer);
+  }
+
+   @Get('/:id')
   getAlumnoById(@Param('id') id: number) {
     return this.alumnoService.findById(id);
   }
