@@ -13,7 +13,7 @@ export class AlumnoService {
 
   async findAll() {
     const alumnos = await this.alumnoRepository.find({
-      select: ['id', 'nombre', 'apellido', 'dni'],
+      select: ['id', 'nombre', 'apellido', 'dni', 'email'],
     });
 
     return alumnos;
