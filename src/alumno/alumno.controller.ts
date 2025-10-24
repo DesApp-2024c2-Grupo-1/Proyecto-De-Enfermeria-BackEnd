@@ -46,64 +46,55 @@ export class AlumnoController {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('Alumnos');
 
-    // === Cabecera de columnas ===
+    
+    const headers = ['DNI', 'Nombre', 'Apellido', 'Correo electrónico'];
+    worksheet.addRow(headers);
+
+    
+    alumnos.forEach((alumno) => {
+      worksheet.addRow([
+        alumno.dni,
+        alumno.nombre,
+        alumno.apellido,
+        alumno.email,
+      ]);
+    });
+
+    
+    const headerRow = worksheet.getRow(1);
+    headerRow.font = { bold: true };
+    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+
+    
     worksheet.columns = [
-      { header: 'DNI', key: 'id', width: 20 },
+      { header: 'DNI', key: 'id', width: 10 },
       { header: 'Nombre', key: 'nombre', width: 20 },
       { header: 'Apellido', key: 'apellido', width: 20 },
       { header: 'Email', key: 'email', width: 30 },
     ];
-    // === Insertar los datos ===
-    alumnos.forEach((a) => {
-      worksheet.addRow({
-        id: a.dni,
-        nombre: a.nombre,
-        apellido: a.apellido,
-        email: a.email,
-      });
-    });
 
-    // === Estilos de la cabecera ===
-    const headerRow = worksheet.getRow(1);
-    headerRow.eachCell((cell) => {
-      cell.font = { bold: true, color: { argb: 'FFFFFFFF' } }; // Blanco
-      cell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: '55B589' }, // Verde suave
-      };
-      cell.alignment = { vertical: 'middle', horizontal: 'center' };
-      cell.border = {
-        top: { style: 'thin', color: { argb: 'FFCCCCCC' } },
-        left: { style: 'thin', color: { argb: 'FFCCCCCC' } },
-        bottom: { style: 'thin', color: { argb: 'FFCCCCCC' } },
-        right: { style: 'thin', color: { argb: 'FFCCCCCC' } },
-      };
-    });
-
-    // === Bordes para todas las filas ===
-    worksheet.eachRow((row, rowNumber) => {
+    
+    worksheet.eachRow({ includeEmpty: false }, (row) => {
       row.eachCell((cell) => {
         cell.border = {
-          top: { style: 'thin', color: { argb: 'FFE0E0E0' } },
-          left: { style: 'thin', color: { argb: 'FFE0E0E0' } },
-          bottom: { style: 'thin', color: { argb: 'FFE0E0E0' } },
-          right: { style: 'thin', color: { argb: 'FFE0E0E0' } },
+          top: { style: 'thin', color: { argb: 'FFDDDDDD' } },
+          left: { style: 'thin', color: { argb: 'FFDDDDDD' } },
+          bottom: { style: 'thin', color: { argb: 'FFDDDDDD' } },
+          right: { style: 'thin', color: { argb: 'FFDDDDDD' } },
         };
         cell.alignment = { vertical: 'middle', horizontal: 'left' };
       });
+    });
+
+    
+    worksheet.eachRow((row) => {
       row.height = 20;
     });
 
-    // === Auto-filter en la fila 1 ===
-    worksheet.autoFilter = {
-      from: 'A1',
-      to: 'D1',
-    };
-
-    // === Buffer final ===
+    
     const buffer = await workbook.xlsx.writeBuffer();
 
+    
     res.setHeader(
       'Content-Type',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -113,6 +104,7 @@ export class AlumnoController {
       'attachment; filename="alumnos.xlsx"',
     );
 
+    // 🚀 Enviar binario directamente
     res.send(buffer);
   }
 
