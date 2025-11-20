@@ -252,6 +252,7 @@ export class EvaluacionRealizadaService {
         select: ['id', 'fecha', 'preguntaRespondida'],
         where: { evaluacion: { titulo: tituloModeloBase } },
         relations: ['alumno',
+          'evaluacion',
           'docente',
           'preguntaRespondida',
           'preguntaRespondida.pregunta',
@@ -265,7 +266,7 @@ export class EvaluacionRealizadaService {
         nombre: string;
         apellido: string;
         dni: number;
-        evaluacionesRealizadas: { id: number; fecha: string; nota: string, preguntaRespondida: any}[];
+        evaluacionesRealizadas: { id: number; fecha: string; version: number; nota: string, preguntaRespondida: any}[];
       }
     >();
     for (const evalRealizada of evaluacionesRealizadas) {
@@ -281,6 +282,7 @@ export class EvaluacionRealizadaService {
       }
       alumnosMap1.get(alumno.id).evaluacionesRealizadas.push({
         id: evalRealizada.id,
+        version: evalRealizada.evaluacion.version,
         fecha: formatearFecha(evalRealizada.fecha),
         nota: await this.calcularNota(evalRealizada.id),
         preguntaRespondida: evalRealizada.preguntaRespondida,

@@ -40,65 +40,80 @@ export class EvaluacionRealizadaController {
 
   //
 
-  @Get('/exportar/excel/:idEvaluacion')
+@Get('/exportar/excel/:idEvaluacion')
 async exportarAlumnosPorEvaluacionAExcel(
   @Param('idEvaluacion') idEvaluacion: number,
   @Res() res: Response,
 ) {
   const alumnos = await this.evaluacionRealizadaService
     .findAllEvaluacionesDeAlumnosPorModelo(idEvaluacion);
-  
-  const evaluacion = await this.evaluacionService.findById(idEvaluacion); 
+
+  const evaluacion = await this.evaluacionService.findById(idEvaluacion);
 
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet('Alumnos');
 
   // ------------------------------------------------------------------
-  // 1️⃣ OBTENER TODAS LAS PREGUNTAS DEL MODELO (del primer alumno)
+  // 1️⃣ OBTENER LA MAYOR CANTIDAD DE PREGUNTAS ENTRE TODAS LAS VERSIONES
   // ------------------------------------------------------------------
-  const primeraEval = alumnos[0]?.evaluacionesRealizadas[0];
+  let maxPreguntas = 0;
+  let preguntasReferencia: any[] = [];
 
-  if (!primeraEval) {
-    throw new Error('No existen evaluaciones para exportar');
+  alumnos.forEach(a => {
+    a.evaluacionesRealizadas.forEach(e => {
+      if (e.preguntaRespondida.length > maxPreguntas) {
+        maxPreguntas = e.preguntaRespondida.length;
+
+        preguntasReferencia = [...e.preguntaRespondida].sort(
+          (a, b) => a.pregunta.orden - b.pregunta.orden
+        );
+      }
+    });
+  });
+
+  if (maxPreguntas === 0) {
+    throw new Error("No existen evaluaciones con preguntas para exportar");
   }
 
-  // Ordenar preguntas por “orden”
-  const preguntasOrdenadas = [...primeraEval.preguntaRespondida].sort(
-    (a, b) => a.pregunta.orden - b.pregunta.orden,
-  );
-
   // ------------------------------------------------------------------
-  // 2️⃣ DEFINIR HEADERS
+  // 2️⃣ HEADERS (Usando la cantidad máxima encontrada)
   // ------------------------------------------------------------------
   const headers = [
     'DNI',
     'Nombre',
     'Apellido',
     'Modelo',
+    'Versión',
     'Fecha',
     'Nota',
-    ...preguntasOrdenadas.map((p, i) => `Pregunta ${i + 1}`), // P1, P2, P3...
+    ...Array.from({ length: maxPreguntas }).map((_, i) => `Pregunta ${i + 1}`),
   ];
 
   worksheet.addRow(headers);
 
   // ------------------------------------------------------------------
-  // 3️⃣ AGREGAR FILAS (uno por cada intento del alumno)
+  // 3️⃣ FILAS — COMPLETAR CON "-" SI FALTAN PREGUNTAS EN ALGUNA VERSIÓN
   // ------------------------------------------------------------------
   alumnos.forEach(alumno => {
     alumno.evaluacionesRealizadas.forEach(evalR => {
       const respuestasOrdenadas = [...evalR.preguntaRespondida].sort(
-        (a, b) => a.pregunta.orden - b.pregunta.orden,
+        (a, b) => a.pregunta.orden - b.pregunta.orden
       );
+
+      const respuestasConRelleno = [
+        ...respuestasOrdenadas.map(pr => (pr.respuesta ? 1 : 0)),
+        ...Array(maxPreguntas - respuestasOrdenadas.length).fill('-') // 👈 RELLENO
+      ];
 
       const fila = [
         alumno.dni,
         alumno.nombre,
         alumno.apellido,
         evaluacion.titulo,
+        evalR.version,
         evalR.fecha,
         evalR.nota,
-        ...respuestasOrdenadas.map(pr => (pr.respuesta ? 1 : 0)),
+        ...respuestasConRelleno,
       ];
 
       worksheet.addRow(fila);
@@ -106,7 +121,7 @@ async exportarAlumnosPorEvaluacionAExcel(
   });
 
   // ------------------------------------------------------------------
-  // 4️⃣ ESTILOS (opcionales)
+  // 4️⃣ ESTILOS
   // ------------------------------------------------------------------
   const headerRow = worksheet.getRow(1);
   headerRow.font = { bold: true };
@@ -127,7 +142,7 @@ async exportarAlumnosPorEvaluacionAExcel(
   });
 
   // ------------------------------------------------------------------
-  // 5️⃣ DESCARGA DEL EXCEL
+  // 5️⃣ DESCARGA
   // ------------------------------------------------------------------
   const buffer = await workbook.xlsx.writeBuffer();
 
@@ -142,6 +157,8 @@ async exportarAlumnosPorEvaluacionAExcel(
 
   res.send(buffer);
 }
+
+
 
 
 
