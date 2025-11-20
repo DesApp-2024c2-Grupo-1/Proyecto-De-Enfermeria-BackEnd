@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:12.5
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin1234
+      POSTGRES_DB: enfermeria
+    ports:
+      - "5432:5434"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: 
+      context: ./Proyecto-De-Enfermeria-BackEnd
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:admin1234@db:5434/enfermeria
+      JWT_SECRET: superSecreto123
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ./Proyecto-De-Enfermeria-BackEnd:/app:cached
+      - /app/node_modules
+    command: npm run start:dev
+
+  frontend:
+    build:
+      context: ./Proyecto-De-Enfermeria-FrontEnd
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "3001:5173"
+    working_dir: /app
+    volumes:
+      - ./Proyecto-De-Enfermeria-FrontEnd:/app:cached
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=1
+    command: npm run dev
+
+volumes:
+  pgdata:

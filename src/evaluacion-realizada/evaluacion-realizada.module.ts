@@ -8,10 +8,11 @@ import { PreguntaRespondida } from 'src/pregunta-respondida/pregunta-respondida.
 import { Pregunta } from 'src/pregunta/pregunta.entity';
 import { Alumno } from 'src/alumno/alumno.entity';
 import { LugarEvaluacion } from 'src/lugar-evaluacion/lugar-evaluacion.entity'
+import { EvaluacionModule } from 'src/evaluacion/evaluacion.module';
 
 
 @Module({
-  imports: [TypeOrmModule.forFeature([EvaluacionRealizada, Pregunta, PreguntaRespondida, Alumno, Evaluacion, LugarEvaluacion])],
+  imports: [TypeOrmModule.forFeature([EvaluacionRealizada, Pregunta, PreguntaRespondida, Alumno, Evaluacion, LugarEvaluacion]),     EvaluacionModule,],
   providers: [EvaluacionRealizadaService],
   controllers: [EvaluacionRealizadaController]
 })

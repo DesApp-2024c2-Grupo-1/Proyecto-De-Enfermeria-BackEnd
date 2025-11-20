@@ -12,5 +12,6 @@ import { Pregunta } from 'src/pregunta/pregunta.entity';
   ],
   controllers: [EvaluacionController],
   providers: [EvaluacionService],
+  exports: [EvaluacionService],
 })
 export class EvaluacionModule {}

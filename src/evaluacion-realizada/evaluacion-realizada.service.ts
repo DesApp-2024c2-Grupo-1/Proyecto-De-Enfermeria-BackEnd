@@ -241,6 +241,55 @@ export class EvaluacionRealizadaService {
     return Array.from(alumnosMap.values());
   }
 
+  async findAllEvaluacionesDeAlumnosPorModelo(modeloId: number) {
+    const modeloBase = await this.evaluacionRepository.findOne({
+      where: { id: modeloId },
+    });
+    const tituloModeloBase = modeloBase.titulo;
+
+    const evaluacionesRealizadas =
+      await this.evaluacionRealizadaRepository.find({
+        select: ['id', 'fecha', 'preguntaRespondida'],
+        where: { evaluacion: { titulo: tituloModeloBase } },
+        relations: ['alumno',
+          'docente',
+          'preguntaRespondida',
+          'preguntaRespondida.pregunta',
+          'lugarEvaluacion'],
+      });
+
+    const alumnosMap1 = new Map<
+      number,
+      {
+        alumnoId: number;
+        nombre: string;
+        apellido: string;
+        dni: number;
+        evaluacionesRealizadas: { id: number; fecha: string; nota: string, preguntaRespondida: any}[];
+      }
+    >();
+    for (const evalRealizada of evaluacionesRealizadas) {
+      const alumno = evalRealizada.alumno;
+      if (!alumnosMap1.has(alumno.id)) {
+        alumnosMap1.set(alumno.id, {
+          alumnoId: alumno.id,
+          nombre: alumno.nombre,
+          apellido: alumno.apellido,
+          dni: alumno.dni,
+          evaluacionesRealizadas: [],
+        });
+      }
+      alumnosMap1.get(alumno.id).evaluacionesRealizadas.push({
+        id: evalRealizada.id,
+        fecha: formatearFecha(evalRealizada.fecha),
+        nota: await this.calcularNota(evalRealizada.id),
+        preguntaRespondida: evalRealizada.preguntaRespondida,
+      });
+    }
+
+    return Array.from(alumnosMap1.values());
+  }
+
   // Para el dropdown
   async findEvaluacionesDeUnAlumno(evaluacionId: number) {
     const evaluacionesRealizadas =

@@ -39,74 +39,77 @@ export class AlumnoController {
   
   //
 
-  @Get('/exportar/excel')
-  async exportarAlumnosAExcel(@Res() res: Response) {
-    const alumnos = await this.alumnoService.findAll();
+@Get('/exportar/excel')
+async exportarAlumnosAExcel(@Res() res: Response) {
+  const alumnos = await this.alumnoService.findAll();
 
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Alumnos');
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet('Alumnos');
 
-    
-    const headers = ['DNI', 'Nombre', 'Apellido', 'Correo electrónico'];
-    worksheet.addRow(headers);
+  // ------------------------------------------------
+  // 1️⃣ HEADERS
+  // ------------------------------------------------
+  const headers = ['DNI', 'Nombre', 'Apellido', 'Correo electrónico'];
+  worksheet.addRow(headers);
 
-    
-    alumnos.forEach((alumno) => {
-      worksheet.addRow([
-        alumno.dni,
-        alumno.nombre,
-        alumno.apellido,
-        alumno.email,
-      ]);
+  // ------------------------------------------------
+  // 2️⃣ FILAS
+  // ------------------------------------------------
+  alumnos.forEach(alumno => {
+    worksheet.addRow([
+      alumno.dni,
+      alumno.nombre,
+      alumno.apellido,
+      alumno.email,
+    ]);
+  });
+
+  // ------------------------------------------------
+  // 3️⃣ ESTILOS UNIFICADOS (IGUAL QUE EL OTRO EXCEL)
+  // ------------------------------------------------
+
+  // Header
+  const headerRow = worksheet.getRow(1);
+  headerRow.font = { bold: true };
+  headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+
+  // Columnas con el mismo ancho y estilo
+  worksheet.columns = headers.map(() => ({
+    width: 20
+  }));
+
+  // Bordes y alineación igual al otro export
+  worksheet.eachRow({ includeEmpty: false }, row => {
+    row.height = 20;
+
+    row.eachCell(cell => {
+      cell.border = {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
     });
+  });
 
-    
-    const headerRow = worksheet.getRow(1);
-    headerRow.font = { bold: true };
-    headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
+  // ------------------------------------------------
+  // 4️⃣ DESCARGA DEL ARCHIVO
+  // ------------------------------------------------
+  const buffer = await workbook.xlsx.writeBuffer();
 
-    
-    worksheet.columns = [
-      { header: 'DNI', key: 'id', width: 10 },
-      { header: 'Nombre', key: 'nombre', width: 20 },
-      { header: 'Apellido', key: 'apellido', width: 20 },
-      { header: 'Email', key: 'email', width: 30 },
-    ];
+  res.setHeader(
+    'Content-Type',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  );
+  res.setHeader(
+    'Content-Disposition',
+    'attachment; filename="alumnos.xlsx"',
+  );
 
-    
-    worksheet.eachRow({ includeEmpty: false }, (row) => {
-      row.eachCell((cell) => {
-        cell.border = {
-          top: { style: 'thin', color: { argb: 'FFDDDDDD' } },
-          left: { style: 'thin', color: { argb: 'FFDDDDDD' } },
-          bottom: { style: 'thin', color: { argb: 'FFDDDDDD' } },
-          right: { style: 'thin', color: { argb: 'FFDDDDDD' } },
-        };
-        cell.alignment = { vertical: 'middle', horizontal: 'left' };
-      });
-    });
+  res.send(buffer);
+}
 
-    
-    worksheet.eachRow((row) => {
-      row.height = 20;
-    });
-
-    
-    const buffer = await workbook.xlsx.writeBuffer();
-
-    
-    res.setHeader(
-      'Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    );
-    res.setHeader(
-      'Content-Disposition',
-      'attachment; filename="alumnos.xlsx"',
-    );
-
-    // 🚀 Enviar binario directamente
-    res.send(buffer);
-  }
 
 
 
